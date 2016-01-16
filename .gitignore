@@ -1,0 +1,8 @@
+.DS_*
+.ropeproject/
+
+output/
+*.pid
+
+*.py[bcd]
+

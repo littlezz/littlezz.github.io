@@ -38,7 +38,7 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
 
-THEME = 'pelican-themes/Flex'
+THEME = 'pelican-themes/theme'
 
 
 
@@ -62,7 +62,7 @@ CUSTOM_CSS = 'static/custom.css'
 
 
 
-MAIN_MENU = True 
+MAIN_MENU = True
 MENUITEMS = [
 	('Code', '/category/Code'),
 	('瞎扯', '/category/talk')

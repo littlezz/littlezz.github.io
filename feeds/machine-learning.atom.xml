@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/machine-learning.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-01-24T00:00:00+08:00</updated><entry><title>ML-ex8</title><link href="http://littlezz.github.io/ml-ex8.html" rel="alternate"></link><updated>2016-01-24T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-24:ml-ex8.html</id><summary type="html">&lt;p&gt;今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。  &lt;/p&gt;
+&lt;p&gt;这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇&lt;a href="http://www.salemmarafi.com/code/collaborative-filtering-with-python/"&gt;文章&lt;/a&gt;里面看到的是另一个东西。&lt;/p&gt;
+&lt;p&gt;他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。  &lt;/p&gt;
+&lt;p&gt;另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工....  T_T  &lt;/p&gt;
+&lt;p&gt;说一下搬运工的心得吧。&lt;br /&gt;
+今天把公式转换成矩阵的向量运算的时候折腾了好久。  &lt;/p&gt;
+&lt;p&gt;后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先用for 循环&lt;/li&gt;
+&lt;li&gt;2维的可以直接matrix&lt;/li&gt;
+&lt;li&gt;3维带一个for loop&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;一般矩阵相乘形式上正确结果就是正确的&lt;/del&gt;  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其实我花了半个小时在想如何消除3层嵌套的for循环。  /(ㄒoㄒ)/~~  &lt;/p&gt;
+&lt;p&gt;嘛， 接着看吧。（&lt;del&gt;弱逼不敢乱说话&lt;/del&gt;）  &lt;/p&gt;
+&lt;p&gt;2016年01月24日00:57:49&lt;/p&gt;</summary><category term="机器学习"></category></entry></feed>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="zz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="zz" />
+<meta name="description" content="今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。 这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇文章里面看到的是另一个东西。 他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。 另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工.... T_T 说一下搬运工的心得吧。 今天把公式转换成矩阵的向量运算的时候折腾了好久。 后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的 先用for 循环 2维的可以直接matrix 3维带一个for loop 一般矩阵相乘形式上正确结果就是正确的 其实我花了半个小时在想如何消除3层嵌套的for循环。 /(ㄒoㄒ)/~~ 嘛， 接着看吧。（弱逼不敢乱说话） 2016年01月24日00:57:49" />
+<meta name="keywords" content="机器学习">
+<meta property="og:site_name" content="zz's Blog"/>
+<meta property="og:title" content="ML-ex8"/>
+<meta property="og:description" content="今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。 这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇文章里面看到的是另一个东西。 他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。 另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工.... T_T 说一下搬运工的心得吧。 今天把公式转换成矩阵的向量运算的时候折腾了好久。 后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的 先用for 循环 2维的可以直接matrix 3维带一个for loop 一般矩阵相乘形式上正确结果就是正确的 其实我花了半个小时在想如何消除3层嵌套的for循环。 /(ㄒoㄒ)/~~ 嘛， 接着看吧。（弱逼不敢乱说话） 2016年01月24日00:57:49"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://littlezz.github.io/ml-ex8.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-01-24 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="http://littlezz.github.io/author/zz.html">
+<meta property="article:section" content="Machine-Learning"/>
+<meta property="article:tag" content="机器学习"/>
+<meta property="og:image" content="/images/logo.jpg">  <title>zz's Blog &ndash; ML-ex8</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="zz" title="zz">
+      </a>
+      <h1><a href="http://littlezz.github.io">zz</a></h1>
+      <p>当我被狗日时， 我在想些什么</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="ml-ex8">ML-ex8</h1>
+    <p>Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a></p>
+  </header>
+  <div>
+    <p>今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。  </p>
+<p>这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇<a href="http://www.salemmarafi.com/code/collaborative-filtering-with-python/">文章</a>里面看到的是另一个东西。</p>
+<p>他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。  </p>
+<p>另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工....  T_T  </p>
+<p>说一下搬运工的心得吧。<br />
+今天把公式转换成矩阵的向量运算的时候折腾了好久。  </p>
+<p>后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的  </p>
+<ul>
+<li>先用for 循环</li>
+<li>2维的可以直接matrix</li>
+<li>3维带一个for loop</li>
+<li><del>一般矩阵相乘形式上正确结果就是正确的</del>  </li>
+</ul>
+<p>其实我花了半个小时在想如何消除3层嵌套的for循环。  /(ㄒoㄒ)/~~  </p>
+<p>嘛， 接着看吧。（<del>弱逼不敢乱说话</del>）  </p>
+<p>2016年01月24日00:57:49</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>
+    </p>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; zz 2015</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "ML-ex8",
+  "headline": "ML-ex8",
+  "datePublished": "2016-01-24 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "zz",
+    "url": "http://littlezz.github.io/author/zz.html"
+  },
+  "image": "/images/logo.jpg",
+  "url": "http://littlezz.github.io/ml-ex8.html",
+  "description": "今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。 这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇文章里面看到的是另一个东西。 他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。 另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工.... T_T 说一下搬运工的心得吧。 今天把公式转换成矩阵的向量运算的时候折腾了好久。 后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的 先用for 循环 2维的可以直接matrix 3维带一个for loop 一般矩阵相乘形式上正确结果就是正确的 其实我花了半个小时在想如何消除3层嵌套的for循环。 /(ㄒoㄒ)/~~ 嘛， 接着看吧。（弱逼不敢乱说话） 2016年01月24日00:57:49"
+}
+</script></body>
+</html>

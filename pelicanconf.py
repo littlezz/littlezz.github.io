@@ -40,7 +40,7 @@ RELATIVE_URLS = True
 
 
 
-MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', ]
+MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', 'pymdownx.github']
 
 THEME = 'pelican-themes/theme'
 

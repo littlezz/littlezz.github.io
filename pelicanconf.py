@@ -40,7 +40,7 @@ RELATIVE_URLS = True
 
 
 
-MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', 'pymdownx.github']
+MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', ]
 
 THEME = 'pelican-themes/theme'
 
@@ -49,7 +49,7 @@ THEME = 'pelican-themes/theme'
 
 
 SITETITLE = 'zz'
-SITESUBTITLE = ''
+SITESUBTITLE = '当我被狗日时， 我在想些什么'
 SITEDESCRIPTION = 'zz\'s Thoughts and Writings'
 SITELOGO = '/images/logo.jpg'
 
@@ -69,6 +69,7 @@ CUSTOM_CSS = 'static/custom.css'
 MAIN_MENU = True
 MENUITEMS = [
 	('Category', '/categories'),
+	('Tags', '/tags'),
 ]
 
 STATUSCAKE=False

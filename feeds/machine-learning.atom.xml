@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/machine-learning.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-01-24T00:00:00+08:00</updated><entry><title>ML-ex8</title><link href="http://littlezz.github.io/ml-ex8.html" rel="alternate"></link><updated>2016-01-24T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-24:ml-ex8.html</id><summary type="html">&lt;p&gt;今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/machine-learning.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-01-24T14:49:33+08:00</updated><entry><title>Ng Machine Learning Week 10</title><link href="http://littlezz.github.io/ng-machine-learning-week-10.html" rel="alternate"></link><updated>2016-01-24T14:49:33+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-24:ng-machine-learning-week-10.html</id><summary type="html">&lt;p&gt;总结一下第10周， 之前看的都没有总结（←懒   &lt;/p&gt;
+&lt;p&gt;第十周已经开始不怎么说算法了， 这次说的是对于大数据集的处理， 之前那种每次都对所有数据集做计算的称为batch， 现在这个（stochastic）是每次只对一个样例找最优值， 遍历完所有样例之后也会趋向于全局最优， 会在他的旁边震荡， 这个时候可以动态的减少学习效率 (alpha)   &lt;/p&gt;
+&lt;p&gt;之后说了mini-batch， 就是stochastic 和batch的混合版， 每次只训练一小部分样例。&lt;/p&gt;
+&lt;p&gt;然后在线的学习其实感觉就是stochastic， 每次都对一个新的样本训练， 然后丢弃。  &lt;/p&gt;
+&lt;p&gt;之后是map reduce， 这个没有什么好说的了， 分布式计算， 或者并行的多核计算， 分布式要考虑网络带宽等问题， 虽然视频说多核的不用考虑带宽， 但是实际上核心之间的通信也要消耗时间， 最终可能每个核心只能快80%吧。  &lt;/p&gt;
+&lt;p&gt;map reduce的使用需要计算的时候数据能够分割， 一般是有 Σ 这种求和公式的时候使用。  &lt;/p&gt;
+&lt;p&gt;嘛。  &lt;/p&gt;
+&lt;p&gt;2016年01月24日14:42:29&lt;/p&gt;</summary><category term="机器学习"></category></entry><entry><title>ML-ex8</title><link href="http://littlezz.github.io/ml-ex8.html" rel="alternate"></link><updated>2016-01-24T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-24:ml-ex8.html</id><summary type="html">&lt;p&gt;今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。  &lt;/p&gt;
 &lt;p&gt;这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇&lt;a href="http://www.salemmarafi.com/code/collaborative-filtering-with-python/"&gt;文章&lt;/a&gt;里面看到的是另一个东西。&lt;/p&gt;
 &lt;p&gt;他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。  &lt;/p&gt;
 &lt;p&gt;另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工....  T_T  &lt;/p&gt;

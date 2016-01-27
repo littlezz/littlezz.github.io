@@ -44,6 +44,10 @@ MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', 'pymdownx.github']
 
 THEME = 'pelican-themes/theme'
 
+EXTRA_PATH_METADATA = {
+    'extra/custom.css': {'path': 'static/custom.css'},
+}
+CUSTOM_CSS = 'static/custom.css'
 
 
 
@@ -59,12 +63,15 @@ SITELOGO = '/images/logo.jpg'
 COPYRIGHT_YEAR = 2015
 # CC_LICENSE = { 'name': 'Creative Commons Attribution-ShareAlike', 'version':'4.0', 'slug': 'by-sa' }
 
-EXTRA_PATH_METADATA = {
-    'extra/custom.css': {'path': 'static/custom.css'},
-}
 CUSTOM_CSS = 'static/custom.css'
 
+EXTRA_PATH_METADATA = {
+    CUSTOM_CSS: {'path': 'static/custom.css'},
+}
 
+
+STATIC_PATHS = ['images', 
+				CUSTOM_CSS]
 
 MAIN_MENU = True
 MENUITEMS = [

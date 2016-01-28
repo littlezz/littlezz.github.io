@@ -36,7 +36,6 @@ LINKS = []
 
 SOCIAL = (
 	('github', 'https://github.com/littlezz/'),
-	('zhihu', 'https://zhihu.com')
 	)
 
 DEFAULT_PAGINATION = 10

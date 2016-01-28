@@ -29,9 +29,15 @@ AUTHOR_FEED_RSS = None
 
 LINKS = []
 
+
 # Social widget
 # SOCIAL = (('You can add links in your config file', 'http://github.com/littlezz'),
 #           ('Another social link', '#'),)
+
+SOCIAL = (
+	('github', 'https://github.com/littlezz/'),
+	('zhihu', 'https://zhihu.com')
+	)
 
 DEFAULT_PAGINATION = 10
 

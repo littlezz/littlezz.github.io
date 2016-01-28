@@ -1,5 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-01-27T00:00:00+08:00</updated><entry><title>药丸， 真的是药丸</title><link href="http://littlezz.github.io/yao-wan-zhen-de-shi-yao-wan.html" rel="alternate"></link><updated>2016-01-27T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-27:yao-wan-zhen-de-shi-yao-wan.html</id><summary type="html">&lt;p&gt;今天浪了一天， 不懂在干什么， 本来说要补一波概率论的， 结果看到第4章之后就开始乱翻书了， 然后统计学习基础那本书根本就没有看， 昨天看到『前列腺癌』的例子， 今天还是这个例子。 我很关心男性前列腺癌嘛啊？  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-01-29T00:00:00+08:00</updated><entry><title>概率论学习</title><link href="http://littlezz.github.io/gai-lu-lun-xue-xi.html" rel="alternate"></link><updated>2016-01-29T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-29:gai-lu-lun-xue-xi.html</id><summary type="html">&lt;p&gt;所用公式都是用mathjax 写的， ( &lt;del&gt;奶奶的， 写死我了。&lt;/del&gt; )  &lt;/p&gt;
+&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;基本概念&lt;/h2&gt;
+&lt;p&gt;基本概念主要记下常用公式。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;P(A) 表示事件A发生的概率  &lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(P(A \bigcup B) = P(A) + P(B) - P(AB)\)&lt;/span&gt;  &lt;/li&gt;
+&lt;li&gt;上面公式可以推广到N个事件  &lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(P(B \mid A)  = \frac{P(AB)}{P(A)}\)&lt;/span&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(P(A) = P(AB)+P(A \bar B) = P(B) \cdot P(A|B) + P(\bar B) \cdot P(A| \bar B)\)&lt;/span&gt;  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;全概率公式&lt;/h5&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(B_i\)&lt;/span&gt; 是&lt;span class="math"&gt;\(S\)&lt;/span&gt;的完备事件组  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)\)&lt;/span&gt;   &lt;/p&gt;
+&lt;h5 id="_3"&gt;&lt;a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;贝叶斯公式&lt;/h5&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(P(B_k|A) = {P(B_k A) \over P(A)} = {P(B_k)P(A|P(B_k) \over \sum_{j=1}^n P(B_j)P(A|B_j)}\)&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id="_4"&gt;&lt;a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;概率分布&lt;/h2&gt;
+&lt;h4 id="0-1"&gt;&lt;a name="user-content-0-1" href="#0-1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;0-1分布&lt;/h4&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(X \sim 0 - 1\)&lt;/span&gt;  &lt;/p&gt;
+&lt;h4 id="_5"&gt;&lt;a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;二项分布&lt;/h4&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(P\{X= k\} = C_n^kp^k(1-p)^k\)&lt;/span&gt;  &lt;/p&gt;
+&lt;p&gt;记作 &lt;span class="math"&gt;\(X \sim B(n,p)\)&lt;/span&gt;&lt;/p&gt;
+&lt;h4 id="poisson"&gt;&lt;a name="user-content-poisson" href="#poisson" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;poisson分布&lt;/h4&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(P\{X= k\} = {e^{-\lambda}\lambda^k \over k!}\)&lt;/span&gt;  &lt;/p&gt;
+&lt;p&gt;记作 &lt;span class="math"&gt;\(X \sim \pi(\lambda)\)&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id="distribution-function"&gt;&lt;a name="user-content-distribution-function" href="#distribution-function" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Distribution function&lt;/h3&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(F(x) = P\{X \le x\}\)&lt;/span&gt;  &lt;/p&gt;
+&lt;h3 id="probability-density-function"&gt;&lt;a name="user-content-probability-density-function" href="#probability-density-function" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;probability density function&lt;/h3&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(f(x)\)&lt;/span&gt; 是概率密度函数&lt;br /&gt;
+满足  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(P\{X \in D\} = \int_{D} f(x) {dx}\)&lt;/span&gt;  &lt;/p&gt;
+&lt;h3 id="_6"&gt;&lt;a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;分布&lt;/h3&gt;
+&lt;h4 id="_7"&gt;&lt;a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;均匀分布&lt;/h4&gt;
+&lt;p&gt;f(x) = 1/(b-a),  x在（a,b)内， 其他的地方为0  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(X \sim U(a,b)\)&lt;/span&gt;  &lt;/p&gt;
+&lt;h4 id="normal"&gt;&lt;a name="user-content-normal" href="#normal" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;正态分布 （normal）&lt;/h4&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(X \sim N(\mu, \sigma^2)\)&lt;/span&gt;  &lt;/p&gt;
+&lt;p&gt;性质&lt;br /&gt;
+- f(x) 关于 &lt;span class="math"&gt;\(x=\mu\)&lt;/span&gt; 对称&lt;br /&gt;
+- &lt;span class="math"&gt;\(\sigma\)&lt;/span&gt;越大, 最大值越大, 就是越瘦高.  &lt;br /&gt;
+- N(0, 1) 是标准正态分布  &lt;/p&gt;
+&lt;h4 id="_8"&gt;&lt;a name="user-content-_8" href="#_8" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;指数分布&lt;/h4&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(f(x) = \lambda e^{-\lambda x}\)&lt;/span&gt;, x&amp;gt;0  &lt;/p&gt;
+&lt;p&gt;记作&lt;span class="math"&gt;\(X \sim E(\lambda)\)&lt;/span&gt;&lt;/p&gt;
+&lt;h4 id="others"&gt;&lt;a name="user-content-others" href="#others" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;others&lt;/h4&gt;
+&lt;p&gt;比如 Gamma分布， &lt;br /&gt;
+&lt;span class="math"&gt;\(X \sim \Gamma(\alpha, \beta)\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Beta 分布&lt;br /&gt;
+&lt;span class="math"&gt;\(X \sim \beta(a, b)\)&lt;/span&gt;&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</summary></entry><entry><title>药丸， 真的是药丸</title><link href="http://littlezz.github.io/yao-wan-zhen-de-shi-yao-wan.html" rel="alternate"></link><updated>2016-01-27T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-27:yao-wan-zhen-de-shi-yao-wan.html</id><summary type="html">&lt;p&gt;今天浪了一天， 不懂在干什么， 本来说要补一波概率论的， 结果看到第4章之后就开始乱翻书了， 然后统计学习基础那本书根本就没有看， 昨天看到『前列腺癌』的例子， 今天还是这个例子。 我很关心男性前列腺癌嘛啊？  &lt;/p&gt;
 &lt;p&gt;感觉真的药丸。  &lt;/p&gt;
 &lt;p&gt;昨天和手榴弹去吃KFC， 作死的点了一个全家桶， 嘛， 作为肥宅， kfc当然要刷全家桶啦。  &lt;/p&gt;
 &lt;p&gt;结果就是吃得快吐了， 肥宅力不足嘛。&lt;br /&gt;

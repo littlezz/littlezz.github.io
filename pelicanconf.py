@@ -47,6 +47,11 @@ RELATIVE_URLS = True
 
 MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', 'pymdownx.github']
 
+PLUGIN_PATHS = ['pelican-plugins']
+
+PLUGINS = ["render_math"]
+MATH_JAX = {'align':'left','responsive': True}
+
 THEME = 'pelican-themes/theme'
 
 EXTRA_PATH_METADATA = {

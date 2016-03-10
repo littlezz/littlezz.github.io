@@ -77,10 +77,12 @@ CUSTOM_CSS = 'static/custom.css'
 
 EXTRA_PATH_METADATA = {
     CUSTOM_CSS: {'path': 'static/custom.css'},
+    'diary/photos/': {'path': 'photos/'}
 }
 
 
 STATIC_PATHS = ['images', 
+				'diary/photos',
 				CUSTOM_CSS]
 
 MAIN_MENU = True

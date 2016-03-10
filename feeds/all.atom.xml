@@ -1,5 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-01-29T00:00:00+08:00</updated><entry><title>概率论学习</title><link href="http://littlezz.github.io/gai-lu-lun-xue-xi.html" rel="alternate"></link><updated>2016-01-29T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-29:gai-lu-lun-xue-xi.html</id><summary type="html">&lt;p&gt;所用公式都是用mathjax 写的， ( &lt;del&gt;奶奶的， 写死我了。&lt;/del&gt; )  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-10T00:00:00+08:00</updated><entry><title>Linear Model的总结</title><link href="http://littlezz.github.io/linear-modelde-zong-jie.html" rel="alternate"></link><updated>2016-03-10T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-03-10:linear-modelde-zong-jie.html</id><summary type="html">&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;目录&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;公式&lt;/li&gt;
+&lt;li&gt;易混淆的名词解释&lt;/li&gt;
+&lt;li&gt;蛋疼的程序编写过程  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;公式&lt;/h3&gt;
+&lt;p&gt;The elements of statistical learning 看到了第三章， 昨天着手于编写程序。  &lt;/p&gt;
+&lt;p&gt;Linear Model: &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;在这里面， &lt;span class="math"&gt;\(\mathbf X\)&lt;/span&gt; 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。&lt;br /&gt;
+所以beta hat 算出来后第一项为截距。  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\hat {\mathbf y} = \mathbf X \hat \beta\)&lt;/span&gt; &lt;/p&gt;
+&lt;p&gt;对数据做预测的时候， &lt;strong&gt;X也要standardization&lt;/strong&gt;， 做和你之前一样的事情， 使用和**train set一样的 mean 和 std**， 说多了都是泪啊， 我昨天晚上一个晚上都在弄这个， 因为我的要预测的x用了自己的mean 和std， 结果出来的结果不一样。  一定要使用相同的std 和mean 来处理数据。 我才想起来ng的课里面写程序的时候， pdf里面还特别提示过， 妈的， 哭晕。  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(var(\hat\beta)=(\mathbf X^T \mathbf X)^{-1}\sigma^2\)&lt;/span&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\hat \sigma = \frac{1}{N-p-1} \sum_{i=1}^N(y_i - \hat y_i)^2\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;然后是z-score&lt;br /&gt;
+&lt;span class="math"&gt;\(z_j = \frac{\hat\beta_j}{\hat \sigma \sqrt v_j}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;注意到&lt;span class="math"&gt;\(v_j\)&lt;/span&gt;是&lt;span class="math"&gt;\(\mathbf X^T \mathbf X\)&lt;/span&gt;的对角线上的第j项。&lt;br /&gt;
+所以得到stand error这里的做法是对&lt;span class="math"&gt;\(var(\hat\beta)\)&lt;/span&gt;对角线开平方。&lt;/p&gt;
+&lt;p&gt;F statistic  &lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(F = \frac{(RSS_0 - RSS_1)/(p_1 - p_0)}{RSS1 / (N - p_1 - 1)}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;F statistic 用于分析去掉一些feature之后影响大不大。&lt;br /&gt;
+&lt;span class="math"&gt;\(RSS_1\)&lt;/span&gt; 是含有跟多feature的模型的代价， &lt;span class="math"&gt;\(RSS_0\)&lt;/span&gt;是去掉一些feature之后的模型的代价。  &lt;/p&gt;
+&lt;h3 id="_3"&gt;&lt;a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;易混淆的名词解释&lt;/h3&gt;
+&lt;h5 id="standardization"&gt;&lt;a name="user-content-standardization" href="#standardization" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;standardization&lt;/h5&gt;
+&lt;p&gt;这个的意识是让数据的feature 的平均值为0, 然后高斯分布为1.  &lt;/p&gt;
+&lt;p&gt;针对的是每一个feature, 一般是&lt;code&gt;x = (x-x.mean(axis=0)) / x.std(asix=0, ddof=1)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;默认ddof=0， 这个时候标准差（std） 是除以N的， 在机器学习里面， 一般是除以N， 但是在这本书里面， 一般是认为std的计算要除以（N-1）。  &lt;/p&gt;
+&lt;h5 id="normalize"&gt;&lt;a name="user-content-normalize" href="#normalize" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;normalize&lt;/h5&gt;
+&lt;p&gt;这个是针对每一个样例的， 比如X里面包含N组数据， 那么就是对N组数据做， 一般是把不同特征的取值范围降到同一个范围里面。  &lt;/p&gt;
+&lt;h3 id="_4"&gt;&lt;a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;蛋疼的程序编写过程&lt;/h3&gt;
+&lt;p&gt;我花了一天， 才发现， standardization对结果是不会影响的， 是一种优化方法。&lt;br /&gt;
+但是我因为对 Test_X 的数据standardization错了, 所以结果总是不一样. 非常的尴尬.  &lt;/p&gt;
+&lt;p&gt;翻了sklearn的源码, 发现他里面怎么对y做了处理, 做了&lt;code&gt;(y-y.mean())&lt;/code&gt;东西， 卧槽， 不合理啊。  &lt;/p&gt;
+&lt;p&gt;昨天写了一天， 值写了linear Regression， 后面还有一堆， 慢慢写吧。  &lt;/p&gt;
+&lt;p&gt;等稳定一些之后再放到github上面好了。  &lt;/p&gt;
+&lt;p&gt;2016年03月10日15:12:10&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</summary><category term="机器学习"></category></entry><entry><title>概率论学习</title><link href="http://littlezz.github.io/gai-lu-lun-xue-xi.html" rel="alternate"></link><updated>2016-01-29T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-01-29:gai-lu-lun-xue-xi.html</id><summary type="html">&lt;p&gt;所用公式都是用mathjax 写的， ( &lt;del&gt;奶奶的， 写死我了。&lt;/del&gt; )  &lt;/p&gt;
 &lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;基本概念&lt;/h2&gt;
 &lt;p&gt;基本概念主要记下常用公式。&lt;/p&gt;
 &lt;ul&gt;

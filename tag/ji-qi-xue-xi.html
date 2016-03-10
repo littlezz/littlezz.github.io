@@ -49,6 +49,89 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/linear-modelde-zong-jie.html#linear-modelde-zong-jie">Linear Model的总结</a></h2>
+    <p>
+      Posted on Thu 10 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>    </p>
+  </header>
+  <div>
+      <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>目录</h2>
+<ul>
+<li>公式</li>
+<li>易混淆的名词解释</li>
+<li>蛋疼的程序编写过程  </li>
+</ul>
+<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>公式</h3>
+<p>The elements of statistical learning 看到了第三章， 昨天着手于编写程序。  </p>
+<p>Linear Model: </p>
+<p><span class="math">\(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\)</span></p>
+<p>在这里面， <span class="math">\(\mathbf X\)</span> 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。<br />
+所以beta hat 算出来后第一项为截距。  </p>
+<p><span class="math">\(\hat {\mathbf y} = \mathbf X \hat \beta\)</span> </p>
+<p>对数据做预测的时候， <strong>X也要standardization</strong>， 做和你之前一样的事情， 使用和**train set一样的 ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      <a class="btn" href="http://littlezz.github.io/linear-modelde-zong-jie.html#linear-modelde-zong-jie">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/ng-machine-learning-week-11.html#ng-machine-learning-week-11">Ng Machine Learning Week 11</a></h2>
     <p>
       Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="zz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="zz" />
+<meta name="description" content="目录 公式 易混淆的名词解释 蛋疼的程序编写过程 公式 The elements of statistical learning 看到了第三章， 昨天着手于编写程序。 Linear Model: \(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\) 在这里面， \(\mathbf X\) 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。 所以beta hat 算出来后第一项为截距。 \(\hat {\mathbf y} = \mathbf X \hat \beta\) 对数据做预测的时候， X也要standardization， 做和你之前一样的事情， 使用和**train set一样的 ...if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width" />
+<meta name="keywords" content="机器学习">
+<meta property="og:site_name" content="zz's Blog"/>
+<meta property="og:title" content="Linear Model的总结"/>
+<meta property="og:description" content="目录 公式 易混淆的名词解释 蛋疼的程序编写过程 公式 The elements of statistical learning 看到了第三章， 昨天着手于编写程序。 Linear Model: \(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\) 在这里面， \(\mathbf X\) 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。 所以beta hat 算出来后第一项为截距。 \(\hat {\mathbf y} = \mathbf X \hat \beta\) 对数据做预测的时候， X也要standardization， 做和你之前一样的事情， 使用和**train set一样的 ...if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://littlezz.github.io/linear-modelde-zong-jie.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-03-10 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="http://littlezz.github.io/author/zz.html">
+<meta property="article:section" content="Machine-Learning"/>
+<meta property="article:tag" content="机器学习"/>
+<meta property="og:image" content="/images/logo.jpg">  <title>zz's Blog &ndash; Linear Model的总结</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="zz" title="zz">
+      </a>
+      <h1><a href="http://littlezz.github.io">zz</a></h1>
+      <p>当我被狗日时， 我在想些什么</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/littlezz/" target="_blank"><i class="fa fa-github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="linear-modelde-zong-jie">Linear Model的总结</h1>
+    <p>Posted on Thu 10 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a></p>
+  </header>
+  <div>
+    <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>目录</h2>
+<ul>
+<li>公式</li>
+<li>易混淆的名词解释</li>
+<li>蛋疼的程序编写过程  </li>
+</ul>
+<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>公式</h3>
+<p>The elements of statistical learning 看到了第三章， 昨天着手于编写程序。  </p>
+<p>Linear Model: </p>
+<p><span class="math">\(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\)</span></p>
+<p>在这里面， <span class="math">\(\mathbf X\)</span> 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。<br />
+所以beta hat 算出来后第一项为截距。  </p>
+<p><span class="math">\(\hat {\mathbf y} = \mathbf X \hat \beta\)</span> </p>
+<p>对数据做预测的时候， <strong>X也要standardization</strong>， 做和你之前一样的事情， 使用和**train set一样的 mean 和 std**， 说多了都是泪啊， 我昨天晚上一个晚上都在弄这个， 因为我的要预测的x用了自己的mean 和std， 结果出来的结果不一样。  一定要使用相同的std 和mean 来处理数据。 我才想起来ng的课里面写程序的时候， pdf里面还特别提示过， 妈的， 哭晕。  </p>
+<p><span class="math">\(var(\hat\beta)=(\mathbf X^T \mathbf X)^{-1}\sigma^2\)</span>  </p>
+<p><span class="math">\(\hat \sigma = \frac{1}{N-p-1} \sum_{i=1}^N(y_i - \hat y_i)^2\)</span></p>
+<p>然后是z-score<br />
+<span class="math">\(z_j = \frac{\hat\beta_j}{\hat \sigma \sqrt v_j}\)</span></p>
+<p>注意到<span class="math">\(v_j\)</span>是<span class="math">\(\mathbf X^T \mathbf X\)</span>的对角线上的第j项。<br />
+所以得到stand error这里的做法是对<span class="math">\(var(\hat\beta)\)</span>对角线开平方。</p>
+<p>F statistic  </p>
+<p><span class="math">\(F = \frac{(RSS_0 - RSS_1)/(p_1 - p_0)}{RSS1 / (N - p_1 - 1)}\)</span></p>
+<p>F statistic 用于分析去掉一些feature之后影响大不大。<br />
+<span class="math">\(RSS_1\)</span> 是含有跟多feature的模型的代价， <span class="math">\(RSS_0\)</span>是去掉一些feature之后的模型的代价。  </p>
+<h3 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>易混淆的名词解释</h3>
+<h5 id="standardization"><a name="user-content-standardization" href="#standardization" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>standardization</h5>
+<p>这个的意识是让数据的feature 的平均值为0, 然后高斯分布为1.  </p>
+<p>针对的是每一个feature, 一般是<code>x = (x-x.mean(axis=0)) / x.std(asix=0, ddof=1)</code></p>
+<p>默认ddof=0， 这个时候标准差（std） 是除以N的， 在机器学习里面， 一般是除以N， 但是在这本书里面， 一般是认为std的计算要除以（N-1）。  </p>
+<h5 id="normalize"><a name="user-content-normalize" href="#normalize" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>normalize</h5>
+<p>这个是针对每一个样例的， 比如X里面包含N组数据， 那么就是对N组数据做， 一般是把不同特征的取值范围降到同一个范围里面。  </p>
+<h3 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>蛋疼的程序编写过程</h3>
+<p>我花了一天， 才发现， standardization对结果是不会影响的， 是一种优化方法。<br />
+但是我因为对 Test_X 的数据standardization错了, 所以结果总是不一样. 非常的尴尬.  </p>
+<p>翻了sklearn的源码, 发现他里面怎么对y做了处理, 做了<code>(y-y.mean())</code>东西， 卧槽， 不合理啊。  </p>
+<p>昨天写了一天， 值写了linear Regression， 后面还有一堆， 慢慢写吧。  </p>
+<p>等稳定一些之后再放到github上面好了。  </p>
+<p>2016年03月10日15:12:10</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>
+    </p>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; zz 2015</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Linear Model的总结",
+  "headline": "Linear Model的总结",
+  "datePublished": "2016-03-10 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "zz",
+    "url": "http://littlezz.github.io/author/zz.html"
+  },
+  "image": "/images/logo.jpg",
+  "url": "http://littlezz.github.io/linear-modelde-zong-jie.html",
+  "description": "目录 公式 易混淆的名词解释 蛋疼的程序编写过程 公式 The elements of statistical learning 看到了第三章， 昨天着手于编写程序。 Linear Model: \(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\) 在这里面， \(\mathbf X\) 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。 所以beta hat 算出来后第一项为截距。 \(\hat {\mathbf y} = \mathbf X \hat \beta\) 对数据做预测的时候， X也要standardization， 做和你之前一样的事情， 使用和**train set一样的 ...if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width"
+}
+</script></body>
+</html>

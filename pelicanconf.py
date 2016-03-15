@@ -68,7 +68,7 @@ SITEDESCRIPTION = 'zz\'s Thoughts and Writings'
 SITELOGO = '/images/logo.jpg'
 
 # FAVICON = SITEURL + '/images/favicon.ico'
-ROBOTS = 'index, follow'
+# ROBOTS = 'index, follow'
 
 COPYRIGHT_YEAR = 2015
 # CC_LICENSE = { 'name': 'Creative Commons Attribution-ShareAlike', 'version':'4.0', 'slug': 'by-sa' }

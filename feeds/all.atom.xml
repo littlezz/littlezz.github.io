@@ -1,5 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-15T00:00:00+08:00</updated><entry><title>阿发狗，少年以及金庸</title><link href="http://littlezz.github.io/a-fa-gou-shao-nian-yi-ji-jin-yong.html" rel="alternate"></link><updated>2016-03-15T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-03-15:a-fa-gou-shao-nian-yi-ji-jin-yong.html</id><summary type="html">&lt;p&gt;阿发狗3：0打赢了李世石， 整个世界沉浸在一股人工智能毁灭人类的狂欢中， 之后李世石翻了一盘。 众人笑道：AI已经学会放水啦， 药丸药丸， 真是可怕。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>zz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-17T00:00:00+08:00</updated><entry><title>Python Package Setup</title><link href="http://littlezz.github.io/python-package-setup.html" rel="alternate"></link><updated>2016-03-17T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-03-17:python-package-setup.html</id><summary type="html">&lt;p&gt;esl_model &lt;a href="https://github.com/littlezz/ESL-Model"&gt;https://github.com/littlezz/ESL-Model&lt;/a&gt;&lt;br /&gt;
+今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  &lt;/p&gt;
+&lt;p&gt;简单总结一下Python的Package Distribution吧。&lt;br /&gt;
+有空的话， 在写一个pytest的简单总结。&lt;/p&gt;
+&lt;h2 id="setuppy"&gt;&lt;a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;setup.py&lt;/h2&gt;
+&lt;p&gt;setup.py 是最主要的整个配置的文件， &lt;/p&gt;
+&lt;p&gt;贴我的setup.py 的代码好了。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;setuptools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;find_packages&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;README.rst&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;encoding&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;readme&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;version&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;__import__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;esl_model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__version__&lt;/span&gt;
+
+
+&lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;esl_model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Algorithm from The Elements of Statistical Learning book implement by Python code&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;long_description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;readme&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;classifiers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;Programming Language :: Python :: 3.5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;Programming Language :: Python :: 3 :: Only&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;Development Status :: 2 - Pre-Alpha&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;License :: OSI Approved :: MIT License&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="p"&gt;],&lt;/span&gt;
+      &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://github.com/littlezz/ESL-Model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;littlezz&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;author_email&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;zz.at.field@gmail.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;license&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;MIT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;packages&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;find_packages&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exclude&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;tests*&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt;
+      &lt;span class="n"&gt;install_requires&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;numpy&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;pandas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;scipy&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;sklearn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="p"&gt;],&lt;/span&gt;
+      &lt;span class="n"&gt;tests_require&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;pytest&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+      &lt;span class="n"&gt;include_package_data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;zip_safe&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;逐个解释参数。&lt;br /&gt;
+&lt;code&gt;name&lt;/code&gt; 是你要发布的模块的名字, 只能是用小写和下划线.不要和其他的公共的模块名字冲突.  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;version&lt;/code&gt; 是版本号, 诸如 0.0.1 这样.  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;description&lt;/code&gt; 和 &lt;code&gt;long_description&lt;/code&gt;是你这个项目的介绍，用于pipy上面的介绍，注意 long_description 只能使用rst格式， **不支持**markdown。   &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;classifiers&lt;/code&gt;是你在pipy上面的分类， 一般在这里要只能你是否支持py2， 或py3， 或者是否有特定的平台限制。&lt;a href="https://pypi.python.org/pypi?%3Aaction=list_classifiers"&gt;所有classifiers 列表&lt;/a&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;packages&lt;/code&gt;, 要包含的代码的文件夹。比如我也可以设置成 &lt;code&gt;esl_model&lt;/code&gt;， 但是据我观察， 这样设置之后， 我下面的子模块是没有办法使用&lt;code&gt;import esl_model.ch3&lt;/code&gt; 这样载入的。&lt;br /&gt;
+所以使用find_packages自动寻找所有模块， 特别排除我的测试文件存放的文件夹。  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;install_requires&lt;/code&gt;, 依赖， 如果在虚拟环境里面的话可以用&lt;code&gt;pip freeze&lt;/code&gt;来查看安装的库， 但是这里面会包含真正用到的库（比如里面可能会显示ipython）。 可以使用 pipreqs 这个库。  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tests_require&lt;/code&gt; 这个是测试的用的, 在&lt;code&gt;python setup.py test&lt;/code&gt;的时候用到, 然而我偷懒了, pytest在这里还差一步配置， 所以这里有没有都一样。。  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;include_package_data&lt;/code&gt;, 这个是包含非python代码的文件， 我的程序里面要使用到csv数据， 所以需要这个选项。  &lt;/p&gt;
+&lt;p&gt;我的代码结构树&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;── LICENSE.md
+├── MANIFEST.in
+├── README.rst
+├── esl_model
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── base.py
+│   ├── ch3
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   └── model.py
+│   ├── datasets
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── base.py
+│   │   └── data
+│   │       └── prostate.csv
+│   └── utils.py
+├── pytest.ini
+├── setup.py
+└── tests
+    ├── __init__.py
+    ├── __pycache__
+    ├── test_ch3.py
+    └── utils.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id="manifestin"&gt;&lt;a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;MANIFEST.in&lt;/h2&gt;
+&lt;p&gt;指定需要包含的非程序文件  &lt;/p&gt;
+&lt;p&gt;一般是&lt;code&gt;include README.rst&lt;/code&gt; &lt;br /&gt;
+我这里因为有额外的数据， 所以要多一行。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;include README.rst
+recursive-include esl_model/datasets/data *.csv
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;recursive-include 必须， 不然数据不包含。  &lt;/p&gt;
+&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;测试安装&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;pip install -e .&lt;/code&gt;&lt;br /&gt;
+本地的调试安装模式。  &lt;/p&gt;
+&lt;h2 id="ref"&gt;&lt;a name="user-content-ref" href="#ref" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;ref&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;sklearn的配置文件 &lt;a href="https://github.com/scikit-learn/scikit-learn"&gt;https://github.com/scikit-learn/scikit-learn&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;Python-packaging &lt;a href="https://python-packaging.readthedocs.org/en/latest/testing.html"&gt;https://python-packaging.readthedocs.org/en/latest/testing.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="python"></category><category term="小结"></category></entry><entry><title>阿发狗，少年以及金庸</title><link href="http://littlezz.github.io/a-fa-gou-shao-nian-yi-ji-jin-yong.html" rel="alternate"></link><updated>2016-03-15T00:00:00+08:00</updated><author><name>zz</name></author><id>tag:littlezz.github.io,2016-03-15:a-fa-gou-shao-nian-yi-ji-jin-yong.html</id><summary type="html">&lt;p&gt;阿发狗3：0打赢了李世石， 整个世界沉浸在一股人工智能毁灭人类的狂欢中， 之后李世石翻了一盘。 众人笑道：AI已经学会放水啦， 药丸药丸， 真是可怕。  &lt;/p&gt;
 &lt;p&gt;时至围棋界被阿发狗颠覆之际， 世界围棋第一人站了出来：就算阿发狗能打败李世石， 也打败不了我！大家定睛一看， 发现围棋第一人是个19岁少年， 于是纷纷以长辈自称， 要教他一下如何做人谦虚的人生道理。  &lt;/p&gt;
 &lt;p&gt;围棋大师吴清源的脑残粉金庸同学3月10日九十二岁啦， 大家有什么想对他说的， 截止2016年03月16日00:44:36， 这个问题下面排名第一的答案写了一个小故事， 大意是金庸因为写了一篇暗讽教务主任的文章被其看到后居然就被退学了， 之后金庸都不提这段高中历史， 作者给于这件事情的评价是， 『傲娇』得很的金庸。末尾不忘用一个感叹号来增强语气。  &lt;/p&gt;
 &lt;p&gt;我想起了周杰伦在《三年二班》里面唱到那句重复了好多遍的歌词  &lt;/p&gt;

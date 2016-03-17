@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'zz'
-SITENAME = "zz\'s Blog"
+AUTHOR = 'littlezz'
+SITENAME = "littlezz\'s Blog"
 SITEURL = ''
 
 PATH = 'content'
@@ -62,9 +62,9 @@ CUSTOM_CSS = 'static/custom.css'
 
 
 
-SITETITLE = 'zz'
+SITETITLE = 'littlezz'
 SITESUBTITLE = '当我被狗日时， 我在想些什么'
-SITEDESCRIPTION = 'zz\'s Thoughts and Writings'
+SITEDESCRIPTION = 'littlezz\'s Thoughts and Writings About Python And Machine Learning and diary'
 SITELOGO = '/images/logo.jpg'
 
 # FAVICON = SITEURL + '/images/favicon.ico'

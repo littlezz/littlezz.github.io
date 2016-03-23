@@ -49,6 +49,196 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Numpy 使用小结</a></h2>
+    <p>
+      Posted on Mon 21 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <p><a href="https://github.com/littlezz/ESL-Model">ESLModel</a> 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  </p>
+<p>于是抽空写一下关于numpy的总结吧。  </p>
+<h2 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Intro</h2>
+<p>介绍一些会混淆的东西</p>
+<h3 id="vector-vs-matrix"><a name="user-content-vector-vs-matrix" href="#vector-vs-matrix" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>vector vs matrix</h3>
+<p>vector是向量， 是一维的。 <br />
+matrix是二维以上的。  </p>
+<div class="highlight"><pre><span></span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># method 1</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]])</span>
+
+<span class="c1"># method 2</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># mathod 3</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># output (3,)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># output (3, 1)</span>
+</pre></div>
+
+
+<ol>
+<li>向量可以点乘矩阵， 反过来也可以， 结果是向量。</li>
+<li>向量可以点乘向量， 得到标量</li>
+<li>向量没有倒置</li>
+<li>矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。  </li>
+</ol>
+<p>如果想要得到  单行的子矩阵  </p>
+<div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># 得到一行， 矩阵</span>
+<span class="n">mat</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
+
+<span class="c1"># 得到一列， 矩阵</span>
+<span class="n">mat</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="c1"># 得到第二列， 向量</span>
+<span class="n">mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># 子矩阵</span>
+<span class="n">mat</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># 下标查询</span>
+<span class="n">mat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+
+<h3 id="axis1-vs-axis0"><a name="user-content-axis1-vs-axis0" href="#axis1-vs-axis0" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>axis=1 vs axis=0</h3>
+<p>之前看官方的文档里面有说， 你要这样记：axis=0 是从上往下， axis=1 是从左往右处理。  </p>
+<p>比如<code>np.sum(mat, axis=0)</code> 得到每一列从上到下的累加和. <code>axis=1</code> 的时候得到每一行的累加和.  </p>
+<div class="highlight"><pre><span></span><span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">Out</span><span class="p">[</span><span class="mi">65</span><span class="p">]:</span>
+<span class="n">array</span><span class="p">([</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">38</span><span class="p">])</span>
+</pre></div>
+
+
+<h4 id="rowvar1"><a name="user-content-rowvar1" href="#rowvar1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>rowvar=1</h4>
+<p>在使用<code>np.cov</code> 的时候，里面有这个参数， 默认是非零， 表示你的矩阵是（p x N）的， 每一行表示变量， 每一列里面存的是样本数据。  如果<code>rowvar=0</code>, 则表示反过来.  </p>
+<h2 id="tips"><a name="user-content-tips" href="#tips" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Tips</h2>
+<h3 id="reshape"><a name="user-content-reshape" href="#reshape" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>reshape</h3>
+<p>reshape 里面的值设置-1的时候表示自动</p>
+<p><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+<br />
+会自动变成(3x4)  </p>
+<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>如何插入一列</h3>
+<div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># 在0的开始插入全为3的列</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<h3 id="a"><a name="user-content-a" href="#a" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>如何算矩阵的行列式<span class="math">\(|A|\)</span></h3>
+<p>用<code>np.linalg.det</code> 或者 <code>np.linalg.slogdet</code><br />
+后者在矩阵里面的值很小的时候使用, 得到的是log后的结果.</p>
+<h3 id="ddof"><a name="user-content-ddof" href="#ddof" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ddof</h3>
+<p>在<code>np.std</code>等函数中有<code>ddof</code>这个参数， 默认为0， 在pandas里面默认为1， 主要用于控制比如计算标准差的时候， 是除以N-1还是除以N， 这里相当于除以（N - ddof）</p>
+<h3 id="svd"><a name="user-content-svd" href="#svd" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>svd</h3>
+<p><div class="highlight"><pre><span></span><span class="n">U</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vt</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># output(4, 4) (3,) (3, 3) (4, 3)</span>
+
+<span class="c1"># with full_matrices=False</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">Vt</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># output (4, 3) (3,) (3, 3) (4, 3)</span>
+</pre></div>
+<br />
+注意到D是向量， Vt是V的转置矩阵。<br />
+多数情况下， 应该是使用full_matrices=False</p>
+<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>随机整数矩阵</h3>
+<div class="highlight"><pre><span></span><span class="c1"># 随机生成包含0-9的 4x3 的矩阵</span>
+<span class="n">d</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+
+<h3 id="orthogonal-matrix"><a name="user-content-orthogonal-matrix" href="#orthogonal-matrix" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>随机生成正交矩阵（orthogonal matrix）</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_orthogonal_matrix</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    with random permutation of coordinate axes</span>
+<span class="sd">    :param N: dimension of matrix</span>
+<span class="sd">    :return: NxN orthogonal matrix contains 0 and 1</span>
+
+<span class="sd">    Ref: http://stackoverflow.com/questions/33003341/how-to-randomly-generate-a-nonnegative-orthogonal-matrix-in-numpy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">I</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+</pre></div>
+
+
+<h3 id="eigen-decomposition"><a name="user-content-eigen-decomposition" href="#eigen-decomposition" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>特征分解（eigen decomposition）</h3>
+<p>todo</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Python Package Setup</a></h2>
     <p>
       Posted on Thu 17 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>

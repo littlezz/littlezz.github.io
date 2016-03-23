@@ -20,7 +20,7 @@
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io"/>
 <meta property="og:image" content="/images/logo.jpg">
-  <title>littlezz's Blog &ndash; Category: Python</title>
+  <title>littlezz's Blog &ndash; Tag: numpy</title>
 </head>
 <body>
   <aside>
@@ -79,37 +79,6 @@ matrix是二维以上的。  </p>
 
 <span class="k">print</span><span class="p">(</span><span class="n">mat ...</span></pre></div>
       <a class="btn" href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Python Package Setup</a></h2>
-    <p>
-      Posted on Thu 17 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
-  </header>
-  <div>
-      <p>esl_model <a href="https://github.com/littlezz/ESL-Model">https://github.com/littlezz/ESL-Model</a><br />
-今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  </p>
-<p>简单总结一下Python的Package Distribution吧。<br />
-有空的话， 在写一个pytest的简单总结。</p>
-<h2 id="setuppy"><a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>setup.py</h2>
-<p>setup.py 是最主要的整个配置的文件， </p>
-<p>贴我的setup.py 的代码好了。  </p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;README.rst&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">readme</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">version</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;esl_model&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">__version__</span>
-
-
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;esl_model&#39;</span><span class="p">,</span>
-      <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
-      <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Algorithm from ...</span></pre></div>
-      <a class="btn" href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Continue reading</a>
   </div>
 </article>
 

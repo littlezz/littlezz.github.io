@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="littlezz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+  <meta name="author" content="littlezz" />
+  <meta name="description" content="littlezz's Thoughts and Writings About Python And Machine Learning and diary" />
+<meta property="og:site_name" content="littlezz's Blog"/>
+<meta property="og:type" content="blog"/>
+<meta property="og:title" content="littlezz's Blog"/>
+<meta property="og:description" content="littlezz's Thoughts and Writings About Python And Machine Learning and diary"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://littlezz.github.io"/>
+<meta property="og:image" content="/images/logo.jpg">
+  <title>littlezz's Blog &ndash; Tag: 学学学，学个屁</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="littlezz" title="littlezz">
+      </a>
+      <h1><a href="http://littlezz.github.io">littlezz</a></h1>
+      <p>当我被狗日时， 我在想些什么</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/littlezz/" target="_blank"><i class="fa fa-github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h2><a href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Fuck the Reduced-rank LDA</a></h2>
+    <p>
+      Posted on Fri 25 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/machine-learning.html">machine learning</a>,      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/ta-ma-de.html">他妈的</a>,      <a href="http://littlezz.github.io/tag/xue-xue-xue-xue-ge-pi.html">学学学，学个屁</a>    </p>
+  </header>
+  <div>
+      <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br />
+搜索各种资料， 各自有理， 到最后连计算 <span class="math">\(W^{-\frac{1}{2}}\)</span> 都能有不同的版本。  </p>
+<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  </p>
+<h2 id="esl"><a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>版本一： ESL</h2>
+<p>page 114 页的算法。<br />
+我翻译一下：  </p>
+<ul>
+<li>计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；</li>
+<li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
+<li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
+</ul>
+<p>卧槽 ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      <a class="btn" href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Continue reading</a>
+  </div>
+</article>
+
+  <div class="pagination">
+  </div>
+
+    <footer>
+        <p>&copy; littlezz 2015</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " littlezz's Blog ",
+  "url" : "http://littlezz.github.io",
+  "image": "/images/logo.jpg",
+  "description": "littlezz's Thoughts and Writings About Python And Machine Learning and diary"
+}
+</script></body>
+</html>

@@ -1,5 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-24T00:27:52+08:00</updated><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-24T00:27:52+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-25T00:00:00+08:00</updated><entry><title>Fuck the Reduced-rank LDA</title><link href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html" rel="alternate"></link><updated>2016-03-25T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-25:fuck-the-reduced-rank-lda.html</id><summary type="html">&lt;p&gt;从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。&lt;br /&gt;
+搜索各种资料， 各自有理， 到最后连计算 &lt;span class="math"&gt;\(W^{-\frac{1}{2}}\)&lt;/span&gt; 都能有不同的版本。  &lt;/p&gt;
+&lt;p&gt;权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  &lt;/p&gt;
+&lt;h2 id="esl"&gt;&lt;a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;版本一： ESL&lt;/h2&gt;
+&lt;p&gt;page 114 页的算法。&lt;br /&gt;
+我翻译一下：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；&lt;/li&gt;
+&lt;li&gt;计算 &lt;span class="math"&gt;\(M^* = MW^{-\frac{1}{2}}\)&lt;/span&gt;, 使用W的特征分解；&lt;/li&gt;
+&lt;li&gt;计算&lt;span class="math"&gt;\(B^*\)&lt;/span&gt;, &lt;span class="math"&gt;\(M^*\)&lt;/span&gt;的协方差矩阵（B是为了between-class）, 还有他的特征分解 &lt;span class="math"&gt;\(B^* = V^*D_BV^{*T}\)&lt;/span&gt;. &lt;span class="math"&gt;\(V^*\)&lt;/span&gt;的按顺序的列&lt;span class="math"&gt;\(v_l^*\)&lt;/span&gt;定义了最佳子空间的坐标。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;卧槽， 我他妈看懂了。&lt;br /&gt;
+我往下看了一行。 &lt;br /&gt;
+书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。  &lt;/p&gt;
+&lt;p&gt;那我懂了， 我接着看书了。  &lt;/p&gt;
+&lt;p&gt;FUCK！&lt;br /&gt;
+FUCK ME！&lt;/p&gt;
+&lt;p&gt;2016年03月25日00:46:12&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</summary><category term="machine learning"></category><category term="机器学习"></category><category term="他妈的"></category><category term="学学学，学个屁"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-24T00:27:52+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
 &lt;p&gt;于是抽空写一下关于numpy的总结吧。  &lt;/p&gt;
 &lt;h2 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Intro&lt;/h2&gt;
 &lt;p&gt;介绍一些会混淆的东西&lt;/p&gt;

@@ -223,6 +223,15 @@ matrix是二维以上的。  </p>
 </pre></div>
 
 
+<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>如何把向量转成单列矩阵</h3>
+<div class="highlight"><pre><span></span><span class="c1"># column matrix</span>
+<span class="n">vec</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span>
+
+<span class="c1"># row matrix</span>
+<span class="n">vec</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+
+
 <h3 id="a"><a name="user-content-a" href="#a" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>如何算矩阵的行列式<span class="math">\(|A|\)</span></h3>
 <p>用<code>np.linalg.det</code> 或者 <code>np.linalg.slogdet</code><br />
 后者在矩阵里面的值很小的时候使用, 得到的是log后的结果.</p>
@@ -241,7 +250,7 @@ matrix是二维以上的。  </p>
 <br />
 注意到D是向量， Vt是V的转置矩阵。<br />
 多数情况下， 应该是使用full_matrices=False</p>
-<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>随机整数矩阵</h3>
+<h3 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>随机整数矩阵</h3>
 <div class="highlight"><pre><span></span><span class="c1"># 随机生成包含0-9的 4x3 的矩阵</span>
 <span class="n">d</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 </pre></div>
@@ -263,7 +272,8 @@ matrix是二维以上的。  </p>
 
 
 <h3 id="eigen-decomposition"><a name="user-content-eigen-decomposition" href="#eigen-decomposition" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>特征分解（eigen decomposition）</h3>
-<p>todo</p>
+<p><code>np.eigh</code> 针对对称的矩阵， <strong>注意， eigenvalues 是升序的，而在R语言里面是降序的！</strong><br />
+<code>np.eig</code> 普通的分解， eigenvalues不保证顺序。  </p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "left",
         indent = "0em",

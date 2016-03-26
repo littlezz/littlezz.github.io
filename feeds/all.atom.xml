@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-25T00:00:00+08:00</updated><entry><title>Fuck the Reduced-rank LDA</title><link href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html" rel="alternate"></link><updated>2016-03-25T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-25:fuck-the-reduced-rank-lda.html</id><summary type="html">&lt;p&gt;从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。&lt;br /&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-26T11:12:24+08:00</updated><entry><title>Fuck the Reduced-rank LDA</title><link href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html" rel="alternate"></link><updated>2016-03-25T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-25:fuck-the-reduced-rank-lda.html</id><summary type="html">&lt;p&gt;从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。&lt;br /&gt;
 搜索各种资料， 各自有理， 到最后连计算 &lt;span class="math"&gt;\(W^{-\frac{1}{2}}\)&lt;/span&gt; 都能有不同的版本。  &lt;/p&gt;
 &lt;p&gt;权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  &lt;/p&gt;
 &lt;h2 id="esl"&gt;&lt;a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;版本一： ESL&lt;/h2&gt;
@@ -73,7 +73,7 @@ FUCK ME！&lt;/p&gt;
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</summary><category term="machine learning"></category><category term="机器学习"></category><category term="他妈的"></category><category term="学学学，学个屁"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-24T00:27:52+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
+&lt;/script&gt;</summary><category term="machine learning"></category><category term="机器学习"></category><category term="他妈的"></category><category term="学学学，学个屁"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-26T11:12:24+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
 &lt;p&gt;于是抽空写一下关于numpy的总结吧。  &lt;/p&gt;
 &lt;h2 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Intro&lt;/h2&gt;
 &lt;p&gt;介绍一些会混淆的东西&lt;/p&gt;
@@ -153,6 +153,15 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;h3 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;如何把向量转成单列矩阵&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# column matrix&lt;/span&gt;
+&lt;span class="n"&gt;vec&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# row matrix&lt;/span&gt;
+&lt;span class="n"&gt;vec&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;:]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h3 id="a"&gt;&lt;a name="user-content-a" href="#a" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;如何算矩阵的行列式&lt;span class="math"&gt;\(|A|\)&lt;/span&gt;&lt;/h3&gt;
 &lt;p&gt;用&lt;code&gt;np.linalg.det&lt;/code&gt; 或者 &lt;code&gt;np.linalg.slogdet&lt;/code&gt;&lt;br /&gt;
 后者在矩阵里面的值很小的时候使用, 得到的是log后的结果.&lt;/p&gt;
@@ -171,7 +180,7 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;br /&gt;
 注意到D是向量， Vt是V的转置矩阵。&lt;br /&gt;
 多数情况下， 应该是使用full_matrices=False&lt;/p&gt;
-&lt;h3 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;随机整数矩阵&lt;/h3&gt;
+&lt;h3 id="_3"&gt;&lt;a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;随机整数矩阵&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 随机生成包含0-9的 4x3 的矩阵&lt;/span&gt;
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;randint&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -193,7 +202,8 @@ matrix是二维以上的。  &lt;/p&gt;
 
 
 &lt;h3 id="eigen-decomposition"&gt;&lt;a name="user-content-eigen-decomposition" href="#eigen-decomposition" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;特征分解（eigen decomposition）&lt;/h3&gt;
-&lt;p&gt;todo&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;np.eigh&lt;/code&gt; 针对对称的矩阵， &lt;strong&gt;注意， eigenvalues 是升序的，而在R语言里面是降序的！&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;np.eig&lt;/code&gt; 普通的分解， eigenvalues不保证顺序。  &lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "left",
         indent = "0em",

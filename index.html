@@ -49,6 +49,217 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">How to Write Reduced Rank Linear Discriminant Analysis with Python</a></h2>
+    <p>
+      Posted on Sat 26 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/machine-learning.html">machine learning</a>,      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
+  </header>
+  <div>
+      <h2 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Intro</h2>
+<p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.  </p>
+<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead of <code>np.dot</code>  </p>
+<h2 id="the-difference-between-numpy-and-r"><a name="user-content-the-difference-between-numpy-and-r" href="#the-difference-between-numpy-and-r" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>The difference between Numpy and R</h2>
+<p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).  </p>
+<p>In R, the eigenvalues return from <code>eigen</code> is descending, which is all notes assume.<br />
+But Numpy <code>np.linalg.eigh</code> return eigenvalues in ascending order.  </p>
+<p>It is doesn't matter when you work on LDA, because it use both <span class="math">\(V\)</span> and <span class="math">\(D\)</span>, but it influence the result in Reduced rank LDA which you use column of <span class="math">\(V\)</span> alone.  </p>
+<p>To slove this problem, you may use <code>np.fliplr</code>.  </p>
+<div class="highlight"><pre><span></span><span class="n">W</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.9967</span><span class="p">,</span>  <span class="mf">0.002</span> <span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.002</span> <span class="p">,</span>  <span class="mf">1.0263</span><span class="p">]])</span>
+
+<span class="n">Dw</span><span class="p">,</span> <span class="n">Uw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="n">Dw</span> <span class="o">=</span> <span class="n">Dw</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">Uw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">Uw</span><span class="p">)</span>
+</pre></div>
+
+
+<p>You can get </p>
+<div class="highlight"><pre><span></span>print(Dw)
+[ 1.02643452  0.99656548]
+
+
+print(Dw)
+[[ 0.06711024 -0.99774557]
+ [ 0.99774557  0.06711024]]
+</pre></div>
+
+
+<h2 id="how-to-write-reduced-rank-lda"><a name="user-content-how-to-write-reduced-rank-lda" href="#how-to-write-reduced-rank-lda" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>How to Write Reduced Rank LDA</h2>
+<p>Finally, we arrive at the algorithm.<br />
+I mainly reference <a href="http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/lda2.pdf">http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/lda2.pdf</a>. <br />
+Which is a very very nice ppt, thanks it very much!  </p>
+<ul>
+<li>
+<p>Find the centroids for all the classes and class prior probabilities, which is the same in LDA (<span class="math">\(\mu_k\)</span> and <span class="math">\(\pi_k\)</span>).  </p>
+</li>
+<li>
+<p>Find between-class covariance matrix B using the centroid vectors and class prior probabilities<br />
+    suppose <span class="math">\(\mu_k\)</span> is column vector</p>
+<p><span class="math">\(\mu = \Sigma_1^K \mu_k\)</span><br />
+<span class="math">\(B =  \Sigma_1^K \pi_k(\mu - \mu_k)(\mu - \mu_k)^T\)</span></p>
+<p><strong>Notice that the code dosen't take same shape with formula</strong>  </p>
+<div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma_hat</span>
+<span class="c1"># prior probabilities (K,1)</span>
+<span class="n">Pi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Pi</span>
+<span class="c1"># class centroids (K, p)</span>
+<span class="n">Mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span>
+<span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+<span class="c1"># the number of class</span>
+<span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K</span>
+<span class="c1"># the dimension you want</span>
+<span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span>
+
+<span class="c1"># Mu is (K,p) matrix, Pi is (K,1)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Pi</span> <span class="o">*</span> <span class="n">Mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="c1"># vector @ vector equal scalar, use vector[:, None] to transform to matrix</span>
+    <span class="c1"># vec[:, None] equal to vec.reshape((1, vec.shape[0]))</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">B</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="p">((</span><span class="n">Mu</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="err">@</span> <span class="p">((</span><span class="n">Mu</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)[</span><span class="bp">None</span><span class="p">,</span> <span class="p">:]))</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Find within-class covariance matrix W, the same with <span class="math">\(\hat \Sigma\)</span> in LDA.  </p>
+</li>
+<li>
+<p>eigen decomposition W</p>
+<p><span class="math">\(W = V_WD_WV_W^T\)</span><br />
+Define <span class="math">\(W^{1/2} = D_W^{1/2}V_W^T\)</span></p>
+<p>So <span class="math">\(W^{-\frac{1}{2}} = (W^{1/2})^{-1}\)</span>  </p>
+<div class="highlight"><pre><span></span><span class="c1"># Be careful, the `eigh` method get the eigenvalues in ascending , which is opposite to R.</span>
+<span class="n">Dw</span><span class="p">,</span> <span class="n">Uw</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="c1"># reverse the Dw_ and Uw</span>
+<span class="n">Dw</span> <span class="o">=</span> <span class="n">Dw</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">Uw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">Uw</span><span class="p">)</span>
+
+<span class="n">W_half</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagflat</span><span class="p">(</span><span class="n">Dw</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="err">@</span> <span class="n">Uw</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>compute <span class="math">\(B^*\)</span><br />
+<span class="math">\(B^* = (W^{-\frac{1}{2}})^TBW^{-\frac{1}{2}}\)</span>  </p>
+<div class="highlight"><pre><span></span><span class="n">B_star</span> <span class="o">=</span> <span class="n">W_half</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">B</span> <span class="err">@</span> <span class="n">W_half</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>eigen decompostion <span class="math">\(B^*\)</span>, get <span class="math">\(a_l\)</span><br />
+<span class="math">\(B^* = VDV^T\)</span><br />
+<span class="math">\(a_l = W^{-\frac{1}{2}}V_l\)</span></p>
+<div class="highlight"><pre><span></span><span class="n">D_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B_star</span><span class="p">)</span>
+
+<span class="c1"># reverse V</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">L</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="n">A</span><span class="p">[</span><span class="n">l</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">W_half</span><span class="p">)</span> <span class="err">@</span> <span class="n">V</span><span class="p">[:,</span> <span class="n">l</span><span class="p">]</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>transform X and <span class="math">\(\mu_k\)</span> and get predict value<br />
+<span class="math">\(\hat x = Ax\)</span><br />
+<span class="math">\(\hat \mu_k = A\mu_k\)</span></p>
+<p>find <span class="math">\(argmin_k {|\hat x- \hat\mu|_2^2 - log(\pi_k)}\)</span></p>
+<div class="highlight"><pre><span></span><span class="n">X_star</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">):</span>
+    <span class="c1"># mu_s_star shape is (p,)</span>
+    <span class="n">mu_k_star</span> <span class="o">=</span> <span class="n">A</span> <span class="err">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="c1"># Ref: http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.norm.html</span>
+    <span class="c1"># Ref: http://stackoverflow.com/questions/1401712/how-can-the-euclidean-distance-be-calculated-with-numpy</span>
+    <span class="n">Y</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_star</span> <span class="o">-</span> <span class="n">mu_k_star</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Pi</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+<span class="c1"># Python index start from 0, transform to start with 1</span>
+<span class="n">y_hat</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+
+
+</li>
+</ul>
+<h2 id="put-it-together"><a name="user-content-put-it-together" href="#put-it-together" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Put it Together</h2>
+<p>You can find complete code in here<br />
+<a href="https://github.com/littlezz/ESL-Model/blob/master/esl_model/ch4/model.py">https://github.com/littlezz/ESL-Model/blob/master/esl_model/ch4/model.py</a></p>
+<h2 id="reference"><a name="user-content-reference" href="#reference" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Reference</h2>
+<ul>
+<li>The Elements of Statistical Learning 2nd Edition section 4.3.2 - 4.3.3  </li>
+<li><a href="http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/lda2.pdf">http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/lda2.pdf</a>  </li>
+<li><a href="https://onlinecourses.science.psu.edu/stat857/node/83">https://onlinecourses.science.psu.edu/stat857/node/83</a></li>
+<li><a href="http://www.stat.cmu.edu/~ryantibs/datamining/lectures/21-clas2-marked.pdf">http://www.stat.cmu.edu/~ryantibs/datamining/lectures/21-clas2-marked.pdf</a></li>
+</ul>
+<p>2016-03-26 15:43:45</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Fuck the Reduced-rank LDA</a></h2>
     <p>
       Posted on Fri 25 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
@@ -845,34 +1056,6 @@ recursive-include esl_model/datasets/data *.csv
 <p>map reduce的使用需要计算的时候数据能够分割， 一般是有 Σ 这种求和公式的时候使用。  </p>
 <p>嘛。  </p>
 <p>2016年01月24日14:42:29</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/ml-ex8.html#ml-ex8">ML-ex8</a></h2>
-    <p>
-      Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>    </p>
-  </header>
-  <div>
-      <p>今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。  </p>
-<p>这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇<a href="http://www.salemmarafi.com/code/collaborative-filtering-with-python/">文章</a>里面看到的是另一个东西。</p>
-<p>他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。  </p>
-<p>另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工....  T_T  </p>
-<p>说一下搬运工的心得吧。<br />
-今天把公式转换成矩阵的向量运算的时候折腾了好久。  </p>
-<p>后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的  </p>
-<ul>
-<li>先用for 循环</li>
-<li>2维的可以直接matrix</li>
-<li>3维带一个for loop</li>
-<li><del>一般矩阵相乘形式上正确结果就是正确的</del>  </li>
-</ul>
-<p>其实我花了半个小时在想如何消除3层嵌套的for循环。  /(ㄒoㄒ)/~~  </p>
-<p>嘛， 接着看吧。（<del>弱逼不敢乱说话</del>）  </p>
-<p>2016年01月24日00:57:49</p>
   </div>
 </article>
 

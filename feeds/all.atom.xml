@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-26T11:12:24+08:00</updated><entry><title>How to Write Reduced Rank Linear Discriminant Analysis with Python</title><link href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html" rel="alternate"></link><updated>2016-03-26T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-26:how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html</id><summary type="html">&lt;h2 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Intro&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-31T00:00:00+08:00</updated><entry><title>Travis CI with Numpy and Pytest</title><link href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html" rel="alternate"></link><updated>2016-03-31T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-31:travis-ci-with-numpy-and-pytest.html</id><summary type="html">&lt;p&gt;It takes long time to install scientific python package by &lt;code&gt;pip&lt;/code&gt; in travis and sometime fail.  &lt;/p&gt;
+&lt;p&gt;The solve is to use conda to install binary package. &lt;br /&gt;
+&lt;a href="http://conda.pydata.org/docs/travis.html"&gt;http://conda.pydata.org/docs/travis.html&lt;/a&gt;  &lt;/p&gt;
+&lt;p&gt;Note that some package not in conda, you can use &lt;code&gt;pip&lt;/code&gt; install it, for example, &lt;code&gt;py.test&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;Here is my &lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESL-Model&lt;/a&gt; .trais.yml, you can view on github &lt;a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml"&gt;https://github.com/littlezz/ESL-Model/blob/master/.travis.yml&lt;/a&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;language: python
+python:
+  &lt;span class="c1"&gt;# We don&amp;#39;t actually use the Travis Python, but this keeps it organized.&lt;/span&gt;
+  - &lt;span class="s2"&gt;&amp;quot;3.5&amp;quot;&lt;/span&gt;
+
+install:
+  - sudo apt-get update
+  &lt;span class="c1"&gt;# We do this conditionally because it saves us some downloading if the&lt;/span&gt;
+  &lt;span class="c1"&gt;# version is the same.&lt;/span&gt;
+  - &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$TRAVIS_PYTHON_VERSION&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+  - bash miniconda.sh -b -p &lt;span class="nv"&gt;$HOME&lt;/span&gt;/miniconda
+  - &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/miniconda/bin:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+  - &lt;span class="nb"&gt;hash&lt;/span&gt; -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  &lt;span class="c1"&gt;# Useful for debugging any issues with conda&lt;/span&gt;
+  - conda info -a
+
+  - conda create -q -n test-environment &lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$TRAVIS_PYTHON_VERSION&lt;/span&gt; pandas numpy scipy scikit-learn
+  - &lt;span class="nb"&gt;source&lt;/span&gt; activate test-environment
+  - python setup.py install
+  - pip install pytest
+
+script:
+  - py.test
+
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+&lt;/pre&gt;&lt;/div&gt;
+&lt;br /&gt;
+Note that you should install pytest manually instead use pre-install one.&lt;/p&gt;
+&lt;p&gt;However, you can not use tox with conda direct, try ctox &lt;a href="https://github.com/hayd/ctox"&gt;https://github.com/hayd/ctox&lt;/a&gt;  &lt;/p&gt;
+&lt;p&gt;2016-03-31 16:19:38&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>How to Write Reduced Rank Linear Discriminant Analysis with Python</title><link href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html" rel="alternate"></link><updated>2016-03-26T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-26:how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html</id><summary type="html">&lt;h2 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Intro&lt;/h2&gt;
 &lt;p&gt;I'm working on a project named &lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESL-Model&lt;/a&gt; which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.  &lt;/p&gt;
 &lt;p&gt;Notice that I am using Python3.5, which allow me use &lt;code&gt;@&lt;/code&gt; instead of &lt;code&gt;np.dot&lt;/code&gt;  &lt;/p&gt;
 &lt;h2 id="the-difference-between-numpy-and-r"&gt;&lt;a name="user-content-the-difference-between-numpy-and-r" href="#the-difference-between-numpy-and-r" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;The difference between Numpy and R&lt;/h2&gt;

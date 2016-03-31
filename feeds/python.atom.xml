@@ -43,7 +43,7 @@ notifications:
 &lt;br /&gt;
 Note that you should install pytest manually instead use pre-install one.&lt;/p&gt;
 &lt;p&gt;However, you can not use tox with conda direct, try ctox &lt;a href="https://github.com/hayd/ctox"&gt;https://github.com/hayd/ctox&lt;/a&gt;  &lt;/p&gt;
-&lt;p&gt;2016-03-31 16:19:38&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-26T11:12:24+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
+&lt;p&gt;2016-03-31 16:19:38&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category><category term="小结"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-26T11:12:24+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
 &lt;p&gt;于是抽空写一下关于numpy的总结吧。  &lt;/p&gt;
 &lt;h2 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Intro&lt;/h2&gt;
 &lt;p&gt;介绍一些会混淆的东西&lt;/p&gt;

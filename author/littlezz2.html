@@ -49,6 +49,27 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/ng-machine-learning-week-11.html#ng-machine-learning-week-11">Ng Machine Learning Week 11</a></h2>
+    <p>
+      Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>    </p>
+  </header>
+  <div>
+      <p>第十一周说的是处理图片， 介绍了滑动窗口， 如何获得（制造）更多的数据， 还有在pipeline 中的上限分析， 这个是用来决定在系统中应该跟加关心那些模块的优化， 哪些模块就算优化了效果也比较小。  当然了， 喜闻乐见的黑了一下『我认识的人』， 花了18个月去优化一个没有太大效果的模块。  </p>
+<h4 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>滑动窗口</h4>
+<p>图片处理的时候是训练识别一小块， 然后滑动窗口来在大图中寻找是否找到。 比如你的样本都是 10x10 的大小， 然后等比例缩放， 在原图中你也可以找 50x50 的, 但是对于这个范围， 你得缩小到10x10， 然后在来识别。  </p>
+<h4 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>展开</h4>
+<p>里面还顺带提及了， 什么展开（好吧我不记得具体的名字了）， 在识别图像里面的文字的时候， 首先要找到包含文字的区域， 比如标记为白色， 然后这些白色向周围扩散， 比如20个像素点， 如果这之中也有其他的文字区域（即白色）， 着把他们连成一块大的白色区域。</p>
+<h4 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>制造数据</h4>
+<p>用现有样本， 加上噪声之类的， 得到新的训练数据。<br />
+他建议在解决问题前， 先算一下如果我要得到10倍的训练数据， 我需要多大的代价， 比如人工10秒做一次判断， 那么如果我有新的10k条数据， 可能就是人工工作几天， 但是我得到了更加多的数据， 也就是说 ...</p>
+      <a class="btn" href="http://littlezz.github.io/ng-machine-learning-week-11.html#ng-machine-learning-week-11">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/ng-machine-learning-week-10.html#ng-machine-learning-week-10">Ng Machine Learning Week 10</a></h2>
     <p>
       Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>

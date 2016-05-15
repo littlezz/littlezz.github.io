@@ -49,6 +49,84 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">How to upload package to pypi</a></h2>
+    <p>
+      Posted on Sun 15 May 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <h2 id="install-twine"><a name="user-content-install-twine" href="#install-twine" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Install twine</h2>
+<p><code>pip install twine</code></p>
+<h2 id="init-file"><a name="user-content-init-file" href="#init-file" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Init file</h2>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
+<p>For example, </p>
+<div class="highlight"><pre><span></span>.
+├── foo
+│   └── a.py
+└── readme.md
+</pre></div>
+
+
+<p>Secondly, add specify file to the root folder.  </p>
+<ul>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
+<li>setup.cfg(option)</li>
+</ul>
+<p>pypi do not know markdown format readme, there is only rst format available.</p>
+<h2 id="setuppy"><a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>setup.py</h2>
+<p>look at<br />
+<a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py</a></p>
+<p>after finish <code>setup.py</code><br />
+you can use   </p>
+<p><code>pip install -e .</code><br />
+install package locally on editable mode.<br />
+It will also install dependency.  </p>
+<h2 id="make-dist"><a name="user-content-make-dist" href="#make-dist" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Make dist</h2>
+<h3 id="build-source-distribution"><a name="user-content-build-source-distribution" href="#build-source-distribution" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Build source distribution</h3>
+<p>run<br />
+<code>python setup.py sdist</code>  </p>
+<h3 id="build-wheel"><a name="user-content-build-wheel" href="#build-wheel" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Build wheel.</h3>
+<p>If your code compat py2 and py3.<br />
+<code>python setup.py bdist_wheel --universal</code>  </p>
+<p>else, <br />
+<code>python setup.py bdist_wheel</code>  </p>
+<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code>  </p>
+<p>For example, if your code is only available in py3.5 and 3.4 </p>
+<div class="highlight"><pre><span></span><span class="k">[bdist_wheel]</span>
+<span class="na">python-tag</span> <span class="o">=</span> <span class="s">py35, py34</span>
+</pre></div>
+
+
+<h2 id="upload"><a name="user-content-upload" href="#upload" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Upload</h2>
+<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a>  </p>
+<p>Create a account on pypi, register your package,  write a <code>~/.pypirc</code> </p>
+<div class="highlight"><pre><span></span><span class="k">[distutils]</span>
+<span class="na">index-servers</span><span class="o">=</span><span class="s">pypi</span>
+
+<span class="k">[pypi]</span>
+<span class="na">repository</span> <span class="o">=</span> <span class="s">https://pypi.python.org/pypi</span>
+<span class="na">username</span> <span class="o">=</span> <span class="s">&lt;username&gt;</span>
+<span class="na">password</span> <span class="o">=</span> <span class="s">&lt;password&gt;</span>
+</pre></div>
+
+
+<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.  </p>
+<p>upload your dist folder  </p>
+<p><code>twine upload dist/*</code>  </p>
+<h2 id="reference"><a name="user-content-reference" href="#reference" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Reference</h2>
+<ul>
+<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a>  </li>
+<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a>  </li>
+</ul>
+<p>2016-05-15 11:43:33</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian">日本动画人展览会总结与推荐</a></h2>
     <p>
       Posted on Thu 21 April 2016 in <a href="http://littlezz.github.io/category/acg.html">ACG</a>
@@ -60,8 +138,7 @@
 <p>5分钟的动画， 制作时间往往是好几个月， 途中经历的种种困难， 特别是对于新人监督， 经验不足，在现场时的时候很难控制场面。比如第32话的监督， 在配音时说希望林原惠用更成熟一点的语气， 结果林原惠反问『请问监督眼中的成熟是什么呢？ 我没有从人物的脸上看到成熟的气质。』。 然后监督直接吓懵逼，一个工作人员默默递给监督一个红绿按钮的选择键盘，全场没有人敢讲话， 只有监督不断翻着台本的声音。   最后还是林原惠救场， 说在刚才的基础上用更低沉的语气。 监督说很好， 这样就好。 </p>
 <p>旁白一针见血的说『现在监督一点很后悔吧』。<br />
 但是很多问题最后可能只能妥协。<br />
-学会妥协也是成为优秀监督的必要能力。  </p>
-<hr />
+毕竟学会妥协也是成为优秀监督的必要能力。。。。  </p>
 <p>好了， 开始记录那些我喜欢的作品吧。<br />
 基于看过纪录片的原因， 我先说32话， 之后的按顺序。  </p>
 <h3 id="32"><a name="user-content-32" href="#32" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>32 新世紀いんぱくつ。</h3>
@@ -154,6 +231,7 @@
 <h3 id="35"><a name="user-content-35" href="#35" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>35 カセットガール</h3>
 <p>这个。。。这个。。 这个是向庵野秀明毕业作品致敬么？  </p>
 <p>2016年04月25日00:02:40</p>
+<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>最后</h3>
   </div>
   <hr />
 </article>
@@ -943,122 +1021,6 @@ recursive-include esl_model/datasets/data *.csv
 <p>昨天写了一天， 值写了linear Regression， 后面还有一堆， 慢慢写吧。  </p>
 <p>等稳定一些之后再放到github上面好了。  </p>
 <p>2016年03月10日15:12:10</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/gai-lu-lun-xue-xi.html#gai-lu-lun-xue-xi">概率论学习</a></h2>
-    <p>
-      Posted on Fri 29 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
-    </p>
-  </header>
-  <div>
-      <p>所用公式都是用mathjax 写的， ( <del>奶奶的， 写死我了。</del> )  </p>
-<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>基本概念</h2>
-<p>基本概念主要记下常用公式。</p>
-<ul>
-<li>P(A) 表示事件A发生的概率  </li>
-<li><span class="math">\(P(A \bigcup B) = P(A) + P(B) - P(AB)\)</span>  </li>
-<li>上面公式可以推广到N个事件  </li>
-<li><span class="math">\(P(B \mid A)  = \frac{P(AB)}{P(A)}\)</span>  </li>
-<li><span class="math">\(P(A) = P(AB)+P(A \bar B) = P(B) \cdot P(A|B) + P(\bar B) \cdot P(A| \bar B)\)</span>  </li>
-</ul>
-<h5 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>全概率公式</h5>
-<p><span class="math">\(B_i\)</span> 是<span class="math">\(S\)</span>的完备事件组  </p>
-<p><span class="math">\(P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)\)</span>   </p>
-<h5 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>贝叶斯公式</h5>
-<p><span class="math">\(P(B_k|A) = {P(B_k A) \over P(A)} = {P(B_k)P(A|P(B_k) \over \sum_{j=1}^n P(B_j)P(A|B_j)}\)</span></p>
-<h2 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>概率分布</h2>
-<h4 id="0-1"><a name="user-content-0-1" href="#0-1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>0-1分布</h4>
-<p><span class="math">\(X \sim 0 - 1\)</span>  </p>
-<h4 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>二项分布</h4>
-<p><span class="math">\(P\{X= k\} = C_n^kp^k(1-p)^k\)</span>  </p>
-<p>记作 <span class="math">\(X \sim B(n,p)\)</span></p>
-<h4 id="poisson"><a name="user-content-poisson" href="#poisson" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>poisson分布</h4>
-<p><span class="math">\(P\{X= k\} = {e^{-\lambda}\lambda^k \over k!}\)</span>  </p>
-<p>记作 <span class="math">\(X \sim \pi(\lambda)\)</span></p>
-<h3 id="distribution-function"><a name="user-content-distribution-function" href="#distribution-function" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Distribution function</h3>
-<p><span class="math">\(F(x) = P\{X \le x\}\)</span>  </p>
-<h3 id="probability-density-function"><a name="user-content-probability-density-function" href="#probability-density-function" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>probability density function</h3>
-<p><span class="math">\(f(x)\)</span> 是概率密度函数<br />
-满足  </p>
-<p><span class="math">\(P\{X \in D\} = \int_{D} f(x) {dx}\)</span>  </p>
-<h3 id="_6"><a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>分布</h3>
-<h4 id="_7"><a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>均匀分布</h4>
-<p>f(x) = 1/(b-a),  x在（a,b)内， 其他的地方为0  </p>
-<p><span class="math">\(X \sim U(a,b)\)</span>  </p>
-<h4 id="normal"><a name="user-content-normal" href="#normal" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>正态分布 （normal）</h4>
-<p><span class="math">\(X \sim N(\mu, \sigma^2)\)</span>  </p>
-<p>性质<br />
-- f(x) 关于 <span class="math">\(x=\mu\)</span> 对称<br />
-- <span class="math">\(\sigma\)</span>越大, 最大值越大, 就是越瘦高.  <br />
-- N(0, 1) 是标准正态分布  </p>
-<h4 id="_8"><a name="user-content-_8" href="#_8" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>指数分布</h4>
-<p><span class="math">\(f(x) = \lambda e^{-\lambda x}\)</span>, x&gt;0  </p>
-<p>记作<span class="math">\(X \sim E(\lambda)\)</span></p>
-<h4 id="others"><a name="user-content-others" href="#others" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>others</h4>
-<p>比如 Gamma分布， <br />
-<span class="math">\(X \sim \Gamma(\alpha, \beta)\)</span></p>
-<p>Beta 分布<br />
-<span class="math">\(X \sim \beta(a, b)\)</span></p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "left",
         indent = "0em",

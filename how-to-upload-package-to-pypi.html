@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="littlezz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="littlezz" />
+<meta name="description" content="Install twine pip install twine Init file First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have README and some other files in the same level. For example, . ├── foo │ └── a.py └── readme.md Secondly, add specify ..." />
+<meta name="keywords" content="python, 小结">
+<meta property="og:site_name" content="littlezz's Blog"/>
+<meta property="og:title" content="How to upload package to pypi"/>
+<meta property="og:description" content="Install twine pip install twine Init file First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have README and some other files in the same level. For example, . ├── foo │ └── a.py └── readme.md Secondly, add specify ..."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://littlezz.github.io/how-to-upload-package-to-pypi.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-05-15 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
+<meta property="article:section" content="Python"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="小结"/>
+<meta property="og:image" content="/images/logo.jpg">  <title>littlezz's Blog &ndash; How to upload package to pypi</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="littlezz" title="littlezz">
+      </a>
+      <h1><a href="http://littlezz.github.io">littlezz</a></h1>
+      <p>当我被狗日时， 我在想些什么</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/littlezz/" target="_blank"><i class="fa fa-github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="how-to-upload-package-to-pypi">How to upload package to pypi</h1>
+    <p>Posted on Sun 15 May 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a></p>
+  </header>
+  <div>
+    <h2 id="install-twine"><a name="user-content-install-twine" href="#install-twine" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Install twine</h2>
+<p><code>pip install twine</code></p>
+<h2 id="init-file"><a name="user-content-init-file" href="#init-file" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Init file</h2>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
+<p>For example, </p>
+<div class="highlight"><pre><span></span>.
+├── foo
+│   └── a.py
+└── readme.md
+</pre></div>
+
+
+<p>Secondly, add specify file to the root folder.  </p>
+<ul>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
+<li>setup.cfg(option)</li>
+</ul>
+<p>pypi do not know markdown format readme, there is only rst format available.</p>
+<h2 id="setuppy"><a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>setup.py</h2>
+<p>look at<br />
+<a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py</a></p>
+<p>after finish <code>setup.py</code><br />
+you can use   </p>
+<p><code>pip install -e .</code><br />
+install package locally on editable mode.<br />
+It will also install dependency.  </p>
+<h2 id="make-dist"><a name="user-content-make-dist" href="#make-dist" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Make dist</h2>
+<h3 id="build-source-distribution"><a name="user-content-build-source-distribution" href="#build-source-distribution" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Build source distribution</h3>
+<p>run<br />
+<code>python setup.py sdist</code>  </p>
+<h3 id="build-wheel"><a name="user-content-build-wheel" href="#build-wheel" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Build wheel.</h3>
+<p>If your code compat py2 and py3.<br />
+<code>python setup.py bdist_wheel --universal</code>  </p>
+<p>else, <br />
+<code>python setup.py bdist_wheel</code>  </p>
+<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code>  </p>
+<p>For example, if your code is only available in py3.5 and 3.4 </p>
+<div class="highlight"><pre><span></span><span class="k">[bdist_wheel]</span>
+<span class="na">python-tag</span> <span class="o">=</span> <span class="s">py35, py34</span>
+</pre></div>
+
+
+<h2 id="upload"><a name="user-content-upload" href="#upload" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Upload</h2>
+<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a>  </p>
+<p>Create a account on pypi, register your package,  write a <code>~/.pypirc</code> </p>
+<div class="highlight"><pre><span></span><span class="k">[distutils]</span>
+<span class="na">index-servers</span><span class="o">=</span><span class="s">pypi</span>
+
+<span class="k">[pypi]</span>
+<span class="na">repository</span> <span class="o">=</span> <span class="s">https://pypi.python.org/pypi</span>
+<span class="na">username</span> <span class="o">=</span> <span class="s">&lt;username&gt;</span>
+<span class="na">password</span> <span class="o">=</span> <span class="s">&lt;password&gt;</span>
+</pre></div>
+
+
+<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.  </p>
+<p>upload your dist folder  </p>
+<p><code>twine upload dist/*</code>  </p>
+<h2 id="reference"><a name="user-content-reference" href="#reference" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Reference</h2>
+<ul>
+<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a>  </li>
+<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a>  </li>
+</ul>
+<p>2016-05-15 11:43:33</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://littlezz.github.io/tag/python.html">python</a>
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>
+    </p>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; littlezz 2015</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "How to upload package to pypi",
+  "headline": "How to upload package to pypi",
+  "datePublished": "2016-05-15 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "littlezz",
+    "url": "http://littlezz.github.io/author/littlezz.html"
+  },
+  "image": "/images/logo.jpg",
+  "url": "http://littlezz.github.io/how-to-upload-package-to-pypi.html",
+  "description": "Install twine pip install twine Init file First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have README and some other files in the same level. For example, . ├── foo │ └── a.py └── readme.md Secondly, add specify ..."
+}
+</script></body>
+</html>

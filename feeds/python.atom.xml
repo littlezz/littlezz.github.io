@@ -1,5 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/python.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-03-31T00:00:00+08:00</updated><entry><title>Travis CI with Numpy and Pytest</title><link href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html" rel="alternate"></link><updated>2016-03-31T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-31:travis-ci-with-numpy-and-pytest.html</id><summary type="html">&lt;p&gt;It takes long time to install scientific python package by &lt;code&gt;pip&lt;/code&gt; in travis and sometime fail.  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/python.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-05-15T00:00:00+08:00</updated><entry><title>How to upload package to pypi</title><link href="http://littlezz.github.io/how-to-upload-package-to-pypi.html" rel="alternate"></link><updated>2016-05-15T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-05-15:how-to-upload-package-to-pypi.html</id><summary type="html">&lt;h2 id="install-twine"&gt;&lt;a name="user-content-install-twine" href="#install-twine" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Install twine&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;pip install twine&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="init-file"&gt;&lt;a name="user-content-init-file" href="#init-file" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Init file&lt;/h2&gt;
+&lt;p&gt;First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have &lt;code&gt;README&lt;/code&gt; and some other files in the same level.  &lt;/p&gt;
+&lt;p&gt;For example, &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+├── foo
+│   └── a.py
+└── readme.md
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Secondly, add specify file to the root folder.  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;README.rst  &lt;/li&gt;
+&lt;li&gt;MANIFEST.in  &lt;/li&gt;
+&lt;li&gt;setup.py  &lt;/li&gt;
+&lt;li&gt;setup.cfg(option)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;pypi do not know markdown format readme, there is only rst format available.&lt;/p&gt;
+&lt;h2 id="setuppy"&gt;&lt;a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;setup.py&lt;/h2&gt;
+&lt;p&gt;look at&lt;br /&gt;
+&lt;a href="https://github.com/pypa/sampleproject/blob/master/setup.py"&gt;https://github.com/pypa/sampleproject/blob/master/setup.py&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;after finish &lt;code&gt;setup.py&lt;/code&gt;&lt;br /&gt;
+you can use   &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pip install -e .&lt;/code&gt;&lt;br /&gt;
+install package locally on editable mode.&lt;br /&gt;
+It will also install dependency.  &lt;/p&gt;
+&lt;h2 id="make-dist"&gt;&lt;a name="user-content-make-dist" href="#make-dist" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Make dist&lt;/h2&gt;
+&lt;h3 id="build-source-distribution"&gt;&lt;a name="user-content-build-source-distribution" href="#build-source-distribution" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Build source distribution&lt;/h3&gt;
+&lt;p&gt;run&lt;br /&gt;
+&lt;code&gt;python setup.py sdist&lt;/code&gt;  &lt;/p&gt;
+&lt;h3 id="build-wheel"&gt;&lt;a name="user-content-build-wheel" href="#build-wheel" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Build wheel.&lt;/h3&gt;
+&lt;p&gt;If your code compat py2 and py3.&lt;br /&gt;
+&lt;code&gt;python setup.py bdist_wheel --universal&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;else, &lt;br /&gt;
+&lt;code&gt;python setup.py bdist_wheel&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;if your code is specify for some python version, add python tag in &lt;code&gt;setup.cfg&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;For example, if your code is only available in py3.5 and 3.4 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[bdist_wheel]&lt;/span&gt;
+&lt;span class="na"&gt;python-tag&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;py35, py34&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id="upload"&gt;&lt;a name="user-content-upload" href="#upload" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Upload&lt;/h2&gt;
+&lt;p&gt;look at &lt;a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi"&gt;http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi&lt;/a&gt;  &lt;/p&gt;
+&lt;p&gt;Create a account on pypi, register your package,  write a &lt;code&gt;~/.pypirc&lt;/code&gt; &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[distutils]&lt;/span&gt;
+&lt;span class="na"&gt;index-servers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;pypi&lt;/span&gt;
+
+&lt;span class="k"&gt;[pypi]&lt;/span&gt;
+&lt;span class="na"&gt;repository&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;https://pypi.python.org/pypi&lt;/span&gt;
+&lt;span class="na"&gt;username&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;lt;username&amp;gt;&lt;/span&gt;
+&lt;span class="na"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;lt;password&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;left the password empty, you can use twine with &lt;code&gt;-p PASSWORD&lt;/code&gt;.  &lt;/p&gt;
+&lt;p&gt;upload your dist folder  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;twine upload dist/*&lt;/code&gt;  &lt;/p&gt;
+&lt;h2 id="reference"&gt;&lt;a name="user-content-reference" href="#reference" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Reference&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/"&gt;http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://peterdowns.com/posts/first-time-with-pypi.html"&gt;http://peterdowns.com/posts/first-time-with-pypi.html&lt;/a&gt;  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2016-05-15 11:43:33&lt;/p&gt;</summary><category term="python"></category><category term="小结"></category></entry><entry><title>Travis CI with Numpy and Pytest</title><link href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html" rel="alternate"></link><updated>2016-03-31T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-31:travis-ci-with-numpy-and-pytest.html</id><summary type="html">&lt;p&gt;It takes long time to install scientific python package by &lt;code&gt;pip&lt;/code&gt; in travis and sometime fail.  &lt;/p&gt;
 &lt;p&gt;The solve is to use conda to install binary package. &lt;br /&gt;
 &lt;a href="http://conda.pydata.org/docs/travis.html"&gt;http://conda.pydata.org/docs/travis.html&lt;/a&gt;  &lt;/p&gt;
 &lt;p&gt;Note that some package not in conda, you can use &lt;code&gt;pip&lt;/code&gt; install it, for example, &lt;code&gt;py.test&lt;/code&gt;  &lt;/p&gt;

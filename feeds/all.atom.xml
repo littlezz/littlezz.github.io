@@ -9,7 +9,7 @@
 &lt;p&gt;其实api接口禁用之后解析html就好了， 懒。 我之前写过一个搜索出A岛回复数超过一定量的串的程序， 当时是有精力啊， 支持A岛， 哭哭哭岛， 备胎岛， 甚至是K岛， 里面有socks的代理设置， 而且还图形化了，用的是自带的tk。 然后呢？mac上面的tk有问题， 触摸板双指滑动tk就崩， 我自己的mac上面下载了新的tk， 没有问题，  后来兴致勃勃的跑去给同学试用， 他从github上克隆好程序装好所需的依赖， 启动之后双指一上滑， Duang！ &lt;/p&gt;
 &lt;p&gt;我和他解释啊， 这不是我的锅啊， 这是tk的锅啊， tk的锅啊， 底层的锅啊， 我救不了啊。 &lt;/p&gt;
 &lt;p&gt;你要不装个新的tk试试？ &lt;/p&gt;
-&lt;p&gt;他给我了我一个关爱智障的眼神。  &lt;/p&gt;
+&lt;p&gt;他给了我一个关爱智障的眼神。  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="" src="../images/2.jpg" /&gt;  &lt;/p&gt;
 &lt;p&gt;这个项目后来也不了了之了， 我自己都不用。  &lt;/p&gt;
 &lt;p&gt;后来还写了一个&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESL-Model&lt;/a&gt;, 这东西我都不想说， 现在都快成黑历史了， 我原先计划把那本 The Elements of statistical Learning 上面的方法全部实现一遍的， 后来大概止步于卷积神经网络的那个patch和步长不能刚好走完一层， 比如书上说patch 3x3, 每次走两格， 但是那一层是16x16， 不能刚好走完啊。我看那个cs231也是刚好能够走完一层的， 于是我就懵逼了啊。&lt;br /&gt;

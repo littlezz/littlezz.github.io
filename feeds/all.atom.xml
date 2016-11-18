@@ -1,5 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-08-17T00:00:00+08:00</updated><entry><title>懒</title><link href="http://littlezz.github.io/lan.html" rel="alternate"></link><updated>2016-08-17T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-08-17:lan.html</id><summary type="html">&lt;p&gt;&lt;img alt="" src="../images/need_fix.jpg" /&gt;  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-11-18T00:00:00+08:00</updated><entry><title>记一次服务器被爆破后灾后重建ss的经历</title><link href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html" rel="alternate"></link><updated>2016-11-18T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-11-18:ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html</id><summary type="html">&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;疑似被黑&lt;/h2&gt;
+&lt;p&gt;2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  &lt;/p&gt;
+&lt;p&gt;2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  &lt;/p&gt;
+&lt;p&gt;直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;netstat -an | grep 443 | grep ESTABLISHED | wc -l
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;大的惊人， 开始慌了。  &lt;/p&gt;
+&lt;p&gt;检查log日志， 发现大量&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;反查这些ip， 发现都不是我们自己的ip。&lt;br /&gt;
+我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。&lt;br /&gt;
+之后就是ban ip， 换端口， 改密码。  &lt;/p&gt;
+&lt;p&gt;接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  &lt;/p&gt;
+&lt;p&gt;检查了一下我的fail2ban， 发现处于开启失败状态。&lt;br /&gt;
+顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。&lt;/p&gt;
+&lt;p&gt;『卧槽， 精彩了』  &lt;/p&gt;
+&lt;p&gt;赶紧联系大腿。&lt;/p&gt;
+&lt;p&gt;先打&lt;code&gt;w&lt;/code&gt;命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示&lt;code&gt;w&lt;/code&gt;估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  &lt;/p&gt;
+&lt;p&gt;往后是一些挣扎， 检查&lt;code&gt;ps -aux&lt;/code&gt;， 看不出来。&lt;br /&gt;
+检查&lt;code&gt;who -a /var/log/wtmp&lt;/code&gt;, 看一下登录的信息， 看不出来。&lt;br /&gt;
+检查bash_history, zsh_history， 根本懒得看了。  &lt;/p&gt;
+&lt;p&gt;淦他娘啊， 我选择重装！  &lt;/p&gt;
+&lt;h2 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;灾后重建&lt;/h2&gt;
+&lt;p&gt;这次选了ubuntu， 而且有经验了。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;先装&lt;code&gt;zsh&lt;/code&gt;, &lt;code&gt;apt-get install zsh&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;建立用户, 指定shell为zsh， &lt;code&gt;useradd youruser -m -s /bin/zsh&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;上传公钥， 通过 &lt;code&gt;ssh-copy-id&lt;/code&gt; 命令。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更改ssh的配置， 改端口， 关root登录， 关密码登录。  &lt;/p&gt;
+&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;PermitRootLogin no
+Port 12345
+PasswordAuthentication no
+&lt;/pre&gt;&lt;/div&gt;
+&lt;br /&gt;
+* 重启ssh服务。  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装 &lt;code&gt;denyhosts&lt;/code&gt;, &lt;code&gt;apt-get install denyhosts&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;oh-my-zsh&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get install git
+sh -c &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="ss"&gt;&lt;a name="user-content-ss" href="#ss" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;配置ss&lt;/h2&gt;
+&lt;h4 id="pip-shadowsocks"&gt;&lt;a name="user-content-pip-shadowsocks" href="#pip-shadowsocks" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;更新系统， 装&lt;code&gt;pip&lt;/code&gt;， &lt;code&gt;shadowsocks&lt;/code&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get install python-pip
+pip install -U pip
+pip install shadowsocks
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id="libsodium"&gt;&lt;a name="user-content-libsodium" href="#libsodium" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;安装密码库， 安装&lt;code&gt;libsodium&lt;/code&gt;依赖&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get install python-m2crypto
+apt-get install libsodium18
+pip install M2Crypto
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4 id="etcshadowsocksjson"&gt;&lt;a name="user-content-etcshadowsocksjson" href="#etcshadowsocksjson" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;配置&lt;code&gt;/etc/shadowsocks.json&lt;/code&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;server&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;::&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;server_port&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8899&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;local_address&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;local_port&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;1080&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;method&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;choose a method&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;fast_open&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;workers&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;quot;user&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;nobody&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;服务器参数设置&lt;code&gt;"::"&lt;/code&gt;可以同时监听ipv4和ipv6, user设置nobody权限， 选一个加密方式， 另外最新是可以打开OTA来防止被攻击， 但是需要客户端也支持OTA。 &lt;/p&gt;
+&lt;p&gt;除此以外， 还可以用提供的 &lt;a href="https://github.com/shadowsocks/shadowsocks/blob/master/utils/autoban.py"&gt;autoban.py&lt;/a&gt; 来ban ip,使用方法参考&lt;a href="https://github.com/shadowsocks/shadowsocks/wiki/Ban-Brute-Force-Crackers"&gt;Ban Brute Force Crackers&lt;/a&gt; .&lt;br /&gt;
+注意到同时监听ipv4和ipv6的时候， 这个代码提取ip的方式有问题，要改一下，&lt;br /&gt;
+第41行改成  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip = line.split()[-1].split(&amp;#39;:&amp;#39;)[-2]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;（小心不要把自己ban了&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;  &lt;/p&gt;
+&lt;h4 id="_3"&gt;&lt;a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;关于优化&lt;/h4&gt;
+&lt;p&gt;参考  &lt;a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize"&gt;shadowsocks-optimize&lt;/a&gt;, 不重复了  &lt;/p&gt;
+&lt;h4 id="_4"&gt;&lt;a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;配置开机自启动&lt;/h4&gt;
+&lt;p&gt;rc.local ubuntu用不了， 需要自己写一个&lt;code&gt;shadowsocks.service&lt;/code&gt;:&lt;br /&gt;
+在&lt;code&gt;/etc/systemd/system&lt;/code&gt;下建立一个文件， 比如&lt;code&gt;shadowsocks.service&lt;/code&gt;， 写入如下内容  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;run ssserver on background&lt;/span&gt;
+
+&lt;span class="k"&gt;[Service]&lt;/span&gt;
+&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;forking&lt;/span&gt;
+&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/usr/local/bin/ssserver -c /etc/shadowsocks.json -d restart&lt;/span&gt;
+&lt;span class="na"&gt;ExecStop&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/usr/local/bin/ssserver -c /etc/shadowsocks.json -d stop&lt;/span&gt;
+
+&lt;span class="k"&gt;[Install]&lt;/span&gt;
+&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;参考： &lt;br /&gt;
+&lt;a href="https://unix.stackexchange.com/questions/47695/how-to-write-startup-script-for-systemd"&gt;how-to-write-startup-script-for-systemd&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html"&gt;systemd.service.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;按说明， &lt;code&gt;Type&lt;/code&gt;选&lt;code&gt;forking&lt;/code&gt;而不是&lt;code&gt;simple&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;之后可以用&lt;code&gt;systemctl start shadowsocks&lt;/code&gt; 和&lt;code&gt;systemctl stop shadowsocks&lt;/code&gt; 开关ss.  &lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;systemctl enable shadowsocks&lt;/code&gt; 让ss开机启动。&lt;/p&gt;
+&lt;h2 id="_5"&gt;&lt;a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;总结&lt;/h2&gt;
+&lt;p&gt;&lt;del&gt;在被日中成长&lt;/del&gt;。  &lt;/p&gt;</summary></entry><entry><title>懒</title><link href="http://littlezz.github.io/lan.html" rel="alternate"></link><updated>2016-08-17T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-08-17:lan.html</id><summary type="html">&lt;p&gt;&lt;img alt="" src="../images/need_fix.jpg" /&gt;  &lt;/p&gt;
 &lt;p&gt;最近太懒了， 之前写的几个练手的项目， 有一些没有放到github上面就已经弃坑了， 至于一些开的坑， 也处于长期不填的状态。  &lt;/p&gt;
 &lt;p&gt;最近在准备写一个即时聊天的网站来练手，前端用reactjs， 后端是aiohttp， 数据库mongodb，  主要是想体验一把分布式的Websocket 和Python3.5 的&lt;code&gt;await/async&lt;/code&gt;语法的。但是按现在的进度看来要花大把的时间在前端上面了， 我一年前不知道为什么两个元素会上下排列， 一年后还是不知道为什么。  &lt;/p&gt;
 &lt;p&gt;前端， 总是给我一种五五开的『这他妈是什么， 这他妈又是什么』的感觉。&lt;/p&gt;

@@ -20,7 +20,7 @@
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io"/>
 <meta property="og:image" content="/images/logo.jpg">
-  <title>littlezz's Blog &ndash; Authors</title>
+  <title>littlezz's Blog &ndash; Category: Code</title>
 </head>
 <body>
   <aside>
@@ -49,14 +49,35 @@
 
 <article>
   <header>
-    <h1>Authors</h1>
+    <h2><a href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">记一次服务器被爆破后灾后重建ss的经历</a></h2>
+    <p>
+      Posted on Fri 18 November 2016 in <a href="http://littlezz.github.io/category/code.html">Code</a>
+    </p>
   </header>
   <div>
-    <ul class="list">
-      <li><a href="http://littlezz.github.io/author/littlezz.html">littlezz</a> (19)</li>
-    </ul>
+      <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>疑似被黑</h2>
+<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
+<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
+<p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
+<div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
+</pre></div>
+
+
+<p>大的惊人， 开始慌了。  </p>
+<p>检查log日志， 发现大量</p>
+<div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
+</pre></div>
+
+
+<p>反查这些ip， 发现都不是我们自己的ip。<br />
+我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。<br />
+之后就是ban ...</p>
+      <a class="btn" href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">Continue reading</a>
   </div>
 </article>
+
+  <div class="pagination">
+  </div>
 
     <footer>
         <p>&copy; littlezz 2015</p>
@@ -67,5 +88,14 @@
 
 
 
-</body>
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " littlezz's Blog ",
+  "url" : "http://littlezz.github.io",
+  "image": "/images/logo.jpg",
+  "description": "littlezz's Thoughts and Writings About Python And Machine Learning and diary"
+}
+</script></body>
 </html>

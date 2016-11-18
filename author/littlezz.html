@@ -49,6 +49,35 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">记一次服务器被爆破后灾后重建ss的经历</a></h2>
+    <p>
+      Posted on Fri 18 November 2016 in <a href="http://littlezz.github.io/category/code.html">Code</a>
+    </p>
+  </header>
+  <div>
+      <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>疑似被黑</h2>
+<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
+<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
+<p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
+<div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
+</pre></div>
+
+
+<p>大的惊人， 开始慌了。  </p>
+<p>检查log日志， 发现大量</p>
+<div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
+</pre></div>
+
+
+<p>反查这些ip， 发现都不是我们自己的ip。<br />
+我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。<br />
+之后就是ban ...</p>
+      <a class="btn" href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/lan.html#lan">懒</a></h2>
     <p>
       Posted on Wed 17 August 2016 in <a href="http://littlezz.github.io/category/diary.html">diary</a>
@@ -307,37 +336,6 @@ matrix是二维以上的。  </p>
 
 <span class="k">print</span><span class="p">(</span><span class="n">mat ...</span></pre></div>
       <a class="btn" href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Python Package Setup</a></h2>
-    <p>
-      Posted on Thu 17 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
-  </header>
-  <div>
-      <p>esl_model <a href="https://github.com/littlezz/ESL-Model">https://github.com/littlezz/ESL-Model</a><br />
-今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  </p>
-<p>简单总结一下Python的Package Distribution吧。<br />
-有空的话， 在写一个pytest的简单总结。</p>
-<h2 id="setuppy"><a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>setup.py</h2>
-<p>setup.py 是最主要的整个配置的文件， </p>
-<p>贴我的setup.py 的代码好了。  </p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;README.rst&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">readme</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">version</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;esl_model&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">__version__</span>
-
-
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;esl_model&#39;</span><span class="p">,</span>
-      <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
-      <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Algorithm from ...</span></pre></div>
-      <a class="btn" href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Continue reading</a>
   </div>
 </article>
 

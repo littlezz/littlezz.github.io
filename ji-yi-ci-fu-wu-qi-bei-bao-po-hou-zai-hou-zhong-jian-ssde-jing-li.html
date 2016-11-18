@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="littlezz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="littlezz" />
+<meta name="description" content="疑似被黑 2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。 2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。 直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， netstat -an | grep 443 | grep ESTABLISHED | wc -l 大的惊人， 开始慌了。 检查log日志， 发现大量 2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:<ip>:<port> 反查这些ip， 发现都不是我们自己的ip。 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。 之后就是ban ..." />
+<meta name="keywords" content="">
+<meta property="og:site_name" content="littlezz's Blog"/>
+<meta property="og:title" content="记一次服务器被爆破后灾后重建ss的经历"/>
+<meta property="og:description" content="疑似被黑 2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。 2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。 直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， netstat -an | grep 443 | grep ESTABLISHED | wc -l 大的惊人， 开始慌了。 检查log日志， 发现大量 2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:<ip>:<port> 反查这些ip， 发现都不是我们自己的ip。 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。 之后就是ban ..."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-11-18 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
+<meta property="article:section" content="Code"/>
+<meta property="og:image" content="/images/logo.jpg">  <title>littlezz's Blog &ndash; 记一次服务器被爆破后灾后重建ss的经历</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="littlezz" title="littlezz">
+      </a>
+      <h1><a href="http://littlezz.github.io">littlezz</a></h1>
+      <p>当我被狗日时， 我在想些什么</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/littlezz/" target="_blank"><i class="fa fa-github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">记一次服务器被爆破后灾后重建ss的经历</h1>
+    <p>Posted on Fri 18 November 2016 in <a href="http://littlezz.github.io/category/code.html">Code</a></p>
+  </header>
+  <div>
+    <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>疑似被黑</h2>
+<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
+<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
+<p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
+<div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
+</pre></div>
+
+
+<p>大的惊人， 开始慌了。  </p>
+<p>检查log日志， 发现大量</p>
+<div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
+</pre></div>
+
+
+<p>反查这些ip， 发现都不是我们自己的ip。<br />
+我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。<br />
+之后就是ban ip， 换端口， 改密码。  </p>
+<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  </p>
+<p>检查了一下我的fail2ban， 发现处于开启失败状态。<br />
+顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。</p>
+<p>『卧槽， 精彩了』  </p>
+<p>赶紧联系大腿。</p>
+<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  </p>
+<p>往后是一些挣扎， 检查<code>ps -aux</code>， 看不出来。<br />
+检查<code>who -a /var/log/wtmp</code>, 看一下登录的信息， 看不出来。<br />
+检查bash_history, zsh_history， 根本懒得看了。  </p>
+<p>淦他娘啊， 我选择重装！  </p>
+<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>灾后重建</h2>
+<p>这次选了ubuntu， 而且有经验了。  </p>
+<ul>
+<li>
+<p>先装<code>zsh</code>, <code>apt-get install zsh</code>  </p>
+</li>
+<li>
+<p>建立用户, 指定shell为zsh， <code>useradd youruser -m -s /bin/zsh</code></p>
+</li>
+<li>
+<p>上传公钥， 通过 <code>ssh-copy-id</code> 命令。  </p>
+</li>
+<li>
+<p>更改ssh的配置， 改端口， 关root登录， 关密码登录。  </p>
+<p><div class="highlight"><pre><span></span>PermitRootLogin no
+Port 12345
+PasswordAuthentication no
+</pre></div>
+<br />
+* 重启ssh服务。  </p>
+</li>
+<li>
+<p>安装 <code>denyhosts</code>, <code>apt-get install denyhosts</code>  </p>
+</li>
+<li>
+<p><code>oh-my-zsh</code></p>
+<div class="highlight"><pre><span></span>apt-get install git
+sh -c <span class="s2">&quot;</span><span class="k">$(</span>wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -<span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+</li>
+</ul>
+<h2 id="ss"><a name="user-content-ss" href="#ss" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>配置ss</h2>
+<h4 id="pip-shadowsocks"><a name="user-content-pip-shadowsocks" href="#pip-shadowsocks" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>更新系统， 装<code>pip</code>， <code>shadowsocks</code></h4>
+<div class="highlight"><pre><span></span>apt-get install python-pip
+pip install -U pip
+pip install shadowsocks
+</pre></div>
+
+
+<h4 id="libsodium"><a name="user-content-libsodium" href="#libsodium" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>安装密码库， 安装<code>libsodium</code>依赖</h4>
+<div class="highlight"><pre><span></span>apt-get install python-m2crypto
+apt-get install libsodium18
+pip install M2Crypto
+</pre></div>
+
+
+<h4 id="etcshadowsocksjson"><a name="user-content-etcshadowsocksjson" href="#etcshadowsocksjson" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>配置<code>/etc/shadowsocks.json</code></h4>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;server&quot;</span><span class="p">:</span><span class="s2">&quot;::&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;server_port&quot;</span><span class="p">:</span><span class="mi">8899</span><span class="p">,</span>
+    <span class="nt">&quot;local_address&quot;</span><span class="p">:</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;local_port&quot;</span><span class="p">:</span><span class="mi">1080</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span>
+    <span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;choose a method&gt;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;fast_open&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nt">&quot;user&quot;</span><span class="p">:</span><span class="s2">&quot;nobody&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>服务器参数设置<code>"::"</code>可以同时监听ipv4和ipv6, user设置nobody权限， 选一个加密方式， 另外最新是可以打开OTA来防止被攻击， 但是需要客户端也支持OTA。 </p>
+<p>除此以外， 还可以用提供的 <a href="https://github.com/shadowsocks/shadowsocks/blob/master/utils/autoban.py">autoban.py</a> 来ban ip,使用方法参考<a href="https://github.com/shadowsocks/shadowsocks/wiki/Ban-Brute-Force-Crackers">Ban Brute Force Crackers</a> .<br />
+注意到同时监听ipv4和ipv6的时候， 这个代码提取ip的方式有问题，要改一下，<br />
+第41行改成  </p>
+<div class="highlight"><pre><span></span>ip = line.split()[-1].split(&#39;:&#39;)[-2]
+</pre></div>
+
+
+<p><strong>（小心不要把自己ban了</strong></p>
+<p><br>  </p>
+<h4 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>关于优化</h4>
+<p>参考  <a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize">shadowsocks-optimize</a>, 不重复了  </p>
+<h4 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>配置开机自启动</h4>
+<p>rc.local ubuntu用不了， 需要自己写一个<code>shadowsocks.service</code>:<br />
+在<code>/etc/systemd/system</code>下建立一个文件， 比如<code>shadowsocks.service</code>， 写入如下内容  </p>
+<div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">run ssserver on background</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/ssserver -c /etc/shadowsocks.json -d restart</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/usr/local/bin/ssserver -c /etc/shadowsocks.json -d stop</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+
+
+<p>参考： <br />
+<a href="https://unix.stackexchange.com/questions/47695/how-to-write-startup-script-for-systemd">how-to-write-startup-script-for-systemd</a></p>
+<p><a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html">systemd.service.html</a></p>
+<p>按说明， <code>Type</code>选<code>forking</code>而不是<code>simple</code>。</p>
+<p>之后可以用<code>systemctl start shadowsocks</code> 和<code>systemctl stop shadowsocks</code> 开关ss.  </p>
+<p>使用 <code>systemctl enable shadowsocks</code> 让ss开机启动。</p>
+<h2 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>总结</h2>
+<p><del>在被日中成长</del>。  </p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; littlezz 2015</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "记一次服务器被爆破后灾后重建ss的经历",
+  "headline": "记一次服务器被爆破后灾后重建ss的经历",
+  "datePublished": "2016-11-18 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "littlezz",
+    "url": "http://littlezz.github.io/author/littlezz.html"
+  },
+  "image": "/images/logo.jpg",
+  "url": "http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html",
+  "description": "疑似被黑 2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。 2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。 直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， netstat -an | grep 443 | grep ESTABLISHED | wc -l 大的惊人， 开始慌了。 检查log日志， 发现大量 2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:<ip>:<port> 反查这些ip， 发现都不是我们自己的ip。 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。 之后就是ban ..."
+}
+</script></body>
+</html>

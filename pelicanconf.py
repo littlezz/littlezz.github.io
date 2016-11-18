@@ -45,7 +45,7 @@ RELATIVE_URLS = True
 
 
 
-MD_EXTENSIONS = ['codehilite(css_class=highlight)','extra', 'pymdownx.github']
+MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'pymdownx.github']
 
 PLUGIN_PATHS = ['pelican-plugins']
 

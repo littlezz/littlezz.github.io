@@ -49,6 +49,26 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">对numpy的一系列实验</a></h2>
+    <p>
+      Posted on Thu 08 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
+  </header>
+  <div>
+      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。  </p>
+<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>简介</h2>
+<p>最近要对图片做二值化， 参照<a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf">Adaptive Thresholding Using the Integral Image</a> 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。</p>
+<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>算法</h2>
+<p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 <br />
+过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. <br />
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize ...</p>
+      <a class="btn" href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">How to upload package to pypi</a></h2>
     <p>
       Posted on Sun 15 May 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>

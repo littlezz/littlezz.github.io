@@ -49,6 +49,26 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">对numpy的一系列实验</a></h2>
+    <p>
+      Posted on Thu 08 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
+  </header>
+  <div>
+      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。  </p>
+<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>简介</h2>
+<p>最近要对图片做二值化， 参照<a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf">Adaptive Thresholding Using the Integral Image</a> 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。</p>
+<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>算法</h2>
+<p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 <br />
+过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. <br />
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize ...</p>
+      <a class="btn" href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">记一次服务器被爆破后灾后重建ss的经历</a></h2>
     <p>
       Posted on Fri 18 November 2016 in <a href="http://littlezz.github.io/category/code.html">Code</a>
@@ -301,41 +321,6 @@
 }
 </script>
       <a class="btn" href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Numpy 使用小结</a></h2>
-    <p>
-      Posted on Mon 21 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
-  </header>
-  <div>
-      <p><a href="https://github.com/littlezz/ESL-Model">ESLModel</a> 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  </p>
-<p>于是抽空写一下关于numpy的总结吧。  </p>
-<h2 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Intro</h2>
-<p>介绍一些会混淆的东西</p>
-<h3 id="vector-vs-matrix"><a name="user-content-vector-vs-matrix" href="#vector-vs-matrix" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>vector vs matrix</h3>
-<p>vector是向量， 是一维的。 <br />
-matrix是二维以上的。  </p>
-<div class="highlight"><pre><span></span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-<span class="c1"># method 1</span>
-<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]])</span>
-
-<span class="c1"># method 2</span>
-<span class="n">mat</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
-<span class="c1"># mathod 3</span>
-<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="c1"># output (3,)</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">mat ...</span></pre></div>
-      <a class="btn" href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Continue reading</a>
   </div>
 </article>
 

@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-12-08T00:00:00+08:00</updated><entry><title>对numpy的一系列实验</title><link href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html" rel="alternate"></link><updated>2016-12-08T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-08:dui-numpyde-yi-xi-lie-shi-yan.html</id><summary type="html">&lt;p&gt;本文主要总结了如何把numpy计算速度优化100倍的过程。  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/all.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-12-12T00:00:00+08:00</updated><entry><title>Python打包时添加非代码文件的坑</title><link href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html" rel="alternate"></link><updated>2016-12-12T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-12:pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html</id><summary type="html">&lt;p&gt;对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python3 setup.py sdist bdist_wheel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使用pip安装的时候一般是安装bdist打包出来的文件。&lt;/p&gt;
+&lt;p&gt;关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了&lt;code&gt;package_data&lt;/code&gt;参数， 另外对于 setuptools 还提供了特别的 &lt;code&gt;include_package_data&lt;/code&gt;的参数， 接下来介绍这些参数的意义和怎么用。  &lt;/p&gt;
+&lt;h2 id="manifestin"&gt;&lt;a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;MANIFEST.in&lt;/h2&gt;
+&lt;p&gt;MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST&lt;/p&gt;
+&lt;p&gt;MIANIFEST会暗中自动寻找以下的文件：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有&lt;code&gt;py_modules&lt;/code&gt; 和 &lt;code&gt;packages&lt;/code&gt;中没有明确说明的python文件 &lt;/li&gt;
+&lt;li&gt;ext_modules 或 libraries选项中指明的C文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;scripts&lt;/code&gt;指明的文件&lt;/li&gt;
+&lt;li&gt;所有看上去像是test文件的， 比如&lt;code&gt;tests/*.py&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;README.txt 或者 README, setup.py, setup.cfg&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;package_data&lt;/code&gt;中指明的文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;data_files&lt;/code&gt;中指明的文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="package_data"&gt;&lt;a name="user-content-package_data" href="#package_data" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;package_data&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;是在setup.py中的参数， 用于控制安装包里面包含的文件。&lt;br /&gt;
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  &lt;/p&gt;
+&lt;p&gt;一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  &lt;/p&gt;
+&lt;h2 id="include_package_data"&gt;&lt;a name="user-content-include_package_data" href="#include_package_data" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;include_package_data&lt;/h2&gt;
+&lt;p&gt;坑就是指&lt;code&gt;include_package_data&lt;/code&gt;， 这个参数是setuptools特有的， 但是非常容易让人误解然后勿用。 setuptools的文档中是这样写的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If set to True, this tells setuptools to automatically include any data files it finds inside your package directories that are specified by your MANIFEST.in file. For more information, see the section below on Including Data Files.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;设为 True 时， 打包时setuptools 会自动加入在 MANIFEST.in中指定的文件。&lt;/p&gt;
+&lt;p&gt;原本是 MANIFEST 在 setup.py 中的&lt;code&gt;package_data&lt;/code&gt;寻找额外的文件的， 现在变成大家以 MANIFEST.in 为准了。&lt;/p&gt;
+&lt;p&gt;这会发生什么事情呢， &lt;br /&gt;
+如果你同时用了&lt;code&gt;include_package_data&lt;/code&gt;和&lt;code&gt;package_data&lt;/code&gt;， 那么你的 sdist 就会瞬间爆炸。&lt;br /&gt;
+bdist 打包出来的东西会包含&lt;code&gt;package_data&lt;/code&gt;中的内容， 但是源代码打包的时候就会失去在&lt;code&gt;package_data&lt;/code&gt;中指明的文件。  &lt;/p&gt;
+&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;总结&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;永远也不要用&lt;code&gt;include_package_data&lt;/code&gt;&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;MANIFEST.in&lt;/code&gt; 用来给源文件打包， 里面包含许多额外的信息， 比如测试文件之类的。  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;用于指定安装时加入的额外的文件， 不需要再MANIFEST.in中重复定义， 源文件打包的时候回自动包含这里面的文件。  &lt;/p&gt;
+&lt;p&gt;参考:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.python.org/3.4/distutils/sourcedist.html#specifying-the-files-to-distribute"&gt;specifying-the-files-to-distribute&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#including-data-files"&gt;setuptools&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2016年12月12日01:04:25&lt;/p&gt;</summary><category term="python"></category><category term="小结"></category></entry><entry><title>对numpy的一系列实验</title><link href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html" rel="alternate"></link><updated>2016-12-08T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-08:dui-numpyde-yi-xi-lie-shi-yan.html</id><summary type="html">&lt;p&gt;本文主要总结了如何把numpy计算速度优化100倍的过程。  &lt;/p&gt;
 &lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;简介&lt;/h2&gt;
 &lt;p&gt;最近要对图片做二值化， 参照&lt;a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf"&gt;Adaptive Thresholding Using the Integral Image&lt;/a&gt; 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。&lt;/p&gt;
 &lt;h2 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;算法&lt;/h2&gt;

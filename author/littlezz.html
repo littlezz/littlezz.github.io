@@ -49,6 +49,31 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Python打包时添加非代码文件的坑</a></h2>
+    <p>
+      Posted on Mon 12 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <p>对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行</p>
+<div class="highlight"><pre><span></span>python3 setup.py sdist bdist_wheel
+</pre></div>
+
+
+<p>使用pip安装的时候一般是安装bdist打包出来的文件。</p>
+<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。  </p>
+<h2 id="manifestin"><a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>MANIFEST.in</h2>
+<p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
+<p>MIANIFEST会暗中自动寻找以下的文件：  </p>
+<ul>
+<li>所有<code>py_modules</code> 和 <code>packages ...</code></li></ul>
+      <a class="btn" href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">对numpy的一系列实验</a></h2>
     <p>
       Posted on Thu 08 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -240,87 +265,6 @@
 <p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.  </p>
 <p>Notice that I am using Python3.5, which allow me use <code>@</code> instead ...</p>
       <a class="btn" href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Fuck the Reduced-rank LDA</a></h2>
-    <p>
-      Posted on Fri 25 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/machine-learning.html">machine learning</a>,      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/ta-ma-de.html">他妈的</a>,      <a href="http://littlezz.github.io/tag/xue-xue-xue-xue-ge-pi.html">学学学，学个屁</a>    </p>
-  </header>
-  <div>
-      <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br />
-搜索各种资料， 各自有理， 到最后连计算 <span class="math">\(W^{-\frac{1}{2}}\)</span> 都能有不同的版本。  </p>
-<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  </p>
-<h2 id="esl"><a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>版本一： ESL</h2>
-<p>page 114 页的算法。<br />
-我翻译一下：  </p>
-<ul>
-<li>计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；</li>
-<li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
-<li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
-</ul>
-<p>卧槽 ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
-      <a class="btn" href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Continue reading</a>
   </div>
 </article>
 

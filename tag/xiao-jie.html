@@ -49,6 +49,31 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Python打包时添加非代码文件的坑</a></h2>
+    <p>
+      Posted on Mon 12 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <p>对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行</p>
+<div class="highlight"><pre><span></span>python3 setup.py sdist bdist_wheel
+</pre></div>
+
+
+<p>使用pip安装的时候一般是安装bdist打包出来的文件。</p>
+<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。  </p>
+<h2 id="manifestin"><a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>MANIFEST.in</h2>
+<p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
+<p>MIANIFEST会暗中自动寻找以下的文件：  </p>
+<ul>
+<li>所有<code>py_modules</code> 和 <code>packages ...</code></li></ul>
+      <a class="btn" href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/lan.html#lan">懒</a></h2>
     <p>
       Posted on Wed 17 August 2016 in <a href="http://littlezz.github.io/category/diary.html">diary</a>

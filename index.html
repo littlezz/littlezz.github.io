@@ -49,6 +49,61 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Python打包时添加非代码文件的坑</a></h2>
+    <p>
+      Posted on Mon 12 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <p>对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行</p>
+<div class="highlight"><pre><span></span>python3 setup.py sdist bdist_wheel
+</pre></div>
+
+
+<p>使用pip安装的时候一般是安装bdist打包出来的文件。</p>
+<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。  </p>
+<h2 id="manifestin"><a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>MANIFEST.in</h2>
+<p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
+<p>MIANIFEST会暗中自动寻找以下的文件：  </p>
+<ul>
+<li>所有<code>py_modules</code> 和 <code>packages</code>中没有明确说明的python文件 </li>
+<li>ext_modules 或 libraries选项中指明的C文件</li>
+<li><code>scripts</code>指明的文件</li>
+<li>所有看上去像是test文件的， 比如<code>tests/*.py</code></li>
+<li>README.txt 或者 README, setup.py, setup.cfg</li>
+<li><code>package_data</code>中指明的文件</li>
+<li><code>data_files</code>中指明的文件</li>
+</ul>
+<h2 id="package_data"><a name="user-content-package_data" href="#package_data" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>package_data</h2>
+<p><code>package_data</code>是在setup.py中的参数， 用于控制安装包里面包含的文件。<br />
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  </p>
+<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  </p>
+<h2 id="include_package_data"><a name="user-content-include_package_data" href="#include_package_data" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>include_package_data</h2>
+<p>坑就是指<code>include_package_data</code>， 这个参数是setuptools特有的， 但是非常容易让人误解然后勿用。 setuptools的文档中是这样写的</p>
+<blockquote>
+<p>If set to True, this tells setuptools to automatically include any data files it finds inside your package directories that are specified by your MANIFEST.in file. For more information, see the section below on Including Data Files.</p>
+</blockquote>
+<p>设为 True 时， 打包时setuptools 会自动加入在 MANIFEST.in中指定的文件。</p>
+<p>原本是 MANIFEST 在 setup.py 中的<code>package_data</code>寻找额外的文件的， 现在变成大家以 MANIFEST.in 为准了。</p>
+<p>这会发生什么事情呢， <br />
+如果你同时用了<code>include_package_data</code>和<code>package_data</code>， 那么你的 sdist 就会瞬间爆炸。<br />
+bdist 打包出来的东西会包含<code>package_data</code>中的内容， 但是源代码打包的时候就会失去在<code>package_data</code>中指明的文件。  </p>
+<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>总结</h2>
+<p><strong>永远也不要用<code>include_package_data</code></strong>  </p>
+<p><code>MANIFEST.in</code> 用来给源文件打包， 里面包含许多额外的信息， 比如测试文件之类的。  </p>
+<p><code>package_data</code>用于指定安装时加入的额外的文件， 不需要再MANIFEST.in中重复定义， 源文件打包的时候回自动包含这里面的文件。  </p>
+<p>参考:</p>
+<ul>
+<li><a href="https://docs.python.org/3.4/distutils/sourcedist.html#specifying-the-files-to-distribute">specifying-the-files-to-distribute</a>  </li>
+<li><a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#including-data-files">setuptools</a></li>
+</ul>
+<p>2016年12月12日01:04:25</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">对numpy的一系列实验</a></h2>
     <p>
       Posted on Thu 08 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -997,93 +1052,6 @@ Define <span class="math">\(W^{1/2} = D_W^{1/2}V_W^T\)</span></p>
 <li><a href="http://www.stat.cmu.edu/~ryantibs/datamining/lectures/21-clas2-marked.pdf">http://www.stat.cmu.edu/~ryantibs/datamining/lectures/21-clas2-marked.pdf</a></li>
 </ul>
 <p>2016-03-26 15:43:45</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Fuck the Reduced-rank LDA</a></h2>
-    <p>
-      Posted on Fri 25 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/machine-learning.html">machine learning</a>,      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/ta-ma-de.html">他妈的</a>,      <a href="http://littlezz.github.io/tag/xue-xue-xue-xue-ge-pi.html">学学学，学个屁</a>    </p>
-  </header>
-  <div>
-      <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br />
-搜索各种资料， 各自有理， 到最后连计算 <span class="math">\(W^{-\frac{1}{2}}\)</span> 都能有不同的版本。  </p>
-<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  </p>
-<h2 id="esl"><a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>版本一： ESL</h2>
-<p>page 114 页的算法。<br />
-我翻译一下：  </p>
-<ul>
-<li>计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；</li>
-<li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
-<li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
-</ul>
-<p>卧槽， 我他妈看懂了。<br />
-我往下看了一行。 <br />
-书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。  </p>
-<p>那我懂了， 我接着看书了。  </p>
-<p>FUCK！<br />
-FUCK ME！</p>
-<p>2016年03月25日00:46:12</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "left",
         indent = "0em",

@@ -54,23 +54,24 @@ MATH_JAX = {'align':'left','responsive': True}
 
 THEME = 'pelican-themes/theme'
 
-EXTRA_PATH_METADATA = {
-    'extra/custom.css': {'path': 'static/custom.css'},
-}
+# EXTRA_PATH_METADATA = {
+#     'extra/custom.css': {'path': 'static/custom.css'},
+# }
 CUSTOM_CSS = 'static/custom.css'
 
 
 
 
 SITETITLE = 'littlezz'
-SITESUBTITLE = '当我被狗日时， 我在想些什么'
+# SITESUBTITLE = '当我被狗日时， 我在想些什么'
+SITESUBTITLE = 'Everything that has a beginning has an end.'
 SITEDESCRIPTION = 'littlezz\'s Thoughts and Writings About Python And Machine Learning and diary'
 SITELOGO = '/images/logo.jpg'
 
 # FAVICON = SITEURL + '/images/favicon.ico'
 # ROBOTS = 'index, follow'
 
-COPYRIGHT_YEAR = 2015
+COPYRIGHT_YEAR = 2017
 # CC_LICENSE = { 'name': 'Creative Commons Attribution-ShareAlike', 'version':'4.0', 'slug': 'by-sa' }
 
 CUSTOM_CSS = 'static/custom.css'

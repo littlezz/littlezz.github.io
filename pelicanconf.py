@@ -78,7 +78,8 @@ CUSTOM_CSS = 'static/custom.css'
 
 EXTRA_PATH_METADATA = {
     CUSTOM_CSS: {'path': 'static/custom.css'},
-    'diary/photos/': {'path': 'photos/'}
+    'diary/photos/': {'path': 'photos/'},
+    'static/CNAME':{'path':'CNAME'},
 }
 
 

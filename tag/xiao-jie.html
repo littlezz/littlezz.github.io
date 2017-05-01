@@ -49,6 +49,37 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html#jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing">jinja2 模板注入绕过引号任意代码执行</a></h2>
+    <p>
+      Posted on Mon 01 May 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <h3 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>intro</h3>
+<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。<del>（当然最后是用其他的方法</del></p>
+<p>后来想了一下绕过引号的方法。</p>
+<p>首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是<code>__buildtins__</code>, 然后找出 <code>eval</code>进行任意代码执行， 绕过沙盒的限制</p>
+<div class="highlight"><pre><span></span><span class="ch">#! python3</span>
+
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
+<span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;{{[].__class__}}&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+<span class="c1">#output &quot;&lt;class &#39;list&#39;&gt;&quot;</span>
+</pre></div>
+
+
+<p>我们可以通过这种方法调用自带的函数或者对象， 通过<code>subclasses</code> 找到更加多的类</p>
+<div class="highlight"><pre><span></span><span class="p">[]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">([]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1">#output type ...</span></pre></div>
+      <a class="btn" href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html#jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Python打包时添加非代码文件的坑</a></h2>
     <p>
       Posted on Mon 12 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>

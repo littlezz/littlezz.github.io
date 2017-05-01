@@ -85,7 +85,8 @@ EXTRA_PATH_METADATA = {
 
 STATIC_PATHS = ['images', 
 				'diary/photos',
-				CUSTOM_CSS]
+				CUSTOM_CSS,
+                'static']
 
 MAIN_MENU = True
 MENUITEMS = [

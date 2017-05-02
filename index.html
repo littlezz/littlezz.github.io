@@ -50,6 +50,46 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Github Page 自定义子域名</a></h2>
+    <p>
+      Posted on Tue 02 May 2017 in <a href="http://littlezz.github.io/category/code.html">Code</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/xiao-ji-qiao.html">小技巧</a>    </p>
+  </header>
+  <div>
+      <p>目标：设置域名</p>
+<div class="highlight"><pre><span></span>xxx.github.io --&gt; blog.xxx.com
+</pre></div>
+
+
+<ul>
+<li>
+<p>首先在 github page 上面的项目里添加一个文件<code>CNAME</code>, 内容是目标站点<code>blog.xxx.com</code></p>
+</li>
+<li>
+<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
+</li>
+<li>
+<p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf.py</code> 中设置</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;static/CNAME&#39;</span><span class="p">:{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span><span class="s1">&#39;CNAME&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;static&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>之后就是等待 dns 的刷新了</p>
+<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>小结</h3>
+<p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html#jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing">jinja2 模板注入绕过引号任意代码执行</a></h2>
     <p>
       Posted on Mon 01 May 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -929,63 +969,6 @@ It will also install dependency.  </p>
 <p>我是不是可以去写一个啊。。。？  </p>
 <p>看情况， 先把之前的坑给填了先。  </p>
 <p>2016年04月04日19:37:51</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Travis CI with Numpy and Pytest</a></h2>
-    <p>
-      Posted on Thu 31 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
-  </header>
-  <div>
-      <p>It takes long time to install scientific python package by <code>pip</code> in travis and sometime fail.  </p>
-<p>The solve is to use conda to install binary package. <br />
-<a href="http://conda.pydata.org/docs/travis.html">http://conda.pydata.org/docs/travis.html</a>  </p>
-<p>Note that some package not in conda, you can use <code>pip</code> install it, for example, <code>py.test</code>  </p>
-<p>Here is my <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> .trais.yml, you can view on github <a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml">https://github.com/littlezz/ESL-Model/blob/master/.travis.yml</a>  </p>
-<p><div class="highlight"><pre><span></span>language: python
-python:
-  <span class="c1"># We don&#39;t actually use the Travis Python, but this keeps it organized.</span>
-  - <span class="s2">&quot;3.5&quot;</span>
-
-install:
-  - sudo apt-get update
-  <span class="c1"># We do this conditionally because it saves us some downloading if the</span>
-  <span class="c1"># version is the same.</span>
-  - <span class="k">if</span> <span class="o">[[</span> <span class="s2">&quot;</span><span class="nv">$TRAVIS_PYTHON_VERSION</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;2.7&quot;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh<span class="p">;</span>
-    <span class="k">else</span>
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh<span class="p">;</span>
-    <span class="k">fi</span>
-  - bash miniconda.sh -b -p <span class="nv">$HOME</span>/miniconda
-  - <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/miniconda/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
-  - <span class="nb">hash</span> -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  <span class="c1"># Useful for debugging any issues with conda</span>
-  - conda info -a
-
-  - conda create -q -n test-environment <span class="nv">python</span><span class="o">=</span><span class="nv">$TRAVIS_PYTHON_VERSION</span> pandas numpy scipy scikit-learn
-  - <span class="nb">source</span> activate test-environment
-  - python setup.py install
-  - pip install pytest
-
-script:
-  - py.test
-
-
-notifications:
-  email:
-    on_success: never
-    on_failure: always
-</pre></div>
-<br />
-Note that you should install pytest manually instead use pre-install one.</p>
-<p>However, you can not use tox with conda direct, try ctox <a href="https://github.com/hayd/ctox">https://github.com/hayd/ctox</a>  </p>
-<p>2016-03-31 16:19:38</p>
   </div>
 </article>
 

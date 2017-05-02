@@ -50,6 +50,63 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Travis CI with Numpy and Pytest</a></h2>
+    <p>
+      Posted on Thu 31 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
+  </header>
+  <div>
+      <p>It takes long time to install scientific python package by <code>pip</code> in travis and sometime fail.  </p>
+<p>The solve is to use conda to install binary package. <br />
+<a href="http://conda.pydata.org/docs/travis.html">http://conda.pydata.org/docs/travis.html</a>  </p>
+<p>Note that some package not in conda, you can use <code>pip</code> install it, for example, <code>py.test</code>  </p>
+<p>Here is my <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> .trais.yml, you can view on github <a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml">https://github.com/littlezz/ESL-Model/blob/master/.travis.yml</a>  </p>
+<p><div class="highlight"><pre><span></span>language: python
+python:
+  <span class="c1"># We don&#39;t actually use the Travis Python, but this keeps it organized.</span>
+  - <span class="s2">&quot;3.5&quot;</span>
+
+install:
+  - sudo apt-get update
+  <span class="c1"># We do this conditionally because it saves us some downloading if the</span>
+  <span class="c1"># version is the same.</span>
+  - <span class="k">if</span> <span class="o">[[</span> <span class="s2">&quot;</span><span class="nv">$TRAVIS_PYTHON_VERSION</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;2.7&quot;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+      wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh<span class="p">;</span>
+    <span class="k">else</span>
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh<span class="p">;</span>
+    <span class="k">fi</span>
+  - bash miniconda.sh -b -p <span class="nv">$HOME</span>/miniconda
+  - <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/miniconda/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+  - <span class="nb">hash</span> -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  <span class="c1"># Useful for debugging any issues with conda</span>
+  - conda info -a
+
+  - conda create -q -n test-environment <span class="nv">python</span><span class="o">=</span><span class="nv">$TRAVIS_PYTHON_VERSION</span> pandas numpy scipy scikit-learn
+  - <span class="nb">source</span> activate test-environment
+  - python setup.py install
+  - pip install pytest
+
+script:
+  - py.test
+
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+</pre></div>
+<br />
+Note that you should install pytest manually instead use pre-install one.</p>
+<p>However, you can not use tox with conda direct, try ctox <a href="https://github.com/hayd/ctox">https://github.com/hayd/ctox</a>  </p>
+<p>2016-03-31 16:19:38</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">How to Write Reduced Rank Linear Discriminant Analysis with Python</a></h2>
     <p>
       Posted on Sat 26 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
@@ -1037,26 +1094,6 @@ recursive-include esl_model/datasets/data *.csv
 <p>因为，我们还有很长的路要走。</p>
 <p>以上。  </p>
 <p>2016年01月24日21:29:36</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/ng-machine-learning-week-10.html#ng-machine-learning-week-10">Ng Machine Learning Week 10</a></h2>
-    <p>
-      Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>    </p>
-  </header>
-  <div>
-      <p>总结一下第10周， 之前看的都没有总结（←懒   </p>
-<p>第十周已经开始不怎么说算法了， 这次说的是对于大数据集的处理， 之前那种每次都对所有数据集做计算的称为batch， 现在这个（stochastic）是每次只对一个样例找最优值， 遍历完所有样例之后也会趋向于全局最优， 会在他的旁边震荡， 这个时候可以动态的减少学习效率 (alpha)   </p>
-<p>之后说了mini-batch， 就是stochastic 和batch的混合版， 每次只训练一小部分样例。</p>
-<p>然后在线的学习其实感觉就是stochastic， 每次都对一个新的样本训练， 然后丢弃。  </p>
-<p>之后是map reduce， 这个没有什么好说的了， 分布式计算， 或者并行的多核计算， 分布式要考虑网络带宽等问题， 虽然视频说多核的不用考虑带宽， 但是实际上核心之间的通信也要消耗时间， 最终可能每个核心只能快80%吧。  </p>
-<p>map reduce的使用需要计算的时候数据能够分割， 一般是有 Σ 这种求和公式的时候使用。  </p>
-<p>嘛。  </p>
-<p>2016年01月24日14:42:29</p>
   </div>
 </article>
 

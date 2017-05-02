@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/code.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2016-11-18T00:00:00+08:00</updated><entry><title>记一次服务器被爆破后灾后重建ss的经历</title><link href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html" rel="alternate"></link><updated>2016-11-18T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-11-18:ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html</id><summary type="html">&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;疑似被黑&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/code.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-05-02T00:00:00+08:00</updated><entry><title>Github Page 自定义子域名</title><link href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html" rel="alternate"></link><updated>2017-05-02T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-05-02:github-page-zi-ding-yi-zi-yu-ming.html</id><summary type="html">&lt;p&gt;目标：设置域名&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;xxx.github.io --&amp;gt; blog.xxx.com
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先在 github page 上面的项目里添加一个文件&lt;code&gt;CNAME&lt;/code&gt;, 内容是目标站点&lt;code&gt;blog.xxx.com&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用&lt;code&gt;blog.xxx.com&lt;/code&gt;那么 &lt;code&gt;host&lt;/code&gt; 的值填 &lt;code&gt;blog&lt;/code&gt;而不是&lt;code&gt;blog.xxx.com&lt;/code&gt;， value 填&lt;code&gt;xxx.github.io&lt;/code&gt;  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在&lt;code&gt;pelicanconf.py&lt;/code&gt; 中设置&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;static/CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;images&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                &lt;span class="s1"&gt;&amp;#39;static&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;之后就是等待 dns 的刷新了&lt;/p&gt;
+&lt;h3 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;小结&lt;/h3&gt;
+&lt;p&gt;CNAME 设置是 &lt;code&gt;blog&lt;/code&gt;， 而不&lt;code&gt;blog.xxx.com&lt;/code&gt;, 不然域名会解析到&lt;code&gt;blog.xxx.com.xxx.com&lt;/code&gt;&lt;/p&gt;</summary><category term="小结"></category><category term="小技巧"></category></entry><entry><title>记一次服务器被爆破后灾后重建ss的经历</title><link href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html" rel="alternate"></link><updated>2016-11-18T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-11-18:ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html</id><summary type="html">&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;疑似被黑&lt;/h2&gt;
 &lt;p&gt;2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  &lt;/p&gt;
 &lt;p&gt;2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  &lt;/p&gt;
 &lt;p&gt;直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， &lt;/p&gt;

@@ -50,6 +50,33 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Github Page 自定义子域名</a></h2>
+    <p>
+      Posted on Tue 02 May 2017 in <a href="http://littlezz.github.io/category/code.html">Code</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/xiao-ji-qiao.html">小技巧</a>    </p>
+  </header>
+  <div>
+      <p>目标：设置域名</p>
+<div class="highlight"><pre><span></span>xxx.github.io --&gt; blog.xxx.com
+</pre></div>
+
+
+<ul>
+<li>
+<p>首先在 github page 上面的项目里添加一个文件<code>CNAME</code>, 内容是目标站点<code>blog.xxx.com</code></p>
+</li>
+<li>
+<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
+</li>
+<li>
+<p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf ...</code></p></li></ul>
+      <a class="btn" href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html#jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing">jinja2 模板注入绕过引号任意代码执行</a></h2>
     <p>
       Posted on Mon 01 May 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -264,23 +291,6 @@
 一部动画， 构图， 分镜， 配音， 上色， 配乐等等， 这么多元素在里面， 最后大家却振振有词的依据剧情来打分， 还能说得头头是道。  </p>
 <p>我才明白当时的我也是如此， 也就是在那时， 我才会想起我起初看这个动画的时候的兴奋之情， 我大呼卧槽， 我呼啦一下打开房间的门， 我走到从来不看番的室友的房间， 我说 ...</p>
       <a class="btn" href="http://littlezz.github.io/guan-yu-wo-bu-zai-de-jie-dao-ping-fen-de-yi-dian-si-kao.html#guan-yu-wo-bu-zai-de-jie-dao-ping-fen-de-yi-dian-si-kao">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Travis CI with Numpy and Pytest</a></h2>
-    <p>
-      Posted on Thu 31 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
-  </header>
-  <div>
-      <p>It takes long time to install scientific python package by <code>pip</code> in travis and sometime fail.  </p>
-<p>The solve is to use conda to install binary package. <br />
-<a href="http://conda.pydata.org/docs/travis.html">http://conda.pydata.org/docs/travis.html</a>  </p>
-<p>Note that some package not in conda, you can use <code>pip</code> install it, for example, <code>py.test ...</code></p>
-      <a class="btn" href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Continue reading</a>
   </div>
 </article>
 

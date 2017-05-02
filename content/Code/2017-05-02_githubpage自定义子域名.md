@@ -29,3 +29,14 @@ STATIC_PATHS = ['images',
 ###小结
 CNAME 设置是 `blog`， 而不`blog.xxx.com`, 不然域名会解析到`blog.xxx.com.xxx.com`
 
+另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  
+
+方法：
+在主题里的 templates 目录的`base.html`中
+
+```html
+<!--<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>-->
+<link href='//fonts.proxy.ustclug.org/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+```
+

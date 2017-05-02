@@ -88,6 +88,12 @@
 <p>之后就是等待 dns 的刷新了</p>
 <h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>小结</h3>
 <p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
+<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  </p>
+<p>方法：<br />
+在主题里的 templates 目录的<code>base.html</code>中</p>
+<div class="highlight"><pre><span></span><span class="c">&lt;!--&lt;link href=&#39;//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic&#39; rel=&#39;stylesheet&#39; type=&#39;text/css&#39;&gt;--&gt;</span>
+<span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#39;//fonts.proxy.ustclug.org/css?family=Source+Sans+Pro:300,400,700,400italic&#39;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#39;stylesheet&#39;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#39;text/css&#39;</span><span class="p">&gt;</span>
+</pre></div>
   </div>
   <div class="tag-cloud">
     <p>

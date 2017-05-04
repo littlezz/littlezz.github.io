@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="ESLModel 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。 于是抽空写一下关于numpy的总结吧。 Intro 介绍一些会混淆的东西 vector vs matrix vector是向量， 是一维的。 matrix是二维以上的。 vec = np.array([1, 2, 3]) # method 1 mat = np.array([[1],[2],[3]]) # method 2 mat = vec.reshape((3, 1)) # mathod 3 np.array(range(16)).reshape((4,4)) print(vec.shape) # output (3,) print(mat ..." />
+<meta name="description" content="ESLModel 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。 于是抽空写一下关于numpy的总结吧。 Intro 介绍一些会混淆的东西 vector vs matrix vector是向量， 是一维的。 matrix是二维以上的。 vec = np.array([1, 2, 3]) # method 1 mat = np.array([[1],[2],[3]]) # method 2 mat = vec.reshape((3, 1)) # mathod 3 np.array(range(16)).reshape((4,4)) print(vec.shape) # output (3,) print(mat.shape) # output (3, 1) 向量可以点乘矩阵， 反过来也可以， 结果是向量。 向量可以点乘向量， 得到标量 向量没有倒置 矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。 如果想要得到 单行的子矩阵 mat = np.array(range(16)).reshape((4,4)) # 得到一行， 矩阵 mat[[1], :] # 得到一列， 矩阵 mat[:,[1]] # 得到第二列， 向量 mat[:, 2] # 子矩阵 mat[:2 ..." />
 <meta name="keywords" content="numpy, python, 小结">
 <meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="Numpy 使用小结"/>
-<meta property="og:description" content="ESLModel 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。 于是抽空写一下关于numpy的总结吧。 Intro 介绍一些会混淆的东西 vector vs matrix vector是向量， 是一维的。 matrix是二维以上的。 vec = np.array([1, 2, 3]) # method 1 mat = np.array([[1],[2],[3]]) # method 2 mat = vec.reshape((3, 1)) # mathod 3 np.array(range(16)).reshape((4,4)) print(vec.shape) # output (3,) print(mat ..."/>
+<meta property="og:description" content="ESLModel 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。 于是抽空写一下关于numpy的总结吧。 Intro 介绍一些会混淆的东西 vector vs matrix vector是向量， 是一维的。 matrix是二维以上的。 vec = np.array([1, 2, 3]) # method 1 mat = np.array([[1],[2],[3]]) # method 2 mat = vec.reshape((3, 1)) # mathod 3 np.array(range(16)).reshape((4,4)) print(vec.shape) # output (3,) print(mat.shape) # output (3, 1) 向量可以点乘矩阵， 反过来也可以， 结果是向量。 向量可以点乘向量， 得到标量 向量没有倒置 矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。 如果想要得到 单行的子矩阵 mat = np.array(range(16)).reshape((4,4)) # 得到一行， 矩阵 mat[[1], :] # 得到一列， 矩阵 mat[:,[1]] # 得到第二列， 向量 mat[:, 2] # 子矩阵 mat[:2 ..."/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html"/>
 <meta property="og:type" content="article"/>
@@ -283,7 +283,7 @@ matrix是二维以上的。  </p>
   },
   "image": "/images/logo.jpg",
   "url": "http://littlezz.github.io/numpy-shi-yong-xiao-jie.html",
-  "description": "ESLModel 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。 于是抽空写一下关于numpy的总结吧。 Intro 介绍一些会混淆的东西 vector vs matrix vector是向量， 是一维的。 matrix是二维以上的。 vec = np.array([1, 2, 3]) # method 1 mat = np.array([[1],[2],[3]]) # method 2 mat = vec.reshape((3, 1)) # mathod 3 np.array(range(16)).reshape((4,4)) print(vec.shape) # output (3,) print(mat ..."
+  "description": "ESLModel 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。 于是抽空写一下关于numpy的总结吧。 Intro 介绍一些会混淆的东西 vector vs matrix vector是向量， 是一维的。 matrix是二维以上的。 vec = np.array([1, 2, 3]) # method 1 mat = np.array([[1],[2],[3]]) # method 2 mat = vec.reshape((3, 1)) # mathod 3 np.array(range(16)).reshape((4,4)) print(vec.shape) # output (3,) print(mat.shape) # output (3, 1) 向量可以点乘矩阵， 反过来也可以， 结果是向量。 向量可以点乘向量， 得到标量 向量没有倒置 矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。 如果想要得到 单行的子矩阵 mat = np.array(range(16)).reshape((4,4)) # 得到一行， 矩阵 mat[[1], :] # 得到一列， 矩阵 mat[:,[1]] # 得到第二列， 向量 mat[:, 2] # 子矩阵 mat[:2 ..."
 }
 </script></body>
 </html>

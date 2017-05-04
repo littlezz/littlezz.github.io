@@ -59,7 +59,10 @@
   <div>
       <h2 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Intro</h2>
 <p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.  </p>
-<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead ...</p>
+<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead of <code>np.dot</code>  </p>
+<h2 id="the-difference-between-numpy-and-r"><a name="user-content-the-difference-between-numpy-and-r" href="#the-difference-between-numpy-and-r" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>The difference between Numpy and R</h2>
+<p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).  </p>
+<p>In R, the eigenvalues return from <code>eigen</code> is descending, which is all ...</p>
       <a class="btn" href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">Continue reading</a>
   </div>
   <hr />
@@ -84,7 +87,21 @@
 <li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
 <li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
 </ul>
-<p>卧槽 ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+<p>卧槽， 我他妈看懂了。<br />
+我往下看了一行。 <br />
+书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。  </p>
+<p>那我懂了， 我接着看书了。  </p>
+<p>FUCK！<br />
+FUCK ME！</p>
+<p>2016年03月25日00:46:12</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent ...</script><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "left",
         indent = "0em",
         linebreak = "false";
@@ -167,7 +184,10 @@
 <p>在这里面， <span class="math">\(\mathbf X\)</span> 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。<br />
 所以beta hat 算出来后第一项为截距。  </p>
 <p><span class="math">\(\hat {\mathbf y} = \mathbf X \hat \beta\)</span> </p>
-<p>对数据做预测的时候， <strong>X也要standardization</strong>， 做和你之前一样的事情， 使用和**train set一样的 ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+<p>对数据做预测的时候， <strong>X也要standardization</strong>， 做和你之前一样的事情， 使用和**train set一样的 mean 和 std**， 说多了都是泪啊， 我昨天晚上一个晚上都在弄这个， 因为我的要预测的x用了自己的mean 和std， 结果出来的结果不一样。  一定要使用相同的std 和mean 来处理数据。 我才想起来ng的课里面写程序的时候， pdf里面还特别提示过， 妈的， 哭晕。  </p>
+<p><span class="math">\(var(\hat\beta)=(\mathbf X^T \mathbf X)^{-1}\sigma^2\)</span>  </p>
+<p><span class="math">\(\hat \sigma = \frac{1}{N-p-1} \sum_{i=1}^N(y_i - \hat y_i)^2\)</span></p>
+<p>然后是z-score ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "left",
         indent = "0em",
         linebreak = "false";
@@ -234,7 +254,7 @@
     <p>
       Posted on Sun 24 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
       &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>    </p>
+      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>,      <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>    </p>
   </header>
   <div>
       <p>第十一周说的是处理图片， 介绍了滑动窗口， 如何获得（制造）更多的数据， 还有在pipeline 中的上限分析， 这个是用来决定在系统中应该跟加关心那些模块的优化， 哪些模块就算优化了效果也比较小。  当然了， 喜闻乐见的黑了一下『我认识的人』， 花了18个月去优化一个没有太大效果的模块。  </p>
@@ -244,7 +264,15 @@
 <p>里面还顺带提及了， 什么展开（好吧我不记得具体的名字了）， 在识别图像里面的文字的时候， 首先要找到包含文字的区域， 比如标记为白色， 然后这些白色向周围扩散， 比如20个像素点， 如果这之中也有其他的文字区域（即白色）， 着把他们连成一块大的白色区域。</p>
 <h4 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>制造数据</h4>
 <p>用现有样本， 加上噪声之类的， 得到新的训练数据。<br />
-他建议在解决问题前， 先算一下如果我要得到10倍的训练数据， 我需要多大的代价， 比如人工10秒做一次判断， 那么如果我有新的10k条数据， 可能就是人工工作几天， 但是我得到了更加多的数据， 也就是说 ...</p>
+他建议在解决问题前， 先算一下如果我要得到10倍的训练数据， 我需要多大的代价， 比如人工10秒做一次判断， 那么如果我有新的10k条数据， 可能就是人工工作几天， 但是我得到了更加多的数据， 也就是说， 我的训练结果得到了一个巨大的提升。   </p>
+<h4 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>上限分析</h4>
+<p>先要模块化， 然后重头开始给于一个模块绝对正确的预测结果给下一个模块， 计算其中系统正确率的变化。<br />
+然后就可以明确的知道哪些模块不需要花精力啦（<del>前提是你得弄成pipeline， 一般自己写的话都是大杂烩吧</del>）<br />
+同时不忘黑那个18个月的哥们，<del>这家伙我好想在第一周的时候感觉就听说过他了</del>。  </p>
+<h4 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>终结</h4>
+<p>最后的最后， Andrew 结束词的时候， 我非常的感动（才没有哭！）， 这是我大学之后， 上过的第一门真正体现『传道， 授业， 解惑』的课。<del>（大学上的那个不叫课， 叫吃屎）</del> </p>
+<p>我还记得第三周的时候， 介绍各种优化， 他坦然的承认自己搞了10年对于这些优化也是最近才渐渐明白里面的原理， 我隔着屏幕， 跨越时空， 哈哈哈的笑着。  </p>
+<p>我还记得， 当我们上完线性回归和logic回归的时候， 他说， 你们现在已经比大多数硅谷工作的工程师更加懂机器学习了， 他们中有很多人靠机器学习赚到了许多钱， 或者帮助公司取得成功。 然后露出一个诙谐的笑容时候， 我也跟着笑着， 这家伙， 整天黑硅谷的人 ...</p>
       <a class="btn" href="http://littlezz.github.io/ng-machine-learning-week-11.html#ng-machine-learning-week-11">Continue reading</a>
   </div>
   <hr />

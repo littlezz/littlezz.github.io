@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz ..." />
+<meta name="description" content="esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz …" />
 <meta name="keywords" content="python, 小结">
 <meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="Python Package Setup"/>
-<meta property="og:description" content="esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz ..."/>
+<meta property="og:description" content="esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io/python-package-setup.html"/>
 <meta property="og:type" content="article"/>
@@ -60,20 +60,21 @@
     <p>Posted on Thu 17 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a></p>
   </header>
   <div>
-    <p>esl_model <a href="https://github.com/littlezz/ESL-Model">https://github.com/littlezz/ESL-Model</a><br />
-今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  </p>
-<p>简单总结一下Python的Package Distribution吧。<br />
+    <p>esl_model <a href="https://github.com/littlezz/ESL-Model">https://github.com/littlezz/ESL-Model</a><br>
+今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。<br>
+</p>
+<p>简单总结一下Python的Package Distribution吧。<br>
 有空的话， 在写一个pytest的简单总结。</p>
-<h2 id="setuppy"><a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>setup.py</h2>
+<h2>setup.py</h2>
 <p>setup.py 是最主要的整个配置的文件， </p>
-<p>贴我的setup.py 的代码好了。  </p>
+<p>贴我的setup.py 的代码好了。<br>
+</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;README.rst&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">readme</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
 <span class="n">version</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;esl_model&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">__version__</span>
-
 
 <span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;esl_model&#39;</span><span class="p">,</span>
       <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
@@ -103,16 +104,24 @@
 </pre></div>
 
 
-<p>逐个解释参数。<br />
-<code>name</code> 是你要发布的模块的名字, 只能是用小写和下划线.不要和其他的公共的模块名字冲突.  </p>
-<p><code>version</code> 是版本号, 诸如 0.0.1 这样.  </p>
-<p><code>description</code> 和 <code>long_description</code>是你这个项目的介绍，用于pipy上面的介绍，注意 long_description 只能使用rst格式， **不支持**markdown。   </p>
-<p><code>classifiers</code>是你在pipy上面的分类， 一般在这里要只能你是否支持py2， 或py3， 或者是否有特定的平台限制。<a href="https://pypi.python.org/pypi?%3Aaction=list_classifiers">所有classifiers 列表</a>  </p>
-<p><code>packages</code>, 要包含的代码的文件夹。比如我也可以设置成 <code>esl_model</code>， 但是据我观察， 这样设置之后， 我下面的子模块是没有办法使用<code>import esl_model.ch3</code> 这样载入的。<br />
-所以使用find_packages自动寻找所有模块， 特别排除我的测试文件存放的文件夹。  </p>
-<p><code>install_requires</code>, 依赖， 如果在虚拟环境里面的话可以用<code>pip freeze</code>来查看安装的库， 但是这里面会包含真正用到的库（比如里面可能会显示ipython）。 可以使用 pipreqs 这个库。  </p>
-<p><code>tests_require</code> 这个是测试的用的, 在<code>python setup.py test</code>的时候用到, 然而我偷懒了, pytest在这里还差一步配置， 所以这里有没有都一样。。  </p>
-<p><code>include_package_data</code>, 这个是包含非python代码的文件， 我的程序里面要使用到csv数据， 所以需要这个选项。  </p>
+<p>逐个解释参数。<br>
+<code>name</code> 是你要发布的模块的名字, 只能是用小写和下划线.不要和其他的公共的模块名字冲突.<br>
+</p>
+<p><code>version</code> 是版本号, 诸如 0.0.1 这样.<br>
+</p>
+<p><code>description</code> 和 <code>long_description</code>是你这个项目的介绍，用于pipy上面的介绍，注意 long_description 只能使用rst格式， <strong>不支持</strong>markdown。 <br>
+</p>
+<p><code>classifiers</code>是你在pipy上面的分类， 一般在这里要只能你是否支持py2， 或py3， 或者是否有特定的平台限制。<a href="https://pypi.python.org/pypi?%3Aaction=list_classifiers">所有classifiers 列表</a><br>
+</p>
+<p><code>packages</code>, 要包含的代码的文件夹。比如我也可以设置成 <code>esl_model</code>， 但是据我观察， 这样设置之后， 我下面的子模块是没有办法使用<code>import esl_model.ch3</code> 这样载入的。<br>
+所以使用find_packages自动寻找所有模块， 特别排除我的测试文件存放的文件夹。<br>
+</p>
+<p><code>install_requires</code>, 依赖， 如果在虚拟环境里面的话可以用<code>pip freeze</code>来查看安装的库， 但是这里面会包含真正用到的库（比如里面可能会显示ipython）。 可以使用 pipreqs 这个库。<br>
+</p>
+<p><code>tests_require</code> 这个是测试的用的, 在<code>python setup.py test</code>的时候用到, 然而我偷懒了, pytest在这里还差一步配置， 所以这里有没有都一样。。<br>
+</p>
+<p><code>include_package_data</code>, 这个是包含非python代码的文件， 我的程序里面要使用到csv数据， 所以需要这个选项。<br>
+</p>
 <p>我的代码结构树</p>
 <div class="highlight"><pre><span></span>── LICENSE.md
 ├── MANIFEST.in
@@ -142,22 +151,27 @@
 </pre></div>
 
 
-<h2 id="manifestin"><a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>MANIFEST.in</h2>
-<p>指定需要包含的非程序文件  </p>
-<p>一般是<code>include README.rst</code> <br />
-我这里因为有额外的数据， 所以要多一行。  </p>
+<h2>MANIFEST.in</h2>
+<p>指定需要包含的非程序文件<br>
+</p>
+<p>一般是<code>include README.rst</code> <br>
+我这里因为有额外的数据， 所以要多一行。<br>
+</p>
 <div class="highlight"><pre><span></span>include README.rst
 recursive-include esl_model/datasets/data *.csv
 </pre></div>
 
 
-<p>recursive-include 必须， 不然数据不包含。  </p>
-<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>测试安装</h2>
-<p><code>pip install -e .</code><br />
-本地的调试安装模式。  </p>
-<h2 id="ref"><a name="user-content-ref" href="#ref" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>ref</h2>
+<p>recursive-include 必须， 不然数据不包含。<br>
+</p>
+<h2>测试安装</h2>
+<p><code>pip install -e .</code><br>
+本地的调试安装模式。<br>
+</p>
+<h2>ref</h2>
 <ul>
-<li>sklearn的配置文件 <a href="https://github.com/scikit-learn/scikit-learn">https://github.com/scikit-learn/scikit-learn</a>  </li>
+<li>sklearn的配置文件 <a href="https://github.com/scikit-learn/scikit-learn">https://github.com/scikit-learn/scikit-learn</a><br>
+</li>
 <li>Python-packaging <a href="https://python-packaging.readthedocs.org/en/latest/testing.html">https://python-packaging.readthedocs.org/en/latest/testing.html</a></li>
 </ul>
   </div>
@@ -193,7 +207,7 @@ recursive-include esl_model/datasets/data *.csv
   },
   "image": "/images/logo.jpg",
   "url": "http://littlezz.github.io/python-package-setup.html",
-  "description": "esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz ..."
+  "description": "esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz …"
 }
 </script></body>
 </html>

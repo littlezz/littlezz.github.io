@@ -57,12 +57,15 @@
       <a href="http://littlezz.github.io/tag/machine-learning.html">machine learning</a>,      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
   </header>
   <div>
-      <h2 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Intro</h2>
-<p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.  </p>
-<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead of <code>np.dot</code>  </p>
-<h2 id="the-difference-between-numpy-and-r"><a name="user-content-the-difference-between-numpy-and-r" href="#the-difference-between-numpy-and-r" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>The difference between Numpy and R</h2>
-<p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).  </p>
-<p>In R, the eigenvalues return from <code>eigen</code> is descending, which is all ...</p>
+      <h2>Intro</h2>
+<p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.<br>
+</p>
+<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead of <code>np.dot</code><br>
+</p>
+<h2>The difference between Numpy and R</h2>
+<p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).<br>
+</p>
+<p>In R, the eigenvalues return from <code>eigen</code> is descending, which is all notes …</p>
       <a class="btn" href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">Continue reading</a>
   </div>
   <hr />
@@ -76,88 +79,30 @@
       <a href="http://littlezz.github.io/tag/machine-learning.html">machine learning</a>,      <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/ta-ma-de.html">他妈的</a>,      <a href="http://littlezz.github.io/tag/xue-xue-xue-xue-ge-pi.html">学学学，学个屁</a>    </p>
   </header>
   <div>
-      <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br />
-搜索各种资料， 各自有理， 到最后连计算 <span class="math">\(W^{-\frac{1}{2}}\)</span> 都能有不同的版本。  </p>
-<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  </p>
-<h2 id="esl"><a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>版本一： ESL</h2>
-<p>page 114 页的算法。<br />
-我翻译一下：  </p>
+      <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br>
+搜索各种资料， 各自有理， 到最后连计算 $W^{-\frac{1}{2}}$ 都能有不同的版本。<br>
+</p>
+<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）<br>
+</p>
+<h2>版本一： ESL</h2>
+<p>page 114 页的算法。<br>
+我翻译一下：<br>
+</p>
 <ul>
 <li>计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；</li>
-<li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
-<li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
+<li>计算 $M^* = MW^{-\frac{1}{2}}$, 使用W的特征分解；</li>
+<li>计算$B^<em>$, $M^</em>$的协方差矩阵（B是为了between-class）, 还有他的特征分解 $B^<em> = V^</em>D_BV^{<em>T}$. $V^</em>$的按顺序的列$v_l^*$定义了最佳子空间的坐标。<br>
+</li>
 </ul>
-<p>卧槽， 我他妈看懂了。<br />
-我往下看了一行。 <br />
-书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。  </p>
-<p>那我懂了， 我接着看书了。  </p>
-<p>FUCK！<br />
+<p>卧槽， 我他妈看懂了。<br>
+我往下看了一行。 
+书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。<br>
+</p>
+<p>那我懂了， 我接着看书了。<br>
+</p>
+<p>FUCK！<br>
 FUCK ME！</p>
 <p>2016年03月25日00:46:12</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent ...</script><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
       <a class="btn" href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Continue reading</a>
   </div>
   <hr />
@@ -171,79 +116,28 @@ FUCK ME！</p>
       <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>    </p>
   </header>
   <div>
-      <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>目录</h2>
+      <h2>目录</h2>
 <ul>
 <li>公式</li>
 <li>易混淆的名词解释</li>
-<li>蛋疼的程序编写过程  </li>
+<li>蛋疼的程序编写过程<br>
+</li>
 </ul>
-<h3 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>公式</h3>
-<p>The elements of statistical learning 看到了第三章， 昨天着手于编写程序。  </p>
+<h3>公式</h3>
+<p>The elements of statistical learning 看到了第三章， 昨天着手于编写程序。<br>
+</p>
 <p>Linear Model: </p>
-<p><span class="math">\(\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y\)</span></p>
-<p>在这里面， <span class="math">\(\mathbf X\)</span> 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。<br />
-所以beta hat 算出来后第一项为截距。  </p>
-<p><span class="math">\(\hat {\mathbf y} = \mathbf X \hat \beta\)</span> </p>
-<p>对数据做预测的时候， <strong>X也要standardization</strong>， 做和你之前一样的事情， 使用和**train set一样的 mean 和 std**， 说多了都是泪啊， 我昨天晚上一个晚上都在弄这个， 因为我的要预测的x用了自己的mean 和std， 结果出来的结果不一样。  一定要使用相同的std 和mean 来处理数据。 我才想起来ng的课里面写程序的时候， pdf里面还特别提示过， 妈的， 哭晕。  </p>
-<p><span class="math">\(var(\hat\beta)=(\mathbf X^T \mathbf X)^{-1}\sigma^2\)</span>  </p>
-<p><span class="math">\(\hat \sigma = \frac{1}{N-p-1} \sum_{i=1}^N(y_i - \hat y_i)^2\)</span></p>
-<p>然后是z-score ...</p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
+<p>$\hat\beta = (\mathbf X^T \mathbf X)^{-1} \mathbf X^T \mathbf y$</p>
+<p>在这里面， $\mathbf X$ 先要要standardization, 然后在第一列插入全为1的列， 用于截距计算(intercept)。<br>
+所以beta hat 算出来后第一项为截距。<br>
+</p>
+<p>$\hat {\mathbf y} = \mathbf X \hat \beta$ </p>
+<p>对数据做预测的时候， <strong>X也要standardization</strong>， 做和你之前一样的事情， 使用和<strong>train set一样的 mean 和 std</strong>， 说多了都是泪啊， 我昨天晚上一个晚上都在弄这个， 因为我的要预测的x用了自己的mean 和std， 结果出来的结果不一样。  一定要使用相同的std 和mean 来处理数据。 我才想起来ng的课里面写程序的时候， pdf里面还特别提示过， 妈的， 哭晕。<br>
+</p>
+<p>$var(\hat\beta)=(\mathbf X^T \mathbf X)^{-1}\sigma^2$<br>
+</p>
+<p>$\hat \sigma = \frac{1}{N-p-1} \sum_{i=1}^N(y_i - \hat y_i)^2$</p>
+<p>然后是z-score …</p>
       <a class="btn" href="http://littlezz.github.io/linear-modelde-zong-jie.html#linear-modelde-zong-jie">Continue reading</a>
   </div>
   <hr />
@@ -256,77 +150,29 @@ FUCK ME！</p>
     </p>
   </header>
   <div>
-      <p>所用公式都是用mathjax 写的， ( <del>奶奶的， 写死我了。</del> )  </p>
-<h2 id="_1"><a aria-hidden="true" class="headeranchor-link" href="#_1" name="user-content-_1"><span class="headeranchor"></span></a>基本概念</h2>
+      <p>所用公式都是用mathjax 写的， ( ~~奶奶的， 写死我了。~~ )<br>
+</p>
+<h2>基本概念</h2>
 <p>基本概念主要记下常用公式。</p>
 <ul>
-<li>P(A) 表示事件A发生的概率  </li>
-<li><span class="math">\(P(A \bigcup B) = P(A) + P(B) - P(AB)\)</span> </li>
-<li>上面公式可以推广到N个事件  </li>
-<li><span class="math">\(P(B \mid A)  = \frac{P(AB)}{P(A)}\)</span> </li>
-<li><span class="math">\(P(A) = P(AB)+P(A \bar B) = P(B) \cdot P(A|B) + P(\bar B) \cdot P(A| \bar B)\)</span> </li>
+<li>P(A) 表示事件A发生的概率<br>
+</li>
+<li>$P(A \bigcup B) = P(A) + P(B) - P(AB)$<br>
+</li>
+<li>上面公式可以推广到N个事件<br>
+</li>
+<li>$P(B \mid A)  = \frac{P(AB)}{P(A)}$<br>
+</li>
+<li>$P(A) = P(AB)+P(A \bar B) = P(B) \cdot P(A|B) + P(\bar B) \cdot P(A| \bar B)$<br>
+</li>
 </ul>
-<h5 id="_2"><a aria-hidden="true" class="headeranchor-link" href="#_2" name="user-content-_2"><span class="headeranchor"></span></a>全概率公式</h5>
-<p><span class="math">\(B_i\)</span> 是<span class="math">\(S\)</span>的完备事件组  </p>
-<p><span class="math">\(P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)\)</span> </p>
-<h5 id="_3"><a aria-hidden="true" class="headeranchor-link" href="#_3" name="user-content-_3"><span class="headeranchor"></span></a>贝叶斯公式</h5>
-<p><span class="math">\(P(B_k|A) = {P(B_k A) \over P(A)} = {P(B_k)P(A|P(B_k) \over \sum_{j=1}^n P(B_j)P(A|B_j)}\) ...</span></p><script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
+<h5>全概率公式</h5>
+<p>$B_i$ 是$S$的完备事件组<br>
+</p>
+<p>$P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)$ <br>
+</p>
+<h5>贝叶斯公式</h5>
+<p>$P(B_k|A) = {P(B_k A) \over P(A)} = {P(B_k)P(A|P(B_k) \over \sum_{j=1}^n P(B_j …</p>
       <a class="btn" href="http://littlezz.github.io/gai-lu-lun-xue-xi.html#gai-lu-lun-xue-xi">Continue reading</a>
   </div>
   <hr />
@@ -340,22 +186,27 @@ FUCK ME！</p>
       <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>,      <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>    </p>
   </header>
   <div>
-      <p>第十一周说的是处理图片， 介绍了滑动窗口， 如何获得（制造）更多的数据， 还有在pipeline 中的上限分析， 这个是用来决定在系统中应该跟加关心那些模块的优化， 哪些模块就算优化了效果也比较小。  当然了， 喜闻乐见的黑了一下『我认识的人』， 花了18个月去优化一个没有太大效果的模块。  </p>
-<h4 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>滑动窗口</h4>
-<p>图片处理的时候是训练识别一小块， 然后滑动窗口来在大图中寻找是否找到。 比如你的样本都是 10x10 的大小， 然后等比例缩放， 在原图中你也可以找 50x50 的, 但是对于这个范围， 你得缩小到10x10， 然后在来识别。  </p>
-<h4 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>展开</h4>
+      <p>第十一周说的是处理图片， 介绍了滑动窗口， 如何获得（制造）更多的数据， 还有在pipeline 中的上限分析， 这个是用来决定在系统中应该跟加关心那些模块的优化， 哪些模块就算优化了效果也比较小。  当然了， 喜闻乐见的黑了一下『我认识的人』， 花了18个月去优化一个没有太大效果的模块。<br>
+</p>
+<h4>滑动窗口</h4>
+<p>图片处理的时候是训练识别一小块， 然后滑动窗口来在大图中寻找是否找到。 比如你的样本都是 10x10 的大小， 然后等比例缩放， 在原图中你也可以找 50x50 的, 但是对于这个范围， 你得缩小到10x10， 然后在来识别。<br>
+</p>
+<h4>展开</h4>
 <p>里面还顺带提及了， 什么展开（好吧我不记得具体的名字了）， 在识别图像里面的文字的时候， 首先要找到包含文字的区域， 比如标记为白色， 然后这些白色向周围扩散， 比如20个像素点， 如果这之中也有其他的文字区域（即白色）， 着把他们连成一块大的白色区域。</p>
-<h4 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>制造数据</h4>
-<p>用现有样本， 加上噪声之类的， 得到新的训练数据。<br />
-他建议在解决问题前， 先算一下如果我要得到10倍的训练数据， 我需要多大的代价， 比如人工10秒做一次判断， 那么如果我有新的10k条数据， 可能就是人工工作几天， 但是我得到了更加多的数据， 也就是说， 我的训练结果得到了一个巨大的提升。   </p>
-<h4 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>上限分析</h4>
-<p>先要模块化， 然后重头开始给于一个模块绝对正确的预测结果给下一个模块， 计算其中系统正确率的变化。<br />
-然后就可以明确的知道哪些模块不需要花精力啦（<del>前提是你得弄成pipeline， 一般自己写的话都是大杂烩吧</del>）<br />
-同时不忘黑那个18个月的哥们，<del>这家伙我好想在第一周的时候感觉就听说过他了</del>。  </p>
-<h4 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>终结</h4>
-<p>最后的最后， Andrew 结束词的时候， 我非常的感动（才没有哭！）， 这是我大学之后， 上过的第一门真正体现『传道， 授业， 解惑』的课。<del>（大学上的那个不叫课， 叫吃屎）</del> </p>
-<p>我还记得第三周的时候， 介绍各种优化， 他坦然的承认自己搞了10年对于这些优化也是最近才渐渐明白里面的原理， 我隔着屏幕， 跨越时空， 哈哈哈的笑着。  </p>
-<p>我还记得， 当我们上完线性回归和logic回归的时候， 他说， 你们现在已经比大多数硅谷工作的工程师更加懂机器学习了， 他们中有很多人靠机器学习赚到了许多钱， 或者帮助公司取得成功。 然后露出一个诙谐的笑容时候， 我也跟着笑着， 这家伙， 整天黑硅谷的人 ...</p>
+<h4>制造数据</h4>
+<p>用现有样本， 加上噪声之类的， 得到新的训练数据。<br>
+他建议在解决问题前， 先算一下如果我要得到10倍的训练数据， 我需要多大的代价， 比如人工10秒做一次判断， 那么如果我有新的10k条数据， 可能就是人工工作几天， 但是我得到了更加多的数据， 也就是说， 我的训练结果得到了一个巨大的提升。 <br>
+</p>
+<h4>上限分析</h4>
+<p>先要模块化， 然后重头开始给于一个模块绝对正确的预测结果给下一个模块， 计算其中系统正确率的变化。<br>
+然后就可以明确的知道哪些模块不需要花精力啦（~~前提是你得弄成pipeline， 一般自己写的话都是大杂烩吧~~）<br>
+同时不忘黑那个18个月的哥们，~~这家伙我好想在第一周的时候感觉就听说过他了~~。<br>
+</p>
+<h4>终结</h4>
+<p>最后的最后， Andrew 结束词的时候， 我非常的感动（才没有哭！）， 这是我大学之后， 上过的第一门真正体现『传道， 授业， 解惑』的课。~~（大学上的那个不叫课， 叫吃屎）~~ </p>
+<p>我还记得第三周的时候， 介绍各种优化， 他坦然的承认自己搞了10年对于这些优化也是最近才渐渐明白里面的原理， 我隔着屏幕， 跨越时空， 哈哈哈的笑着。<br>
+</p>
+<p>我还记得， 当我们上完线性回归和logic回归的时候， 他说， 你们现在已经比大多数硅谷工作的工程师更加懂机器学习了， 他们中有很多人靠机器学习赚到了许多钱， 或者帮助公司取得成功。 然后露出一个诙谐的笑容时候， 我也跟着笑着， 这家伙， 整天黑硅谷的人 …</p>
       <a class="btn" href="http://littlezz.github.io/ng-machine-learning-week-11.html#ng-machine-learning-week-11">Continue reading</a>
   </div>
   <hr />
@@ -369,13 +220,19 @@ FUCK ME！</p>
       <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>    </p>
   </header>
   <div>
-      <p>总结一下第10周， 之前看的都没有总结（←懒   </p>
-<p>第十周已经开始不怎么说算法了， 这次说的是对于大数据集的处理， 之前那种每次都对所有数据集做计算的称为batch， 现在这个（stochastic）是每次只对一个样例找最优值， 遍历完所有样例之后也会趋向于全局最优， 会在他的旁边震荡， 这个时候可以动态的减少学习效率 (alpha)   </p>
+      <p>总结一下第10周， 之前看的都没有总结（←懒 <br>
+</p>
+<p>第十周已经开始不怎么说算法了， 这次说的是对于大数据集的处理， 之前那种每次都对所有数据集做计算的称为batch， 现在这个（stochastic）是每次只对一个样例找最优值， 遍历完所有样例之后也会趋向于全局最优， 会在他的旁边震荡， 这个时候可以动态的减少学习效率 (alpha) <br>
+</p>
 <p>之后说了mini-batch， 就是stochastic 和batch的混合版， 每次只训练一小部分样例。</p>
-<p>然后在线的学习其实感觉就是stochastic， 每次都对一个新的样本训练， 然后丢弃。  </p>
-<p>之后是map reduce， 这个没有什么好说的了， 分布式计算， 或者并行的多核计算， 分布式要考虑网络带宽等问题， 虽然视频说多核的不用考虑带宽， 但是实际上核心之间的通信也要消耗时间， 最终可能每个核心只能快80%吧。  </p>
-<p>map reduce的使用需要计算的时候数据能够分割， 一般是有 Σ 这种求和公式的时候使用。  </p>
-<p>嘛。  </p>
+<p>然后在线的学习其实感觉就是stochastic， 每次都对一个新的样本训练， 然后丢弃。<br>
+</p>
+<p>之后是map reduce， 这个没有什么好说的了， 分布式计算， 或者并行的多核计算， 分布式要考虑网络带宽等问题， 虽然视频说多核的不用考虑带宽， 但是实际上核心之间的通信也要消耗时间， 最终可能每个核心只能快80%吧。<br>
+</p>
+<p>map reduce的使用需要计算的时候数据能够分割， 一般是有 Σ 这种求和公式的时候使用。<br>
+</p>
+<p>嘛。<br>
+</p>
 <p>2016年01月24日14:42:29</p>
       <a class="btn" href="http://littlezz.github.io/ng-machine-learning-week-10.html#ng-machine-learning-week-10">Continue reading</a>
   </div>
@@ -390,21 +247,29 @@ FUCK ME！</p>
       <a href="http://littlezz.github.io/tag/ji-qi-xue-xi.html">机器学习</a>    </p>
   </header>
   <div>
-      <p>今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。  </p>
+      <p>今天撸了Ng的机器学习的第九周的作业。 课之前看了， 作业拖到我学校的考试周结束了才做。 诶一提起这个就想到我挂科估计要挂到退学警告了。。。<br>
+</p>
 <p>这一周的是关于异常检查和推荐系统的， 协同过滤我之前看过诶， 和这个不一样， Ng还是求那个gradient 什么鬼的， 可是我在另一篇<a href="http://www.salemmarafi.com/code/collaborative-filtering-with-python/">文章</a>里面看到的是另一个东西。</p>
-<p>他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。  </p>
-<p>另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工....  T_T  </p>
-<p>说一下搬运工的心得吧。<br />
-今天把公式转换成矩阵的向量运算的时候折腾了好久。  </p>
-<p>后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的  </p>
+<p>他也是用movie作为行， 用户作为列， 而且是用户直接当做了feature， 然后算两个movie之间的距离， 不过这样说来， 好像和机器学习就没有关系了。。。<br>
+</p>
+<p>另外， 每次做作业的感觉其实就是， 我不会机器学习， 我只是公式的搬运工....  T_T<br>
+</p>
+<p>说一下搬运工的心得吧。<br>
+今天把公式转换成矩阵的向量运算的时候折腾了好久。<br>
+</p>
+<p>后来我还是没有发现什么取巧的办法， google了一下也没有找到好的技巧（←其实就找了一下）， 总结起来， 还是pdf里面说的<br>
+</p>
 <ul>
 <li>先用for 循环</li>
 <li>2维的可以直接matrix</li>
 <li>3维带一个for loop</li>
-<li><del>一般矩阵相乘形式上正确结果就是正确的</del>  </li>
+<li>~~一般矩阵相乘形式上正确结果就是正确的~~<br>
+</li>
 </ul>
-<p>其实我花了半个小时在想如何消除3层嵌套的for循环。  /(ㄒoㄒ)/~~  </p>
-<p>嘛， 接着看吧。（<del>弱逼不敢乱说话</del>）  </p>
+<p>其实我花了半个小时在想如何消除3层嵌套的for循环。  /(ㄒoㄒ)/~~<br>
+</p>
+<p>嘛， 接着看吧。（~~弱逼不敢乱说话~~）<br>
+</p>
 <p>2016年01月24日00:57:49</p>
       <a class="btn" href="http://littlezz.github.io/ml-ex8.html#ml-ex8">Continue reading</a>
   </div>

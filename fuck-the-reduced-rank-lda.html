@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。 搜索各种资料， 各自有理， 到最后连计算 \(W^{-\frac{1}{2}}\) 都能有不同的版本。 权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：） 版本一： ESL page 114 页的算法。 我翻译一下： 计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W； 计算 \(M^* = MW^{-\frac{1}{2}}\), 使用W的特征分解； 计算\(B^*\), \(M^*\)的协方差矩阵（B是为了between-class）, 还有他的特征分解 \(B^* = V^*D_BV^{*T}\). \(V^*\)的按顺序的列\(v_l^*\)定义了最佳子空间的坐标。 卧槽， 我他妈看懂了。 我往下看了一行。 书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。 那我懂了， 我接着看书了。 FUCK！ FUCK ME！ 2016年03月25日00:46:12 if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width" />
+<meta name="description" content="从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。 搜索各种资料， 各自有理， 到最后连计算 $W^{-\frac{1}{2}}$ 都能有不同的版本。 权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：） 版本一： ESL page 114 页的算法。 我翻译一下： 计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W； 计算 $M^* = MW^{-\frac{1}{2}}$, 使用W的特征分解； 计算$B^$, $M^$的协方差矩阵（B是为了between-class）, 还有他的特征分解 $B^ = V^D_BV^{T}$. $V^$的按顺序的列$v_l^*$定义了最佳子空间的坐标。 卧槽， 我他妈看懂了。 我往下看了一行。 书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。 那我懂了， 我接着看书了。 FUCK！ FUCK ME！ 2016年03月25日00:46:12" />
 <meta name="keywords" content="machine learning, 机器学习, 他妈的, 学学学，学个屁">
 <meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="Fuck the Reduced-rank LDA"/>
-<meta property="og:description" content="从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。 搜索各种资料， 各自有理， 到最后连计算 \(W^{-\frac{1}{2}}\) 都能有不同的版本。 权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：） 版本一： ESL page 114 页的算法。 我翻译一下： 计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W； 计算 \(M^* = MW^{-\frac{1}{2}}\), 使用W的特征分解； 计算\(B^*\), \(M^*\)的协方差矩阵（B是为了between-class）, 还有他的特征分解 \(B^* = V^*D_BV^{*T}\). \(V^*\)的按顺序的列\(v_l^*\)定义了最佳子空间的坐标。 卧槽， 我他妈看懂了。 我往下看了一行。 书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。 那我懂了， 我接着看书了。 FUCK！ FUCK ME！ 2016年03月25日00:46:12 if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width"/>
+<meta property="og:description" content="从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。 搜索各种资料， 各自有理， 到最后连计算 $W^{-\frac{1}{2}}$ 都能有不同的版本。 权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：） 版本一： ESL page 114 页的算法。 我翻译一下： 计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W； 计算 $M^* = MW^{-\frac{1}{2}}$, 使用W的特征分解； 计算$B^$, $M^$的协方差矩阵（B是为了between-class）, 还有他的特征分解 $B^ = V^D_BV^{T}$. $V^$的按顺序的列$v_l^*$定义了最佳子空间的坐标。 卧槽， 我他妈看懂了。 我往下看了一行。 书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。 那我懂了， 我接着看书了。 FUCK！ FUCK ME！ 2016年03月25日00:46:12"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io/fuck-the-reduced-rank-lda.html"/>
 <meta property="og:type" content="article"/>
@@ -62,81 +62,30 @@
     <p>Posted on Fri 25 March 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a></p>
   </header>
   <div>
-    <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br />
-搜索各种资料， 各自有理， 到最后连计算 <span class="math">\(W^{-\frac{1}{2}}\)</span> 都能有不同的版本。  </p>
-<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  </p>
-<h2 id="esl"><a name="user-content-esl" href="#esl" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>版本一： ESL</h2>
-<p>page 114 页的算法。<br />
-我翻译一下：  </p>
+    <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br>
+搜索各种资料， 各自有理， 到最后连计算 $W^{-\frac{1}{2}}$ 都能有不同的版本。<br>
+</p>
+<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）<br>
+</p>
+<h2>版本一： ESL</h2>
+<p>page 114 页的算法。<br>
+我翻译一下：<br>
+</p>
 <ul>
 <li>计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；</li>
-<li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
-<li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
+<li>计算 $M^* = MW^{-\frac{1}{2}}$, 使用W的特征分解；</li>
+<li>计算$B^<em>$, $M^</em>$的协方差矩阵（B是为了between-class）, 还有他的特征分解 $B^<em> = V^</em>D_BV^{<em>T}$. $V^</em>$的按顺序的列$v_l^*$定义了最佳子空间的坐标。<br>
+</li>
 </ul>
-<p>卧槽， 我他妈看懂了。<br />
-我往下看了一行。 <br />
-书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。  </p>
-<p>那我懂了， 我接着看书了。  </p>
-<p>FUCK！<br />
+<p>卧槽， 我他妈看懂了。<br>
+我往下看了一行。 
+书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。<br>
+</p>
+<p>那我懂了， 我接着看书了。<br>
+</p>
+<p>FUCK！<br>
 FUCK ME！</p>
 <p>2016年03月25日00:46:12</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
   </div>
   <div class="tag-cloud">
     <p>
@@ -172,7 +121,7 @@ FUCK ME！</p>
   },
   "image": "/images/logo.jpg",
   "url": "http://littlezz.github.io/fuck-the-reduced-rank-lda.html",
-  "description": "从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。 搜索各种资料， 各自有理， 到最后连计算 \(W^{-\frac{1}{2}}\) 都能有不同的版本。 权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：） 版本一： ESL page 114 页的算法。 我翻译一下： 计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W； 计算 \(M^* = MW^{-\frac{1}{2}}\), 使用W的特征分解； 计算\(B^*\), \(M^*\)的协方差矩阵（B是为了between-class）, 还有他的特征分解 \(B^* = V^*D_BV^{*T}\). \(V^*\)的按顺序的列\(v_l^*\)定义了最佳子空间的坐标。 卧槽， 我他妈看懂了。 我往下看了一行。 书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。 那我懂了， 我接着看书了。 FUCK！ FUCK ME！ 2016年03月25日00:46:12 if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) { var align = "left", indent = "0em", linebreak = "false"; if (true) { align = (screen.width"
+  "description": "从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。 搜索各种资料， 各自有理， 到最后连计算 $W^{-\frac{1}{2}}$ 都能有不同的版本。 权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：） 版本一： ESL page 114 页的算法。 我翻译一下： 计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W； 计算 $M^* = MW^{-\frac{1}{2}}$, 使用W的特征分解； 计算$B^$, $M^$的协方差矩阵（B是为了between-class）, 还有他的特征分解 $B^ = V^D_BV^{T}$. $V^$的按顺序的列$v_l^*$定义了最佳子空间的坐标。 卧槽， 我他妈看懂了。 我往下看了一行。 书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。 那我懂了， 我接着看书了。 FUCK！ FUCK ME！ 2016年03月25日00:46:12"
 }
 </script></body>
 </html>

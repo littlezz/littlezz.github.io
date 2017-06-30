@@ -13,11 +13,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 ..." />
+<meta name="description" content="目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 …" />
 <meta name="keywords" content="小结, 小技巧">
 <meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="Github Page 自定义子域名"/>
-<meta property="og:description" content="目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 ..."/>
+<meta property="og:description" content="目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 …"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html"/>
 <meta property="og:type" content="article"/>
@@ -70,7 +70,8 @@
 <p>首先在 github page 上面的项目里添加一个文件<code>CNAME</code>, 内容是目标站点<code>blog.xxx.com</code></p>
 </li>
 <li>
-<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
+<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code><br>
+</p>
 </li>
 <li>
 <p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf.py</code> 中设置</p>
@@ -86,10 +87,11 @@
 
 
 <p>之后就是等待 dns 的刷新了</p>
-<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>小结</h3>
+<h3>小结</h3>
 <p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
-<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  </p>
-<p>方法：<br />
+<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。<br>
+</p>
+<p>方法：
 在主题里的 templates 目录的<code>base.html</code>中</p>
 <div class="highlight"><pre><span></span><span class="c">&lt;!--&lt;link href=&#39;//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic&#39; rel=&#39;stylesheet&#39; type=&#39;text/css&#39;&gt;--&gt;</span>
 <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&#39;//fonts.proxy.ustclug.org/css?family=Source+Sans+Pro:300,400,700,400italic&#39;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&#39;stylesheet&#39;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#39;text/css&#39;</span><span class="p">&gt;</span>
@@ -127,7 +129,7 @@
   },
   "image": "/images/logo.jpg",
   "url": "http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html",
-  "description": "目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 ..."
+  "description": "目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 …"
 }
 </script></body>
 </html>

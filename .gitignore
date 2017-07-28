@@ -5,4 +5,5 @@ output/
 *.pid
 
 *.py[bcd]
-
+pelican-themes/
+pelican-plugins/

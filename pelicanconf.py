@@ -47,7 +47,16 @@ RELATIVE_URLS = True
 
 
 
-MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'pymdownx.github']
+
+MARKDOWN = {
+    'extension_configs': {
+        'pymdownx.highlight': {'css_class': 'highlight', 'guess_lang':True},
+        'pymdownx.github': {},
+        'markdown.extensions.meta': {},
+
+    },
+    'output_format': 'html5',
+}
 
 PLUGIN_PATHS = ['pelican-plugins']
 
@@ -85,7 +94,7 @@ EXTRA_PATH_METADATA = {
 }
 
 
-STATIC_PATHS = ['images', 
+STATIC_PATHS = ['images',
 				'diary/photos',
 				CUSTOM_CSS,
                 'static']
@@ -102,6 +111,6 @@ STATUSCAKE=False
 #           ('github', 'https://github.com/alexandrevicenzi'),)
 # ADD_THIS_ID = 'ra-77hh6723hhjd'
 # DISQUS_SITENAME = 'yoursite'
-# GOOGLE_ANALYTICS = 'UA-1234-5678'
+# GOOGLE_ANALYTICS = 'UA-102694300-1'
 # GOOGLE_TAG_MANAGER = 'GTM-ABCDEF'
 # STATUSCAKE = { 'trackid': 'your-id', 'days': 7 }

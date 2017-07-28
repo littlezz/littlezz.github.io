@@ -13,9 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="构造包以及一些网络基础知识 载入所有函数 from scapy.all import * 或者从命令行输入sudo scapy scapy 可以控制各个层的数据， 使用/符号拼合各个层构造出一个包 packet = IP(dst='192.168.1.1', src='192.168.1.2')/ UDP(sport=5555, dport=4444)/ b'udp data' packet.show() print(bytes(packet)) IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。 再后面一层是要发送的数据。 packet.show() 工整的打印包数据 发送包 scapy 有几种发包的方式。 send用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。 send(packet) sendp(p, iface='en0') packet = Ether(src=RandMAC())/IP(dst='192.168.31.1 …" />
+<meta name="description" content="构造包以及一些网络基础知识 载入所有函数 from scapy.all import * 或者从命令行输入sudo scapy scapy 可以控制各个层的数据， 使用/符号拼合各个层构造出一个包 packet = IP(dst=&#39;192.168.1.1&#39;, src=&#39;192.168.1.2&#39;)/ UDP(sport=5555, dport=4444)/ b&#39;udp data&#39; packet.show() print(bytes(packet)) IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。 再后面一层是要发送的数据。 packet.show() 工整的打印包数据 发送包 scapy 有几种发包的方式。 send用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。 send(packet) sendp(p, iface=&#39;en0&#39;) packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …" />
 <meta name="keywords" content="python, 小结">
-<meta property="og:site_name" content="littlezz's Blog"/>
+<!--<meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="Scapy 使用总结"/>
 <meta property="og:description" content="构造包以及一些网络基础知识 载入所有函数 from scapy.all import * 或者从命令行输入sudo scapy scapy 可以控制各个层的数据， 使用/符号拼合各个层构造出一个包 packet = IP(dst='192.168.1.1', src='192.168.1.2')/ UDP(sport=5555, dport=4444)/ b'udp data' packet.show() print(bytes(packet)) IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。 再后面一层是要发送的数据。 packet.show() 工整的打印包数据 发送包 scapy 有几种发包的方式。 send用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。 send(packet) sendp(p, iface='en0') packet = Ether(src=RandMAC())/IP(dst='192.168.31.1 …"/>
 <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,8 @@
 <meta property="article:section" content="Python"/>
 <meta property="article:tag" content="python"/>
 <meta property="article:tag" content="小结"/>
-<meta property="og:image" content="/images/logo.jpg">  <title>littlezz's Blog &ndash; Scapy 使用总结</title>
+<meta property="og:image" content="/images/logo.jpg">-->
+  <title>littlezz's Blog &ndash; Scapy 使用总结</title>
 </head>
 <body>
   <aside>
@@ -61,11 +62,9 @@
   </header>
   <div>
     <h3>构造包以及一些网络基础知识</h3>
-<p>载入所有函数<br>
-</p>
+<p>载入所有函数  </p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
-
 
 <p>或者从命令行输入<code>sudo scapy</code></p>
 <p>scapy 可以控制各个层的数据， 使用<code>/</code>符号拼合各个层构造出一个包</p>
@@ -76,10 +75,8 @@
 <span class="k">print</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">packet</span><span class="p">))</span>
 </pre></div>
 
-
 <p>IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。<br>
-再后面一层是要发送的数据。<br>
-</p>
+再后面一层是要发送的数据。  </p>
 <p><code>packet.show()</code> 工整的打印包数据</p>
 <h3>发送包</h3>
 <p>scapy 有几种发包的方式。<br>
@@ -90,21 +87,15 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1&#39;)/UDP(dport=33331)/b&
 sendp(packet)
 </pre></div>
 
-
 <p><code>sendp</code>可以指定发送的 iface。同时可以构造包的时候加入构造<code>Ether()</code></p>
 <h3>UDP广播</h3>
 <p>子网内的机器在接受数据时是这样一个流程。<br>
-当数据包从网卡流过的时候， 网卡检查数据包的目标 mac 地址是否包含于自己等待的地址中（既网卡可以监听多个 mac 地址）， 符合就吧数据包拷贝一份向上层传输， 之后检查目标 IP 是否和自己监听的 ip 地址之一符合， 如果符合再交由上层处理， 如果不符合， 则看自己是否配置了路由功能， 然后根据路由表选择出口， 如果没有就从默认路由出去。<br>
-</p>
-<p>之所以有 ip 和 mac 之分， 是因为 mac 地址的表示是48位的， 而网络协议的 ip 是32位的。<br>
-</p>
+当数据包从网卡流过的时候， 网卡检查数据包的目标 mac 地址是否包含于自己等待的地址中（既网卡可以监听多个 mac 地址）， 符合就吧数据包拷贝一份向上层传输， 之后检查目标 IP 是否和自己监听的 ip 地址之一符合， 如果符合再交由上层处理， 如果不符合， 则看自己是否配置了路由功能， 然后根据路由表选择出口， 如果没有就从默认路由出去。  </p>
+<p>之所以有 ip 和 mac 之分， 是因为 mac 地址的表示是48位的， 而网络协议的 ip 是32位的。  </p>
 <p>所以在进行广播的时候， 把目标 mac 地址设置为<code>ff:ff:ff:ff:ff:ff</code>, 对于绝大部分机器网卡都会接受这个地址。</p>
-<p>一种是受限广播， 目标 ip 设置为<code>255.255.255.255</code>， mac 地址设置为<code>ff:ff:ff:ff:ff:ff</code>， 这种方式路由器不对目的 ip 为<code>255.255.255.255</code> 进行转发，改数据报只在该子网中出现。<br>
-</p>
-<p>另一种是指向子网的广播， <code>xxx.xxx.xxx.255</code>， 数据包会被转发到该子网内广播。<br>
-</p>
-<p>在 scapy 中， 可以直接把地址设置为<code>255.255.255.255</code>来广播， 但是会得到<br>
-</p>
+<p>一种是受限广播， 目标 ip 设置为<code>255.255.255.255</code>， mac 地址设置为<code>ff:ff:ff:ff:ff:ff</code>， 这种方式路由器不对目的 ip 为<code>255.255.255.255</code> 进行转发，改数据报只在该子网中出现。  </p>
+<p>另一种是指向子网的广播， <code>xxx.xxx.xxx.255</code>， 数据包会被转发到该子网内广播。  </p>
+<p>在 scapy 中， 可以直接把地址设置为<code>255.255.255.255</code>来广播， 但是会得到  </p>
 <p><code>WARNING: Mac address to reach destination not found. Using broadcast.</code></p>
 <p>这是因为使用 <code>send</code> 函数的缘故， 这个函数作用于 layer3 ， 自动组装了 layer2 层的东西， 目的 mac 地址这个时候就会在 arp 表中查询， 然而广播地址的 mac 地址是查不到的， 这个时候它就会提示程序自动把目的地址mac设置成了广播用的 mac</p>
 <h4>solution</h4>
@@ -113,25 +104,19 @@ sendp(packet)
 sendp(packet)
 </pre></div>
 
-
 <p>值得注意的是， <code>sendp</code>是可以使用指定的 interface 来发送包，默认情况下使用<code>conf.iface</code>的设备</p>
 <h3>重放攻击</h3>
-<p><code>sniff</code>用于监听网络流量， sniff 是阻塞的，可以使用回调函数来处理每一个捕获到的包。  同时可以使用 filter 参数过滤要捕获的包，也可以指定用于监听的 interface， 默认使用所有设备来监听<br>
-</p>
+<p><code>sniff</code>用于监听网络流量， sniff 是阻塞的，可以使用回调函数来处理每一个捕获到的包。  同时可以使用 filter 参数过滤要捕获的包，也可以指定用于监听的 interface， 默认使用所有设备来监听  </p>
 <p>filter 的语法和 tcpdump 中用于过滤的语法一样， 可以使用<code>man pcap-filter</code>查看详细的内容。</p>
 <div class="highlight"><pre><span></span>sniff(filter=&#39;udp dst port 2333&#39;, prn=lamda pkt: pkt.show())
 </pre></div>
 
-
-<p>这段代码循环监听 目标端口为2333的 udp 包， 然后回调程序吧这个包展示出来。<br>
-</p>
+<p>这段代码循环监听 目标端口为2333的 udp 包， 然后回调程序吧这个包展示出来。  </p>
 <p>之后可以吧收到的包再发出去， 完成一次重放（UDP）</p>
 <div class="highlight"><pre><span></span>sniff(prn=lambda pkt:sendp(pkt))
 </pre></div>
 
-
-<p>如果是 tcp 的重放，需要修改 ack。<br>
-</p>
+<p>如果是 tcp 的重放，需要修改 ack。  </p>
   </div>
   <div class="tag-cloud">
     <p>

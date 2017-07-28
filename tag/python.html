@@ -58,11 +58,9 @@
   </header>
   <div>
       <h3>构造包以及一些网络基础知识</h3>
-<p>载入所有函数<br>
-</p>
+<p>载入所有函数  </p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
-
 
 <p>或者从命令行输入<code>sudo scapy</code></p>
 <p>scapy 可以控制各个层的数据， 使用<code>/</code>符号拼合各个层构造出一个包</p>
@@ -73,10 +71,8 @@
 <span class="k">print</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">packet</span><span class="p">))</span>
 </pre></div>
 
-
 <p>IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。<br>
-再后面一层是要发送的数据。<br>
-</p>
+再后面一层是要发送的数据。  </p>
 <p><code>packet.show()</code> 工整的打印包数据</p>
 <h3>发送包</h3>
 <p>scapy 有几种发包的方式。<br>
@@ -98,7 +94,7 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
   </header>
   <div>
       <h3>intro</h3>
-<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~</p>
+<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。<del>（当然最后是用其他的方法</del></p>
 <p>后来想了一下绕过引号的方法。</p>
 <p>首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是<code>__buildtins__</code>, 然后找出 <code>eval</code>进行任意代码执行， 绕过沙盒的限制</p>
 <div class="highlight"><pre><span></span><span class="ch">#! python3</span>
@@ -109,14 +105,12 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <span class="c1">#output &quot;&lt;class &#39;list&#39;&gt;&quot;</span>
 </pre></div>
 
-
 <p>我们可以通过这种方法调用自带的函数或者对象， 通过<code>subclasses</code> 找到更加多的类</p>
 <div class="highlight"><pre><span></span><span class="p">[]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
 
 <span class="k">print</span><span class="p">([]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <span class="c1">#output type</span>
 </pre></div>
-
 
 <p>之后利用其中的 <code>catch_warnings</code> 访问 globals 定位出 <code>eval</code>， 然后进行任意代码执行。</p>
 <div class="highlight"><pre><span></span><span class="c1">#python3 </span>
@@ -128,7 +122,6 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
      <span class="o">...</span><span class="p">:</span> <span class="n">lobals__</span><span class="o">.</span><span class="n">__builtins__</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;1+1&quot;</span><span class="p">)}}</span><span class="s1">&#39;).render()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">153</span><span class="p">]:</span> <span class="s1">&#39;2&#39;</span>
 </pre></div>
-
 
 <h3>绕过引号</h3>
 <p>一般情况下， <code>%</code>会被过滤， 但是如果引号也被过滤的话怎么构造出 …</p>
@@ -149,14 +142,11 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <div class="highlight"><pre><span></span>python3 setup.py sdist bdist_wheel
 </pre></div>
 
-
 <p>使用pip安装的时候一般是安装bdist打包出来的文件。</p>
-<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。<br>
-</p>
+<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。  </p>
 <h2>MANIFEST.in</h2>
 <p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
-<p>MIANIFEST会暗中自动寻找以下的文件：<br>
-</p>
+<p>MIANIFEST会暗中自动寻找以下的文件：  </p>
 <ul>
 <li>所有<code>py_modules</code> 和 <code>packages</code>中没有明确说明的python文件 </li>
 <li>ext_modules 或 libraries选项中指明的C文件</li>
@@ -168,10 +158,8 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 </ul>
 <h2>package_data</h2>
 <p><code>package_data</code>是在setup.py中的参数， 用于控制安装包里面包含的文件。<br>
-应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。<br>
-</p>
-<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。<br>
-</p>
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  </p>
+<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  </p>
 <h2>include_package_data</h2>
 <p>坑就是指 …</p>
       <a class="btn" href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Continue reading</a>
@@ -187,25 +175,23 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
   </header>
   <div>
-      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。<br>
-</p>
+      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。  </p>
 <h2>简介</h2>
 <p>最近要对图片做二值化， 参照<a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf">Adaptive Thresholding Using the Integral Image</a> 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。</p>
 <h2>算法</h2>
 <p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 
 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 
-原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。<br>
-</p>
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。  </p>
 <h2>直观实现</h2>
 <p>首先我们直接照着原理实现，理论是最快的
 （然而实际是最慢的） </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
     <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
         <span class="n">csum</span><span class="o">=</span><span class="mi">0</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range …</span></pre></div>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range …</span></pre></div></p>
       <a class="btn" href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">Continue reading</a>
   </div>
   <hr />
@@ -222,8 +208,7 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <h2>Install twine</h2>
 <p><code>pip install twine</code></p>
 <h2>Init file</h2>
-<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.<br>
-</p>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
 <p>For example, </p>
 <div class="highlight"><pre><span></span>.
 ├── foo
@@ -231,16 +216,11 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 └── readme.md
 </pre></div>
 
-
-<p>Secondly, add specify file to the root folder.<br>
-</p>
+<p>Secondly, add specify file to the root folder.  </p>
 <ul>
-<li>README.rst<br>
-</li>
-<li>MANIFEST.in<br>
-</li>
-<li>setup.py<br>
-</li>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
 <li>setup.cfg(option)</li>
 </ul>
 <p>pypi do not know markdown format readme, there is only rst format available.</p>
@@ -260,22 +240,18 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
   </header>
   <div>
-      <p>It takes long time to install scientific python package by <code>pip</code> in travis and sometime fail.<br>
-</p>
+      <p>It takes long time to install scientific python package by <code>pip</code> in travis and sometime fail.  </p>
 <p>The solve is to use conda to install binary package. <br>
-<a href="http://conda.pydata.org/docs/travis.html">http://conda.pydata.org/docs/travis.html</a><br>
-</p>
-<p>Note that some package not in conda, you can use <code>pip</code> install it, for example, <code>py.test</code><br>
-</p>
-<p>Here is my <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> .trais.yml, you can view on github <a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml">https://github.com/littlezz/ESL-Model/blob/master/.travis.yml</a><br>
-</p>
-<div class="highlight"><pre><span></span>language: python
+<a href="http://conda.pydata.org/docs/travis.html">http://conda.pydata.org/docs/travis.html</a>  </p>
+<p>Note that some package not in conda, you can use <code>pip</code> install it, for example, <code>py.test</code>  </p>
+<p>Here is my <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> .trais.yml, you can view on github <a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml">https://github.com/littlezz/ESL-Model/blob/master/.travis.yml</a>  </p>
+<p><div class="highlight"><pre><span></span>language: python
 python:
   <span class="c1"># We don&#39;t actually use the Travis Python, but this keeps it organized.</span>
   - <span class="s2">&quot;3.5&quot;</span>
 
 install:
-  - sudo …</pre></div>
+  - sudo …</pre></div></p>
       <a class="btn" href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Continue reading</a>
   </div>
   <hr />
@@ -290,13 +266,10 @@ install:
   </header>
   <div>
       <h2>Intro</h2>
-<p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.<br>
-</p>
-<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead of <code>np.dot</code><br>
-</p>
+<p>I'm working on a project named <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> which I want to use python to implent algorithm from The Elements of Statistical Learning. I start writing RRLDA the day before yesterday,  and I sccuessfully finish until today.  </p>
+<p>Notice that I am using Python3.5, which allow me use <code>@</code> instead of <code>np.dot</code>  </p>
 <h2>The difference between Numpy and R</h2>
-<p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).<br>
-</p>
+<p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).  </p>
 <p>In R, the eigenvalues return from <code>eigen</code> is descending, which is all notes …</p>
       <a class="btn" href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">Continue reading</a>
   </div>
@@ -311,16 +284,13 @@ install:
       <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
   </header>
   <div>
-      <p><a href="https://github.com/littlezz/ESL-Model">ESLModel</a> 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。<br>
-</p>
-<p>于是抽空写一下关于numpy的总结吧。<br>
-</p>
+      <p><a href="https://github.com/littlezz/ESL-Model">ESLModel</a> 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  </p>
+<p>于是抽空写一下关于numpy的总结吧。  </p>
 <h2>Intro</h2>
 <p>介绍一些会混淆的东西</p>
 <h3>vector vs matrix</h3>
 <p>vector是向量， 是一维的。 
-matrix是二维以上的。<br>
-</p>
+matrix是二维以上的。  </p>
 <div class="highlight"><pre><span></span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 
 <span class="c1"># method 1</span>
@@ -339,16 +309,13 @@ matrix是二维以上的。<br>
 <span class="c1"># output (3, 1)</span>
 </pre></div>
 
-
 <ol>
 <li>向量可以点乘矩阵， 反过来也可以， 结果是向量。</li>
 <li>向量可以点乘向量， 得到标量</li>
 <li>向量没有倒置</li>
-<li>矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。<br>
-</li>
+<li>矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。  </li>
 </ol>
-<p>如果想要得到  单行的子矩阵<br>
-</p>
+<p>如果想要得到  单行的子矩阵  </p>
 <div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 
 <span class="c1"># 得到一行， 矩阵</span>
@@ -376,20 +343,19 @@ matrix是二维以上的。<br>
   </header>
   <div>
       <p>esl_model <a href="https://github.com/littlezz/ESL-Model">https://github.com/littlezz/ESL-Model</a><br>
-今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。<br>
-</p>
+今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  </p>
 <p>简单总结一下Python的Package Distribution吧。<br>
 有空的话， 在写一个pytest的简单总结。</p>
 <h2>setup.py</h2>
 <p>setup.py 是最主要的整个配置的文件， </p>
-<p>贴我的setup.py 的代码好了。<br>
-</p>
+<p>贴我的setup.py 的代码好了。  </p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;README.rst&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">readme</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
 <span class="n">version</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;esl_model&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">__version__</span>
+
 
 <span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;esl_model&#39;</span><span class="p">,</span>
       <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>

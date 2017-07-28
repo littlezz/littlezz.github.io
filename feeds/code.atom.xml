@@ -3,14 +3,12 @@
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;xxx.github.io --&amp;gt; blog.xxx.com
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;首先在 github page 上面的项目里添加一个文件&lt;code&gt;CNAME&lt;/code&gt;, 内容是目标站点&lt;code&gt;blog.xxx.com&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用&lt;code&gt;blog.xxx.com&lt;/code&gt;那么 &lt;code&gt;host&lt;/code&gt; 的值填 &lt;code&gt;blog&lt;/code&gt;而不是&lt;code&gt;blog.xxx.com&lt;/code&gt;， value 填&lt;code&gt;xxx.github.io&lt;/code&gt;&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用&lt;code&gt;blog.xxx.com&lt;/code&gt;那么 &lt;code&gt;host&lt;/code&gt; 的值填 &lt;code&gt;blog&lt;/code&gt;而不是&lt;code&gt;blog.xxx.com&lt;/code&gt;， value 填&lt;code&gt;xxx.github.io&lt;/code&gt;  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在&lt;code&gt;pelicanconf.py&lt;/code&gt; 中设置&lt;/p&gt;
@@ -24,25 +22,21 @@
                 &lt;span class="s1"&gt;&amp;#39;static&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;之后就是等待 dns 的刷新了&lt;/p&gt;
 &lt;h3&gt;小结&lt;/h3&gt;
 &lt;p&gt;CNAME 设置是 &lt;code&gt;blog&lt;/code&gt;， 而不&lt;code&gt;blog.xxx.com&lt;/code&gt;, 不然域名会解析到&lt;code&gt;blog.xxx.com.xxx.com&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  &lt;/p&gt;
 &lt;p&gt;方法：
 在主题里的 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;目标：设置域名&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;xxx.github.io --&amp;gt; blog.xxx.com
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;首先在 github page 上面的项目里添加一个文件&lt;code&gt;CNAME&lt;/code&gt;, 内容是目标站点&lt;code&gt;blog.xxx.com&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用&lt;code&gt;blog.xxx.com&lt;/code&gt;那么 &lt;code&gt;host&lt;/code&gt; 的值填 &lt;code&gt;blog&lt;/code&gt;而不是&lt;code&gt;blog.xxx.com&lt;/code&gt;， value 填&lt;code&gt;xxx.github.io&lt;/code&gt;&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用&lt;code&gt;blog.xxx.com&lt;/code&gt;那么 &lt;code&gt;host&lt;/code&gt; 的值填 &lt;code&gt;blog&lt;/code&gt;而不是&lt;code&gt;blog.xxx.com&lt;/code&gt;， value 填&lt;code&gt;xxx.github.io&lt;/code&gt;  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在&lt;code&gt;pelicanconf.py&lt;/code&gt; 中设置&lt;/p&gt;
@@ -56,116 +50,90 @@
                 &lt;span class="s1"&gt;&amp;#39;static&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;之后就是等待 dns 的刷新了&lt;/p&gt;
 &lt;h3&gt;小结&lt;/h3&gt;
 &lt;p&gt;CNAME 设置是 &lt;code&gt;blog&lt;/code&gt;， 而不&lt;code&gt;blog.xxx.com&lt;/code&gt;, 不然域名会解析到&lt;code&gt;blog.xxx.com.xxx.com&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  &lt;/p&gt;
 &lt;p&gt;方法：
 在主题里的 templates 目录的&lt;code&gt;base.html&lt;/code&gt;中&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;lt;!--&amp;lt;link href=&amp;#39;//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic&amp;#39; rel=&amp;#39;stylesheet&amp;#39; type=&amp;#39;text/css&amp;#39;&amp;gt;--&amp;gt;&lt;/span&gt;
 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;//fonts.proxy.ustclug.org/css?family=Source+Sans+Pro:300,400,700,400italic&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;rel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;stylesheet&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;text/css&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</content><category term="小结"></category><category term="小技巧"></category></entry><entry><title>记一次服务器被爆破后灾后重建ss的经历</title><link href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html" rel="alternate"></link><published>2016-11-18T00:00:00+08:00</published><updated>2016-11-18T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2016-11-18:/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html</id><summary type="html">&lt;h2&gt;疑似被黑&lt;/h2&gt;
-&lt;p&gt;2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  &lt;/p&gt;
+&lt;p&gt;2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  &lt;/p&gt;
 &lt;p&gt;直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;netstat -an | grep 443 | grep ESTABLISHED | wc -l
 &lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;大的惊人， 开始慌了。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;大的惊人， 开始慌了。  &lt;/p&gt;
 &lt;p&gt;检查log日志， 发现大量&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;反查这些ip， 发现都不是我们自己的ip。&lt;br&gt;
 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。
-之后就是ban ip， 换端口， 改密码。&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。&lt;br&gt;
-&lt;/p&gt;
+之后就是ban ip， 换端口， 改密码。  &lt;/p&gt;
+&lt;p&gt;接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  &lt;/p&gt;
 &lt;p&gt;检查了一下我的fail2ban， 发现处于开启失败状态。&lt;br&gt;
 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。&lt;/p&gt;
-&lt;p&gt;『卧槽， 精彩了』&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;『卧槽， 精彩了』  &lt;/p&gt;
 &lt;p&gt;赶紧联系大腿。&lt;/p&gt;
-&lt;p&gt;先打&lt;code&gt;w&lt;/code&gt;命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示&lt;code&gt;w&lt;/code&gt;估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;先打&lt;code&gt;w&lt;/code&gt;命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示&lt;code&gt;w&lt;/code&gt;估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  &lt;/p&gt;
 &lt;p&gt;往后是一些挣扎， 检查&lt;code&gt;ps -aux&lt;/code&gt;， 看不出来。
 检查&lt;code&gt;who -a /var/log/wtmp …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;疑似被黑&lt;/h2&gt;
-&lt;p&gt;2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  &lt;/p&gt;
+&lt;p&gt;2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  &lt;/p&gt;
 &lt;p&gt;直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;netstat -an | grep 443 | grep ESTABLISHED | wc -l
 &lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;大的惊人， 开始慌了。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;大的惊人， 开始慌了。  &lt;/p&gt;
 &lt;p&gt;检查log日志， 发现大量&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;反查这些ip， 发现都不是我们自己的ip。&lt;br&gt;
 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。
-之后就是ban ip， 换端口， 改密码。&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。&lt;br&gt;
-&lt;/p&gt;
+之后就是ban ip， 换端口， 改密码。  &lt;/p&gt;
+&lt;p&gt;接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  &lt;/p&gt;
 &lt;p&gt;检查了一下我的fail2ban， 发现处于开启失败状态。&lt;br&gt;
 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。&lt;/p&gt;
-&lt;p&gt;『卧槽， 精彩了』&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;『卧槽， 精彩了』  &lt;/p&gt;
 &lt;p&gt;赶紧联系大腿。&lt;/p&gt;
-&lt;p&gt;先打&lt;code&gt;w&lt;/code&gt;命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示&lt;code&gt;w&lt;/code&gt;估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;先打&lt;code&gt;w&lt;/code&gt;命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示&lt;code&gt;w&lt;/code&gt;估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  &lt;/p&gt;
 &lt;p&gt;往后是一些挣扎， 检查&lt;code&gt;ps -aux&lt;/code&gt;， 看不出来。
 检查&lt;code&gt;who -a /var/log/wtmp&lt;/code&gt;, 看一下登录的信息， 看不出来。&lt;br&gt;
-检查bash_history, zsh_history， 根本懒得看了。&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;淦他娘啊， 我选择重装！&lt;br&gt;
-&lt;/p&gt;
+检查bash_history, zsh_history， 根本懒得看了。  &lt;/p&gt;
+&lt;p&gt;淦他娘啊， 我选择重装！  &lt;/p&gt;
 &lt;h2&gt;灾后重建&lt;/h2&gt;
-&lt;p&gt;这次选了ubuntu， 而且有经验了。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;这次选了ubuntu， 而且有经验了。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;先装&lt;code&gt;zsh&lt;/code&gt;, &lt;code&gt;apt-get install zsh&lt;/code&gt;&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;先装&lt;code&gt;zsh&lt;/code&gt;, &lt;code&gt;apt-get install zsh&lt;/code&gt;  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;建立用户, 指定shell为zsh， &lt;code&gt;useradd youruser -m -s /bin/zsh&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;上传公钥， 通过 &lt;code&gt;ssh-copy-id&lt;/code&gt; 命令。&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;上传公钥， 通过 &lt;code&gt;ssh-copy-id&lt;/code&gt; 命令。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;更改ssh的配置， 改端口， 关root登录， 关密码登录。&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;PermitRootLogin no
+&lt;p&gt;更改ssh的配置， 改端口， 关root登录， 关密码登录。  &lt;/p&gt;
+&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;PermitRootLogin no
 Port 12345
-PasswordAuthentication no&lt;/code&gt;
-* 重启ssh服务。&lt;br&gt;
-&lt;/p&gt;
+PasswordAuthentication no
+&lt;/pre&gt;&lt;/div&gt;
+* 重启ssh服务。  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;安装 &lt;code&gt;denyhosts&lt;/code&gt;, &lt;code&gt;apt-get install denyhosts&lt;/code&gt;&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;安装 &lt;code&gt;denyhosts&lt;/code&gt;, &lt;code&gt;apt-get install denyhosts&lt;/code&gt;  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;oh-my-zsh&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;sh
-apt-get install git
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get install git
+sh -c &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;配置ss&lt;/h2&gt;
@@ -175,13 +143,11 @@ pip install -U pip
 pip install shadowsocks
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;h4&gt;安装密码库， 安装&lt;code&gt;libsodium&lt;/code&gt;依赖&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;apt-get install python-m2crypto
 apt-get install libsodium18
 pip install M2Crypto
 &lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h4&gt;配置&lt;code&gt;/etc/shadowsocks.json&lt;/code&gt;&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
@@ -198,26 +164,20 @@ pip install M2Crypto
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;服务器参数设置&lt;code&gt;"::"&lt;/code&gt;可以同时监听ipv4和ipv6, user设置nobody权限， 选一个加密方式， 另外最新是可以打开OTA来防止被攻击， 但是需要客户端也支持OTA。 &lt;/p&gt;
 &lt;p&gt;除此以外， 还可以用提供的 &lt;a href="https://github.com/shadowsocks/shadowsocks/blob/master/utils/autoban.py"&gt;autoban.py&lt;/a&gt; 来ban ip,使用方法参考&lt;a href="https://github.com/shadowsocks/shadowsocks/wiki/Ban-Brute-Force-Crackers"&gt;Ban Brute Force Crackers&lt;/a&gt; .&lt;br&gt;
 注意到同时监听ipv4和ipv6的时候， 这个代码提取ip的方式有问题，要改一下，&lt;br&gt;
-第41行改成&lt;br&gt;
-&lt;/p&gt;
+第41行改成  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip = line.split()[-1].split(&amp;#39;:&amp;#39;)[-2]
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;&lt;strong&gt;（小心不要把自己ban了&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;  &lt;/p&gt;
 &lt;h4&gt;关于优化&lt;/h4&gt;
-&lt;p&gt;参考  &lt;a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize"&gt;shadowsocks-optimize&lt;/a&gt;, 不重复了&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;参考  &lt;a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize"&gt;shadowsocks-optimize&lt;/a&gt;, 不重复了  &lt;/p&gt;
 &lt;h4&gt;配置开机自启动&lt;/h4&gt;
 &lt;p&gt;rc.local ubuntu用不了， 需要自己写一个&lt;code&gt;shadowsocks.service&lt;/code&gt;:&lt;br&gt;
-在&lt;code&gt;/etc/systemd/system&lt;/code&gt;下建立一个文件， 比如&lt;code&gt;shadowsocks.service&lt;/code&gt;， 写入如下内容&lt;br&gt;
-&lt;/p&gt;
+在&lt;code&gt;/etc/systemd/system&lt;/code&gt;下建立一个文件， 比如&lt;code&gt;shadowsocks.service&lt;/code&gt;， 写入如下内容  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;run ssserver on background&lt;/span&gt;
 
@@ -230,14 +190,11 @@ pip install M2Crypto
 &lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;参考： &lt;br&gt;
 &lt;a href="https://unix.stackexchange.com/questions/47695/how-to-write-startup-script-for-systemd"&gt;how-to-write-startup-script-for-systemd&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html"&gt;systemd.service.html&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;按说明， &lt;code&gt;Type&lt;/code&gt;选&lt;code&gt;forking&lt;/code&gt;而不是&lt;code&gt;simple&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;之后可以用&lt;code&gt;systemctl start shadowsocks&lt;/code&gt; 和&lt;code&gt;systemctl stop shadowsocks&lt;/code&gt; 开关ss.&lt;br&gt;
-&lt;/p&gt;
+&lt;p&gt;之后可以用&lt;code&gt;systemctl start shadowsocks&lt;/code&gt; 和&lt;code&gt;systemctl stop shadowsocks&lt;/code&gt; 开关ss.  &lt;/p&gt;
 &lt;p&gt;使用 &lt;code&gt;systemctl enable shadowsocks&lt;/code&gt; 让ss开机启动。&lt;/p&gt;
 &lt;h2&gt;总结&lt;/h2&gt;
-&lt;p&gt;~~在被日中成长~~。&lt;br&gt;
-&lt;/p&gt;</content></entry></feed>
+&lt;p&gt;&lt;del&gt;在被日中成长&lt;/del&gt;。  &lt;/p&gt;</content></entry></feed>

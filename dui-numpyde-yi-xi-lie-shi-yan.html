@@ -15,7 +15,7 @@
 <meta name="author" content="littlezz" />
 <meta name="description" content="本文主要总结了如何把numpy计算速度优化100倍的过程。 简介 最近要对图片做二值化， 参照Adaptive Thresholding Using the Integral Image 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。 算法 首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。 直观实现 首先我们直接照着原理实现，理论是最快的 （然而实际是最慢的） def intuitive_method(mat, w, h , set_value, threshold, boxsize): mat = mat.T integral_map = np.zeros_like(mat, dtype=int) ret = np.zeros_like(mat, dtype=int) for i in range(w): csum=0 for j in range …" />
 <meta name="keywords" content="python, numpy">
-<meta property="og:site_name" content="littlezz's Blog"/>
+<!--<meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="对numpy的一系列实验"/>
 <meta property="og:description" content="本文主要总结了如何把numpy计算速度优化100倍的过程。 简介 最近要对图片做二值化， 参照Adaptive Thresholding Using the Integral Image 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。 算法 首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。 直观实现 首先我们直接照着原理实现，理论是最快的 （然而实际是最慢的） def intuitive_method(mat, w, h , set_value, threshold, boxsize): mat = mat.T integral_map = np.zeros_like(mat, dtype=int) ret = np.zeros_like(mat, dtype=int) for i in range(w): csum=0 for j in range …"/>
 <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,8 @@
 <meta property="article:section" content="Python"/>
 <meta property="article:tag" content="python"/>
 <meta property="article:tag" content="numpy"/>
-<meta property="og:image" content="/images/logo.jpg">  <title>littlezz's Blog &ndash; 对numpy的一系列实验</title>
+<meta property="og:image" content="/images/logo.jpg">-->
+  <title>littlezz's Blog &ndash; 对numpy的一系列实验</title>
 </head>
 <body>
   <aside>
@@ -60,19 +61,17 @@
     <p>Posted on Thu 08 December 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a></p>
   </header>
   <div>
-    <p>本文主要总结了如何把numpy计算速度优化100倍的过程。<br>
-</p>
+    <p>本文主要总结了如何把numpy计算速度优化100倍的过程。  </p>
 <h2>简介</h2>
 <p>最近要对图片做二值化， 参照<a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf">Adaptive Thresholding Using the Integral Image</a> 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。</p>
 <h2>算法</h2>
 <p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 
 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 
-原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。<br>
-</p>
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。  </p>
 <h2>直观实现</h2>
 <p>首先我们直接照着原理实现，理论是最快的
 （然而实际是最慢的） </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
     <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -101,20 +100,15 @@
 
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
-
-
-<p>mat是我们的图片矩阵， boxsize是区域的长度， 必须是奇数。 
+mat是我们的图片矩阵， boxsize是区域的长度， 必须是奇数。 
 每个点都在周围取一个boxsize长度的矩形， 要特别处理边界， 让他不要超出累积矩阵。<br>
-很直观的代码， 纯翻译自论文里面的伪代码。<br>
-</p>
+很直观的代码， 纯翻译自论文里面的伪代码。  </p>
 <p>看看速度：</p>
-<div class="highlight"><pre><span></span>⇒  python3 implement.py
+<p><div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 intuitive_method take 1658.280885 ms  
 </pre></div>
-
-
-<p>1600ms, （怎么和说好的15ms不一样）。</p>
+1600ms, （怎么和说好的15ms不一样）。</p>
 <h2>改进的直观方法</h2>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimized_intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
@@ -141,19 +135,15 @@ intuitive_method take 1658.280885 ms
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 
-
 <p>Numpy提供了item和itemset方法来加速对矩阵上单个点的操作。<br>
 同时两次累积和实际可以用可以用<code>np.cumsum</code>来计算， 但是这里有一个小细节，<br>
 单纯的使用两次<code>a=np.cumsum(...)</code>会额外进行一次内部的内存拷贝， 我们要指定<code>out</code>参数来阻止多余的内存拷贝.</p>
-<p>在计算half_s的时候， 使用移位<code>boxsize &gt;&gt; 1</code>来加速。<br>
-</p>
-<div class="highlight"><pre><span></span>⇒  python3 implement.py
+<p>在计算half_s的时候， 使用移位<code>boxsize &gt;&gt; 1</code>来加速。  </p>
+<p><div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 optimized_intuitive_method take 823.928799 ms
 </pre></div>
-
-
-<p>快了一倍， 但是还是不够</p>
+快了一倍， 但是还是不够</p>
 <h2>猥琐法</h2>
 <p>不妨让我们直接退化到累积和的优化之前，纯粹的暴力计算，所有计算都交给opencv， 看看会发生什么事情。</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">opencv_way</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
@@ -165,66 +155,50 @@ optimized_intuitive_method take 823.928799 ms
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
 
-
 <p>这是时间：</p>
 <div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 opencv_way take 35.920926 ms
 </pre></div>
 
-
 <p>好了， 可以全剧终了。<br>
 简单的6行代码， 纯粹的暴力美学。 速度快了40倍。（你学到了么？）<br>
 这里我们借助opencv 的 <code>filter2D</code>方法， 自己定义了一个kernel， 用来求一个点周围区域的平均值， 接下来的计算就全部交给opencv了。 <br>
-关于opencv， 有一点需要补充， <strong>opencv表示， numpy是辣鸡， 请多使用opencv自带的函数</strong>。<br>
-</p>
+关于opencv， 有一点需要补充， <strong>opencv表示， numpy是辣鸡， 请多使用opencv自带的函数</strong>。  </p>
 <h2>向量化</h2>
 <p>还不能全剧终， 接下来是重点， numpy是为矩阵计算而生的， 我们前面一直按照C的思维来对单个点做操作， 而且for循环的存在导致速度下降太多， 接下来我们要寻求把for循环替换掉， 改成向量的计算。</p>
 <p>对于numpy来说， 比如我有两个2维矩阵A和B， 要计算两个矩阵上所有点的差， 从速度上来说， </p>
 <div class="highlight"><pre><span></span>A - B &gt; A[i] - B[i] &gt; A[i,j] - B[i,j]
 </pre></div>
 
-
 <p>我们现在希望把所有的for循环， 替换为矩阵的计算 <code>A - B</code></p>
-<p>一开始的时候我想到利用一次for循环， 从上往下计算两行之间的值， 接着从左往右计算每一列的值， 但是这样只能去掉一个for循环， 后来我想了2个晚上， 想通了实际上所有等距离点操作都可以转化为等距离的向量操作， 进而可以通过构造矩阵来进行矩阵间的操作。<br>
-</p>
-<p>对于之前的代码， 计算累积和部分已经很好了， 关键之后的计算， 代码冗余， 效率低下。<br>
-</p>
+<p>一开始的时候我想到利用一次for循环， 从上往下计算两行之间的值， 接着从左往右计算每一列的值， 但是这样只能去掉一个for循环， 后来我想了2个晚上， 想通了实际上所有等距离点操作都可以转化为等距离的向量操作， 进而可以通过构造矩阵来进行矩阵间的操作。  </p>
+<p>对于之前的代码， 计算累积和部分已经很好了， 关键之后的计算， 代码冗余， 效率低下。  </p>
 <p>其中造成整个for循环存在的关键因素是下面这句代码</p>
-<div class="highlight"><pre><span></span>integral_map[x2, y2] - integral_map[x1, y2] - integral_map[x2, y1] + integral_map[x1, y1]
+<p><div class="highlight"><pre><span></span>integral_map[x2, y2] - integral_map[x1, y2] - integral_map[x2, y1] + integral_map[x1, y1]
 </pre></div>
-
-
-<p>而实际上， 这些点之间是等距离的， （boxsize的距离）， 也就是说， 每一个点对应的x1， x2, y1, y2 都是固定的， 我们可以构造出4个矩阵， 分别向左上， 右上， 左下， 右下位移一段距离， 
-这样就可以吧整个for循环计算化简成<br>
-</p>
+而实际上， 这些点之间是等距离的， （boxsize的距离）， 也就是说， 每一个点对应的x1， x2, y1, y2 都是固定的， 我们可以构造出4个矩阵， 分别向左上， 右上， 左下， 右下位移一段距离， 
+这样就可以吧整个for循环计算化简成  </p>
 <div class="highlight"><pre><span></span>D + A - C - B
 </pre></div>
 
-
 <p>那么怎么构造出这些矩阵呢？<br>
-想象一下， 把<code>integral_map[x1, y1]</code>当成一个集合， 记为A， <code>integral_map[x1, y2]</code>的集合记为B， <code>integral_map[x2, y1]</code>的集合记为C，<code>integral_map[x2, y2]</code>记为D。 <br>
-</p>
-<p>以构造A为例， A实际上是对原先的矩阵向上和向左平移了一半的boxsize的距离， 比如对于矩阵右下角的点，A对应于 <code>integral_map[h-half_boxsize, w-half_boxsize]</code><br>
-</p>
-<p>但是对于左上角的点， 超出了累积矩阵的范围， 为了避免额外的对边界的判断， 我们要额外构造出边框。<br>
-</p>
+想象一下， 把<code>integral_map[x1, y1]</code>当成一个集合， 记为A， <code>integral_map[x1, y2]</code>的集合记为B， <code>integral_map[x2, y1]</code>的集合记为C，<code>integral_map[x2, y2]</code>记为D。   </p>
+<p>以构造A为例， A实际上是对原先的矩阵向上和向左平移了一半的boxsize的距离， 比如对于矩阵右下角的点，A对应于 <code>integral_map[h-half_boxsize, w-half_boxsize]</code>  </p>
+<p>但是对于左上角的点， 超出了累积矩阵的范围， 为了避免额外的对边界的判断， 我们要额外构造出边框。  </p>
 <p>想象一下， 比如我们有一个5x5的矩阵， boxsize取3, </p>
-<div class="highlight"><pre><span></span>  0 1 2 3 4
+<p><div class="highlight"><pre><span></span>  0 1 2 3 4
 0 * * * * *
 1 * * * * *
 2 * * * * *
 3 * * * * *
 4 * * * * *
 </pre></div>
-
-
-<p>计算 (2, 2) 的时候， 取 (1, 1), (1, 3)， （3，1）， （3，3）四个点<br>
+计算 (2, 2) 的时候， 取 (1, 1), (1, 3)， （3，1）， （3，3）四个点<br>
 计算(0,0)上的和的时候， 右下角取（1，1）， 左上角超出了边界，所以只能取（0，0）<br>
-计算（0，1）的时候，右下角是（1，2） 但是左上角还是（0，0）  <br>
-</p>
+计算（0，1）的时候，右下角是（1，2） 但是左上角还是（0，0）    </p>
 <p>所以我们可以构造出一个<code>(boxsize-1)/2</code> 长度的边框，边框上的值和边界的值一样。 这样我们可以通过平移得到ABCD四个矩阵， 而不用额外的边界判断。 </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vector_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vector_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">inv_value</span> <span class="o">=</span> <span class="n">set_value</span> <span class="o">^</span> <span class="mi">255</span>
     <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -249,10 +223,7 @@ opencv_way take 35.920926 ms
     <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mat</span> <span class="o">&lt;</span> <span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="n">set_value</span><span class="p">],</span> <span class="p">[</span><span class="n">inv_value</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
-
-
-<p>但是， 现在还有一道阴影笼罩着我们， 我们没有办法得到窗口的实际大小。 边界附近的点上的窗口是变化的， 我们得额外构造出一个矩阵<code>COUNT</code>来表示每个点上的窗口大小。<br>
-</p>
+但是， 现在还有一道阴影笼罩着我们， 我们没有办法得到窗口的实际大小。 边界附近的点上的窗口是变化的， 我们得额外构造出一个矩阵<code>COUNT</code>来表示每个点上的窗口大小。  </p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_count_matrix</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    矩阵上每个点的值表示该点上的窗口覆盖的总点数。</span>
@@ -275,20 +246,16 @@ opencv_way take 35.920926 ms
     <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">B</span>
 </pre></div>
 
-
 <p>看一下所需的时间</p>
 <div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 vector_method take 22.166661 ms
 </pre></div>
 
-
-<p>现在我们比最初快了80倍， 已经接近论文上的理论速度了， 但是<code>get_count_matrix</code>函数显得非常的力不从心， 还可以寻找优化的办法。<br>
-</p>
+<p>现在我们比最初快了80倍， 已经接近论文上的理论速度了， 但是<code>get_count_matrix</code>函数显得非常的力不从心， 还可以寻找优化的办法。  </p>
 <h2>优化后的向量化方法</h2>
 <p>回想之前的整个过程， 我们对边界的处理实际上过于保守了， 导致计算窗口覆盖点数的时候过于小心翼翼了(不然boxsize-1是怎么得出来的， 都是泪啊)。</p>
-<p>我们可以在计算累积和之前先对边界翻折来进行填充， 之后再对扩展后的矩阵进行累积和，这样可以省略掉<code>get_count_matrix</code>函数， 统一采用<code>(boxsize-1)*(boxsize-1)</code>。<br>
-</p>
+<p>我们可以在计算累积和之前先对边界翻折来进行填充， 之后再对扩展后的矩阵进行累积和，这样可以省略掉<code>get_count_matrix</code>函数， 统一采用<code>(boxsize-1)*(boxsize-1)</code>。  </p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimized_vector_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">inv_value</span> <span class="o">=</span> <span class="n">set_value</span> <span class="o">^</span> <span class="mi">255</span>
     <span class="n">half_s</span> <span class="o">=</span> <span class="n">boxsize</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
@@ -316,17 +283,13 @@ vector_method take 22.166661 ms
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
 
-
-<p>看看计算时间，<br>
-</p>
+<p>看看计算时间，  </p>
 <div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 optimized_vector_method take 10.539570999999999 ms
 </pre></div>
 
-
-<p>比最初快了150倍， 而且超过了论文上的C语言实现的15ms的时间。<br>
-</p>
+<p>比最初快了150倍， 而且超过了论文上的C语言实现的15ms的时间。  </p>
 <h2>总结分析</h2>
 <p>对于最后的这个方法， 需要额外解释一下为什么会比论文快。<br>
 其中一个是CPU的原因， 论文上用的是4核奔腾3.4Ghz的CPU，而我自己的是i5 2.7GHz。<br>
@@ -334,29 +297,22 @@ i5应该是快一些的， （我猜）</p>
 <p>之后是在对窗口大小的计算时间上， 因为我们通过填充扩展矩阵， 使得每一个点的窗口大小都是固定的值， 比论文中的方法省去了多余的窗口大小计算和多余的边界判断。<br>
 但是扩展矩阵在计算累积和的时候有额外的时间消耗， boxsize默认采用边长的1/8， 
 构造后的矩阵比原先大了 81/64 倍的大小。<br>
-不过在之后的计算中并没有额外的消耗。<br>
-</p>
+不过在之后的计算中并没有额外的消耗。  </p>
 <p>再次， 虽然我们构造出了4个矩阵ABCD， 但是实际上没有对内存做拷贝， ABCD都是累积和矩阵上的映射， 没有对内存中的实际数据做拷贝。</p>
-<p>最后， <br>
-</p>
-<div class="highlight"><pre><span></span>integral_map = integral_map.astype(np.uint32)
+<p>最后，   </p>
+<p><div class="highlight"><pre><span></span>integral_map = integral_map.astype(np.uint32)
 </pre></div>
-
-
-<p>我指定了矩阵中的元素的大小， 统一为无符号32位， 速度又得到了一定的提升。<br>
+我指定了矩阵中的元素的大小， 统一为无符号32位， 速度又得到了一定的提升。<br>
 但是uint32有其局限， 只能存下2^32次方的数据， 灰度图的每一个点的最大取值是2^8， 于是uint32的累积矩阵只能存下2^24个像素点， 然而由于填充了边框， 矩阵比实际大了81/64， 约1.266倍， <code>sqrt(2^24/1.266) = 3640</code>,  所以只能处理3640x3640的图片， 但是从平均情况来说， 每一个点平均取2^7， 于是我们可以处理最大5148x5148的图片。</p>
-<p>到此， 完成了从最初的1600ms到10ms的优化。<br>
-</p>
+<p>到此， 完成了从最初的1600ms到10ms的优化。  </p>
 <h2>彩蛋</h2>
-<p>混沌邪恶<br>
-</p>
+<p>混沌邪恶  </p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span> <span class="kn">as</span> <span class="nn">cv</span>
 
 <span class="k">def</span> <span class="nf">wtf</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="c1"># 这才叫Python嘛！</span>
     <span class="k">return</span> <span class="n">cv</span><span class="o">.</span><span class="n">adaptiveThreshold</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">ADAPTIVE_THRESH_GAUSSIAN_C</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">THRESH_BINARY_INV</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
-
 
 <p>咕咕咕？？？<br>
 我选择opencv自带的局部自适应高斯二值化</p>

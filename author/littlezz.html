@@ -58,11 +58,9 @@
   </header>
   <div>
       <h3>构造包以及一些网络基础知识</h3>
-<p>载入所有函数<br>
-</p>
+<p>载入所有函数  </p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
-
 
 <p>或者从命令行输入<code>sudo scapy</code></p>
 <p>scapy 可以控制各个层的数据， 使用<code>/</code>符号拼合各个层构造出一个包</p>
@@ -73,10 +71,8 @@
 <span class="k">print</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">packet</span><span class="p">))</span>
 </pre></div>
 
-
 <p>IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。<br>
-再后面一层是要发送的数据。<br>
-</p>
+再后面一层是要发送的数据。  </p>
 <p><code>packet.show()</code> 工整的打印包数据</p>
 <h3>发送包</h3>
 <p>scapy 有几种发包的方式。<br>
@@ -101,14 +97,12 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <div class="highlight"><pre><span></span>xxx.github.io --&gt; blog.xxx.com
 </pre></div>
 
-
 <ul>
 <li>
 <p>首先在 github page 上面的项目里添加一个文件<code>CNAME</code>, 内容是目标站点<code>blog.xxx.com</code></p>
 </li>
 <li>
-<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code><br>
-</p>
+<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
 </li>
 <li>
 <p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf.py</code> 中设置</p>
@@ -122,12 +116,10 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
                 <span class="s1">&#39;static&#39;</span><span class="p">]</span>
 </pre></div>
 
-
 <p>之后就是等待 dns 的刷新了</p>
 <h3>小结</h3>
 <p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
-<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。<br>
-</p>
+<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  </p>
 <p>方法：
 在主题里的 …</p>
       <a class="btn" href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Continue reading</a>
@@ -144,7 +136,7 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
   </header>
   <div>
       <h3>intro</h3>
-<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。~~（当然最后是用其他的方法~~</p>
+<p>不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。<del>（当然最后是用其他的方法</del></p>
 <p>后来想了一下绕过引号的方法。</p>
 <p>首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是<code>__buildtins__</code>, 然后找出 <code>eval</code>进行任意代码执行， 绕过沙盒的限制</p>
 <div class="highlight"><pre><span></span><span class="ch">#! python3</span>
@@ -155,14 +147,12 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <span class="c1">#output &quot;&lt;class &#39;list&#39;&gt;&quot;</span>
 </pre></div>
 
-
 <p>我们可以通过这种方法调用自带的函数或者对象， 通过<code>subclasses</code> 找到更加多的类</p>
 <div class="highlight"><pre><span></span><span class="p">[]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
 
 <span class="k">print</span><span class="p">([]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <span class="c1">#output type</span>
 </pre></div>
-
 
 <p>之后利用其中的 <code>catch_warnings</code> 访问 globals 定位出 <code>eval</code>， 然后进行任意代码执行。</p>
 <div class="highlight"><pre><span></span><span class="c1">#python3 </span>
@@ -174,7 +164,6 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
      <span class="o">...</span><span class="p">:</span> <span class="n">lobals__</span><span class="o">.</span><span class="n">__builtins__</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;1+1&quot;</span><span class="p">)}}</span><span class="s1">&#39;).render()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">153</span><span class="p">]:</span> <span class="s1">&#39;2&#39;</span>
 </pre></div>
-
 
 <h3>绕过引号</h3>
 <p>一般情况下， <code>%</code>会被过滤， 但是如果引号也被过滤的话怎么构造出 …</p>
@@ -195,14 +184,11 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <div class="highlight"><pre><span></span>python3 setup.py sdist bdist_wheel
 </pre></div>
 
-
 <p>使用pip安装的时候一般是安装bdist打包出来的文件。</p>
-<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。<br>
-</p>
+<p>关于在打包中加入非程序文件， 有几种方法， 一种是在 MANIFEST.in 中加入， 对于 setup.py 中也提供了<code>package_data</code>参数， 另外对于 setuptools 还提供了特别的 <code>include_package_data</code>的参数， 接下来介绍这些参数的意义和怎么用。  </p>
 <h2>MANIFEST.in</h2>
 <p>MANIFEST.in文件是针对 源文件打包 的， 当需要把非程序文件， 包括README， css或者test文件等加入时， 在MANIFEST.in中指定， 用于生成MANIFEST</p>
-<p>MIANIFEST会暗中自动寻找以下的文件：<br>
-</p>
+<p>MIANIFEST会暗中自动寻找以下的文件：  </p>
 <ul>
 <li>所有<code>py_modules</code> 和 <code>packages</code>中没有明确说明的python文件 </li>
 <li>ext_modules 或 libraries选项中指明的C文件</li>
@@ -214,10 +200,8 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 </ul>
 <h2>package_data</h2>
 <p><code>package_data</code>是在setup.py中的参数， 用于控制安装包里面包含的文件。<br>
-应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。<br>
-</p>
-<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。<br>
-</p>
+应该这样理解， MANIFEST 控制 sdist 包含的内容， package_data控制bdist包含的内容。  </p>
+<p>一般情况是， 对源文件打包里面一般包含README， tests这些， 但是对于安装包这不需要。  所以分开设置。  </p>
 <h2>include_package_data</h2>
 <p>坑就是指 …</p>
       <a class="btn" href="http://littlezz.github.io/pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng.html#pythonda-bao-shi-tian-jia-fei-dai-ma-wen-jian-de-keng">Continue reading</a>
@@ -233,25 +217,23 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>    </p>
   </header>
   <div>
-      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。<br>
-</p>
+      <p>本文主要总结了如何把numpy计算速度优化100倍的过程。  </p>
 <h2>简介</h2>
 <p>最近要对图片做二值化， 参照<a href="http://people.scs.carleton.ca/~roth/iit-publications-iti/docs/gerh-50002.pdf">Adaptive Thresholding Using the Integral Image</a> 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。</p>
 <h2>算法</h2>
 <p>首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 
 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 
-原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。<br>
-</p>
+原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。  </p>
 <h2>直观实现</h2>
 <p>首先我们直接照着原理实现，理论是最快的
 （然而实际是最慢的） </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
+<p><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">intuitive_method</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">,</span> <span class="n">set_value</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">boxsize</span><span class="p">):</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span>
     <span class="n">integral_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
         <span class="n">csum</span><span class="o">=</span><span class="mi">0</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range …</span></pre></div>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range …</span></pre></div></p>
       <a class="btn" href="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html#dui-numpyde-yi-xi-lie-shi-yan">Continue reading</a>
   </div>
   <hr />
@@ -265,35 +247,26 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
   </header>
   <div>
       <h2>疑似被黑</h2>
-<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。<br>
-</p>
-<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。<br>
-</p>
+<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
+<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
 <p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
 <div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
 </pre></div>
 
-
-<p>大的惊人， 开始慌了。<br>
-</p>
+<p>大的惊人， 开始慌了。  </p>
 <p>检查log日志， 发现大量</p>
 <div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
 </pre></div>
 
-
 <p>反查这些ip， 发现都不是我们自己的ip。<br>
 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。
-之后就是ban ip， 换端口， 改密码。<br>
-</p>
-<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。<br>
-</p>
+之后就是ban ip， 换端口， 改密码。  </p>
+<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  </p>
 <p>检查了一下我的fail2ban， 发现处于开启失败状态。<br>
 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。</p>
-<p>『卧槽， 精彩了』<br>
-</p>
+<p>『卧槽， 精彩了』  </p>
 <p>赶紧联系大腿。</p>
-<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。<br>
-</p>
+<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  </p>
 <p>往后是一些挣扎， 检查<code>ps -aux</code>， 看不出来。
 检查<code>who -a /var/log/wtmp …</code></p>
       <a class="btn" href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">Continue reading</a>
@@ -309,27 +282,19 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>    </p>
   </header>
   <div>
-      <p><img alt="" src="../images/need_fix.jpg"><br>
-</p>
-<p>最近太懒了， 之前写的几个练手的项目， 有一些没有放到github上面就已经弃坑了， 至于一些开的坑， 也处于长期不填的状态。<br>
-</p>
-<p>最近在准备写一个即时聊天的网站来练手，前端用reactjs， 后端是aiohttp， 数据库mongodb，  主要是想体验一把分布式的Websocket 和Python3.5 的<code>await/async</code>语法的。但是按现在的进度看来要花大把的时间在前端上面了， 我一年前不知道为什么两个元素会上下排列， 一年后还是不知道为什么。<br>
-</p>
+      <p><img alt="" src="../images/need_fix.jpg">  </p>
+<p>最近太懒了， 之前写的几个练手的项目， 有一些没有放到github上面就已经弃坑了， 至于一些开的坑， 也处于长期不填的状态。  </p>
+<p>最近在准备写一个即时聊天的网站来练手，前端用reactjs， 后端是aiohttp， 数据库mongodb，  主要是想体验一把分布式的Websocket 和Python3.5 的<code>await/async</code>语法的。但是按现在的进度看来要花大把的时间在前端上面了， 我一年前不知道为什么两个元素会上下排列， 一年后还是不知道为什么。  </p>
 <p>前端， 总是给我一种五五开的『这他妈是什么， 这他妈又是什么』的感觉。</p>
-<p>不久前写过一个chrome的插件<a href="https://github.com/littlezz/PixivFast">PixivFast</a>， 用来让我在p站刷图时可以不用点开大图之后再右键另存为， 而是按一下<code>s</code>就可以弹出下载大图的会话框。 实用， 但是没放到google商店上， 而且我还想着再加一个同时给10分评分的功能， 于是就一直拖着。目前有一名忠实的用户——我自己， 不过由于没有在google商店上面发布， 每次重启浏览器都得重新安装插件， 就现状看来， 这个『忠实』的用户也快叛变了。<br>
-</p>
+<p>不久前写过一个chrome的插件<a href="https://github.com/littlezz/PixivFast">PixivFast</a>， 用来让我在p站刷图时可以不用点开大图之后再右键另存为， 而是按一下<code>s</code>就可以弹出下载大图的会话框。 实用， 但是没放到google商店上， 而且我还想着再加一个同时给10分评分的功能， 于是就一直拖着。目前有一名忠实的用户——我自己， 不过由于没有在google商店上面发布， 每次重启浏览器都得重新安装插件， 就现状看来， 这个『忠实』的用户也快叛变了。  </p>
 <p>还有一个备份A岛讨论串的爬虫， <a href="https://github.com/littlezz/island-backup">island-backup</a>, 用aiohttp写的。当初野心勃勃， 如今也只是剩下几个自己开的issue没关， kukuku岛禁用api接口之后我懒得再管, 于是现在只能用于主岛。甚至github上面代码到了v1.1.2， 但是pypi上面还是停留在v1.0.1。<br>
-懒到不想打包。<br>
-</p>
+懒到不想打包。  </p>
 <p>其实api接口禁用之后解析html就好了， 懒。 我之前写过一个搜索出A岛回复数超过一定量的串的程序， 当时是有精力啊， 支持A岛， 哭哭哭岛， 备胎岛， 甚至是K岛， 里面有socks的代理设置， 而且还图形化了，用的是自带的tk。 然后呢？mac上面的tk有问题， 触摸板双指滑动tk就崩， 我自己的mac上面下载了新的tk， 没有问题，  后来兴致勃勃的跑去给蛋蛋试用， 他从github上克隆好程序装好所需的依赖， 启动之后双指一上滑， Duang！ </p>
 <p>我和他解释啊， 这不是我的锅啊， 这是tk的锅啊， tk的锅啊， 底层的锅啊， 我救不了啊。 </p>
 <p>你要不装个新的tk试试？ </p>
-<p>他给了我一个关爱智障的眼神。<br>
-</p>
-<p><img alt="" src="../images/2.jpg"><br>
-</p>
-<p>这个项目后来也不了了之了， 我自己都不用。<br>
-</p>
+<p>他给了我一个关爱智障的眼神。  </p>
+<p><img alt="" src="../images/2.jpg">  </p>
+<p>这个项目后来也不了了之了， 我自己都不用。  </p>
 <p>后来还写了一个<a href="https://github.com/littlezz/ESL-Model">ESL-Model</a>, 这东西我都不想说， 现在都快成黑历史了 …</p>
       <a class="btn" href="http://littlezz.github.io/lan.html#lan">Continue reading</a>
   </div>
@@ -345,28 +310,19 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
   </header>
   <div>
       <p>我在上课。<br>
-如同之前我上过的无数的课一样， 我完全没有在听。<br>
-</p>
-<p>老师要求我们在书本上做题， 之后使用像超市里面的条形码扫描器一样的机器在书本上一扫， 平时分就出来了。<br>
-</p>
+如同之前我上过的无数的课一样， 我完全没有在听。  </p>
+<p>老师要求我们在书本上做题， 之后使用像超市里面的条形码扫描器一样的机器在书本上一扫， 平时分就出来了。  </p>
 <p>当然， 这种机器看上去高级， 但总是给人一种玩具的感觉。有些人的分数就是飘忽不定， 一会儿是二十几分， 一会儿是六十几分， 这取决于使用扫描器时的角度， 是个依赖耐心和运气的活儿。   <br>
-不过使用者虽然有耐心， 但是其他同学还在等着用啊， 于是乱糟糟的， 催别人快一些的， 拿高分的发表扫描器使用经验谈的， 拿低分大叫不公平等着再试一次的。<br>
-</p>
+不过使用者虽然有耐心， 但是其他同学还在等着用啊， 于是乱糟糟的， 催别人快一些的， 拿高分的发表扫描器使用经验谈的， 拿低分大叫不公平等着再试一次的。  </p>
 <p>看够了， 我才发现我不知道教材是什么， 看看邻座的，还好， 我桌子上有了一本， 可是完全不知道要写哪里。<br>
-此时老师已经拿着扫描仪走到我旁边了， 我还没有找到对应的页数， 一把抽过邻座的书， 74页， 我看了一下自己的书， 第71页， 赶紧一翻， 老师也在这时走到了我身旁。<br>
-</p>
-<p>我希望他没有看到我空空如也的书本， 对他说先检查邻座的吧。<br>
-</p>
-<p>末了， 老师说时间不够了， 没有检查的同学下课了过去找他。我松了一口气， 赶紧对着邻座的书本抄， 题目是填写一个巨大且数目繁多的表格。<br>
-</p>
+此时老师已经拿着扫描仪走到我旁边了， 我还没有找到对应的页数， 一把抽过邻座的书， 74页， 我看了一下自己的书， 第71页， 赶紧一翻， 老师也在这时走到了我身旁。  </p>
+<p>我希望他没有看到我空空如也的书本， 对他说先检查邻座的吧。  </p>
+<p>末了， 老师说时间不够了， 没有检查的同学下课了过去找他。我松了一口气， 赶紧对着邻座的书本抄， 题目是填写一个巨大且数目繁多的表格。  </p>
 <p>放学后走在回家的路上， 我带着耳机， 放着the pillows的《one life》，和一个女生并肩走着， 我低着头看我的脚抬起又落下， 配合着节拍， 正当我觉得风景正好， 晚霞染红了半片天， 心情舒畅， 斗志昂扬的时候， 我想起这样带着耳机和一个女孩走路不太礼貌， 继而我突然想到我忘记去给老师检查我的作业了。</p>
 <p>于是事情最终演变成了我摘下耳机， 停下了脚步， 在兴奋劲还没有散去的脸上新添了一份略带惶恐的表情：『完了， 我忘记给老师检查了， 平时分没有了。  』</p>
-<p>女孩或许说了些什么， 我没在听， 但是我才注意到我喜欢这个女孩， 但是他是不是我的女朋友呢， 好像也不是， 我们可能是在恋爱期吧。<br>
-</p>
-<p>我觉得没有什么比现在和女孩一起走在回家的路上更重要的了， 瞬间忘光了检查作业的事情， 毕竟， 现在回学校也没有什么用了。<br>
-</p>
-<p>到了一处池塘， 池塘旁边放满了五花八门的脸盆和塑料桶。 这个池塘里面有各种各样的鱼， 以黑色的草鱼为主。 一个无主的池塘， 鱼儿平时可能就吃一些水草吧， 所以鱼饵一下去， 立马咬钩， 但是钓上来的鱼却总是又肥又大， 池塘旁边的各式各样的盆和桶用于给垂钓者临时存放钓上来的鱼， 偶尔来得早了还能发现几根普通的『随手』杆。  总之， 一个免费且设施齐全的自助鱼塘。<br>
-</p>
+<p>女孩或许说了些什么， 我没在听， 但是我才注意到我喜欢这个女孩， 但是他是不是我的女朋友呢， 好像也不是， 我们可能是在恋爱期吧。  </p>
+<p>我觉得没有什么比现在和女孩一起走在回家的路上更重要的了， 瞬间忘光了检查作业的事情， 毕竟， 现在回学校也没有什么用了。  </p>
+<p>到了一处池塘， 池塘旁边放满了五花八门的脸盆和塑料桶。 这个池塘里面有各种各样的鱼， 以黑色的草鱼为主。 一个无主的池塘， 鱼儿平时可能就吃一些水草吧， 所以鱼饵一下去， 立马咬钩， 但是钓上来的鱼却总是又肥又大， 池塘旁边的各式各样的盆和桶用于给垂钓者临时存放钓上来的鱼， 偶尔来得早了还能发现几根普通的『随手』杆。  总之， 一个免费且设施齐全的自助鱼塘。  </p>
 <p>我们商量着钓一条鱼回去， 取了一根鱼竿 …</p>
       <a class="btn" href="http://littlezz.github.io/hui-jia.html#hui-jia">Continue reading</a>
   </div>
@@ -384,8 +340,7 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <h2>Install twine</h2>
 <p><code>pip install twine</code></p>
 <h2>Init file</h2>
-<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.<br>
-</p>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
 <p>For example, </p>
 <div class="highlight"><pre><span></span>.
 ├── foo
@@ -393,16 +348,11 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 └── readme.md
 </pre></div>
 
-
-<p>Secondly, add specify file to the root folder.<br>
-</p>
+<p>Secondly, add specify file to the root folder.  </p>
 <ul>
-<li>README.rst<br>
-</li>
-<li>MANIFEST.in<br>
-</li>
-<li>setup.py<br>
-</li>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
 <li>setup.cfg(option)</li>
 </ul>
 <p>pypi do not know markdown format readme, there is only rst format available.</p>
@@ -422,27 +372,21 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
       <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>    </p>
   </header>
   <div>
-      <p>首先， 不得不提关于这个展览会的纪录片 《庵野先生与我们的莽撞挑战 日本动画人展览会》<br>
-</p>
+      <p>首先， 不得不提关于这个展览会的纪录片 《庵野先生与我们的莽撞挑战 日本动画人展览会》  </p>
 <p>5分钟的动画， 制作时间往往是好几个月， 途中经历的种种困难， 特别是对于新人监督， 经验不足，在现场时的时候很难控制场面。比如第32话的监督， 在配音时说希望林原惠用更成熟一点的语气， 结果林原惠反问『请问监督眼中的成熟是什么呢？ 我没有从人物的脸上看到成熟的气质。』。 然后监督直接吓懵逼，一个工作人员默默递给监督一个红绿按钮的选择键盘，全场没有人敢讲话， 只有监督不断翻着台本的声音。   最后还是林原惠救场， 说在刚才的基础上用更低沉的语气。 监督说很好， 这样就好。 </p>
 <p>旁白一针见血的说『现在监督一点很后悔吧』。
 但是很多问题最后可能只能妥协。<br>
-毕竟学会妥协也是成为优秀监督的必要能力。。。。<br>
-</p>
+毕竟学会妥协也是成为优秀监督的必要能力。。。。  </p>
 <p>好了， 开始记录那些我喜欢的作品吧。<br>
-基于看过纪录片的原因， 我先说32话， 之后的按顺序。<br>
-</p>
+基于看过纪录片的原因， 我先说32话， 之后的按顺序。  </p>
 <h3>32 新世紀いんぱくつ。</h3>
-<p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。~~那张脸上面看不出所谓的成熟~~<br>
+<p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。<del>那张脸上面看不出所谓的成熟</del><br>
 然后歌很好听， 非常好听， 背景也非常美，再配上百合， 百合！百合！林原精分现场！自己和自己百合！！  我吼兴奋， 我吼兴奋啊啊啊啊啊啊啊啊啊啊wwww， 可以循环看好多遍。 <br>
-~~我的偶像不可能变成橙汁~~<br>
-</p>
+<del>我的偶像不可能变成橙汁</del>  </p>
 <h3>1 龍の歯医者</h3>
-<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。<br>
-</p>
+<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。  </p>
 <h3>2 HILL CLIMB GIRL</h3>
-<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。<br>
-</p>
+<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。  </p>
 <h3>3 ME!ME!ME!</h3>
 <p>这个不用说了， 很多人说神作啦， 和EVA说的是一个事情啦， 更加容易懂啦， 实用啦。 各种各样。<br>
 想要补充的就是其实庵野是没有参与进来的。。。<br>

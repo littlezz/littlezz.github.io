@@ -13,9 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="Install twine pip install twine Init file First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have README and some other files in the same level. For example, . ├── foo │ └── a.py └── readme.md Secondly, add specify file to the root folder. README.rst MANIFEST.in setup.py setup.cfg(option) pypi do not know markdown format readme, there is only rst format available. setup.py look at https://github.com/pypa/sampleproject/blob/master/setup.py …" />
+<meta name="description" content="Install twine pip install twine Init file First of all, make sure that the structure of project is correct. Says, your project code in a folder call &#39;foo&#39;, then you have README and some other files in the same level. For example, . ├── foo │ └── a.py └── readme.md Secondly, add specify file to the root folder. README.rst MANIFEST.in setup.py setup.cfg(option) pypi do not know markdown format readme, there is only rst format available. setup.py look at https://github.com/pypa/sampleproject/blob/master/setup.py …" />
 <meta name="keywords" content="python, 小结">
-<meta property="og:site_name" content="littlezz's Blog"/>
+<!--<meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="How to upload package to pypi"/>
 <meta property="og:description" content="Install twine pip install twine Init file First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have README and some other files in the same level. For example, . ├── foo │ └── a.py └── readme.md Secondly, add specify file to the root folder. README.rst MANIFEST.in setup.py setup.cfg(option) pypi do not know markdown format readme, there is only rst format available. setup.py look at https://github.com/pypa/sampleproject/blob/master/setup.py …"/>
 <meta property="og:locale" content="en_US"/>
@@ -27,7 +27,8 @@
 <meta property="article:section" content="Python"/>
 <meta property="article:tag" content="python"/>
 <meta property="article:tag" content="小结"/>
-<meta property="og:image" content="/images/logo.jpg">  <title>littlezz's Blog &ndash; How to upload package to pypi</title>
+<meta property="og:image" content="/images/logo.jpg">-->
+  <title>littlezz's Blog &ndash; How to upload package to pypi</title>
 </head>
 <body>
   <aside>
@@ -63,8 +64,7 @@
     <h2>Install twine</h2>
 <p><code>pip install twine</code></p>
 <h2>Init file</h2>
-<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.<br>
-</p>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
 <p>For example, </p>
 <div class="highlight"><pre><span></span>.
 ├── foo
@@ -72,16 +72,11 @@
 └── readme.md
 </pre></div>
 
-
-<p>Secondly, add specify file to the root folder.<br>
-</p>
+<p>Secondly, add specify file to the root folder.  </p>
 <ul>
-<li>README.rst<br>
-</li>
-<li>MANIFEST.in<br>
-</li>
-<li>setup.py<br>
-</li>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
 <li>setup.cfg(option)</li>
 </ul>
 <p>pypi do not know markdown format readme, there is only rst format available.</p>
@@ -89,35 +84,27 @@
 <p>look at
 <a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py</a></p>
 <p>after finish <code>setup.py</code><br>
-you can use <br>
-</p>
+you can use   </p>
 <p><code>pip install -e .</code>
 install package locally on editable mode.<br>
-It will also install dependency.<br>
-</p>
+It will also install dependency.  </p>
 <h2>Make dist</h2>
 <h3>Build source distribution</h3>
 <p>run<br>
-<code>python setup.py sdist</code><br>
-</p>
+<code>python setup.py sdist</code>  </p>
 <h3>Build wheel.</h3>
 <p>If your code compat py2 and py3.<br>
-<code>python setup.py bdist_wheel --universal</code><br>
-</p>
+<code>python setup.py bdist_wheel --universal</code>  </p>
 <p>else, 
-<code>python setup.py bdist_wheel</code><br>
-</p>
-<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code><br>
-</p>
+<code>python setup.py bdist_wheel</code>  </p>
+<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code>  </p>
 <p>For example, if your code is only available in py3.5 and 3.4 </p>
 <div class="highlight"><pre><span></span><span class="k">[bdist_wheel]</span>
 <span class="na">python-tag</span> <span class="o">=</span> <span class="s">py35, py34</span>
 </pre></div>
 
-
 <h2>Upload</h2>
-<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a><br>
-</p>
+<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a>  </p>
 <p>Create a account on pypi, register your package,  write a <code>~/.pypirc</code> </p>
 <div class="highlight"><pre><span></span><span class="k">[distutils]</span>
 <span class="na">index-servers</span><span class="o">=</span><span class="s">pypi</span>
@@ -128,19 +115,13 @@ It will also install dependency.<br>
 <span class="na">password</span> <span class="o">=</span> <span class="s">&lt;password&gt;</span>
 </pre></div>
 
-
-<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.<br>
-</p>
-<p>upload your dist folder<br>
-</p>
-<p><code>twine upload dist/*</code><br>
-</p>
+<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.  </p>
+<p>upload your dist folder  </p>
+<p><code>twine upload dist/*</code>  </p>
 <h2>Reference</h2>
 <ul>
-<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a><br>
-</li>
-<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a><br>
-</li>
+<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a>  </li>
+<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a>  </li>
 </ul>
 <p>2016-05-15 11:43:33</p>
   </div>

@@ -13,9 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="" />
 <meta name="author" content="littlezz" />
-<meta name="description" content="疑似被黑 2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。 2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。 直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， netstat -an | grep 443 | grep ESTABLISHED | wc -l 大的惊人， 开始慌了。 检查log日志， 发现大量 2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:<ip>:<port> 反查这些ip， 发现都不是我们自己的ip。 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。 之后就是ban ip， 换端口， 改密码。 接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。 检查了一下我的fail2ban， 发现处于开启失败状态。 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。 『卧槽， 精彩了』 赶紧联系大腿。 先打w命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示w估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。 往后是一些挣扎， 检查ps -aux， 看不出来。 检查who -a /var/log/wtmp …" />
+<meta name="description" content="疑似被黑 2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。 2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。 直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， netstat -an | grep 443 | grep ESTABLISHED | wc -l 大的惊人， 开始慌了。 检查log日志， 发现大量 2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt; 反查这些ip， 发现都不是我们自己的ip。 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。 之后就是ban ip， 换端口， 改密码。 接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。 检查了一下我的fail2ban， 发现处于开启失败状态。 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。 『卧槽， 精彩了』 赶紧联系大腿。 先打w命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示w估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。 往后是一些挣扎， 检查ps -aux， 看不出来。 检查who -a /var/log/wtmp …" />
 <meta name="keywords" content="">
-<meta property="og:site_name" content="littlezz's Blog"/>
+<!--<meta property="og:site_name" content="littlezz's Blog"/>
 <meta property="og:title" content="记一次服务器被爆破后灾后重建ss的经历"/>
 <meta property="og:description" content="疑似被黑 2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。 2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。 直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， netstat -an | grep 443 | grep ESTABLISHED | wc -l 大的惊人， 开始慌了。 检查log日志， 发现大量 2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:<ip>:<port> 反查这些ip， 发现都不是我们自己的ip。 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。 之后就是ban ip， 换端口， 改密码。 接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。 检查了一下我的fail2ban， 发现处于开启失败状态。 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。 『卧槽， 精彩了』 赶紧联系大腿。 先打w命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示w估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。 往后是一些挣扎， 检查ps -aux， 看不出来。 检查who -a /var/log/wtmp …"/>
 <meta property="og:locale" content="en_US"/>
@@ -25,7 +25,8 @@
 <meta property="article:modified_time" content=""/>
 <meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
 <meta property="article:section" content="Code"/>
-<meta property="og:image" content="/images/logo.jpg">  <title>littlezz's Blog &ndash; 记一次服务器被爆破后灾后重建ss的经历</title>
+<meta property="og:image" content="/images/logo.jpg">-->
+  <title>littlezz's Blog &ndash; 记一次服务器被爆破后灾后重建ss的经历</title>
 </head>
 <body>
   <aside>
@@ -59,74 +60,59 @@
   </header>
   <div>
     <h2>疑似被黑</h2>
-<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。<br>
-</p>
-<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。<br>
-</p>
+<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
+<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
 <p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
 <div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
 </pre></div>
 
-
-<p>大的惊人， 开始慌了。<br>
-</p>
+<p>大的惊人， 开始慌了。  </p>
 <p>检查log日志， 发现大量</p>
 <div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
 </pre></div>
 
-
 <p>反查这些ip， 发现都不是我们自己的ip。<br>
 我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。
-之后就是ban ip， 换端口， 改密码。<br>
-</p>
-<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。<br>
-</p>
+之后就是ban ip， 换端口， 改密码。  </p>
+<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  </p>
 <p>检查了一下我的fail2ban， 发现处于开启失败状态。<br>
 顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。</p>
-<p>『卧槽， 精彩了』<br>
-</p>
+<p>『卧槽， 精彩了』  </p>
 <p>赶紧联系大腿。</p>
-<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。<br>
-</p>
+<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  </p>
 <p>往后是一些挣扎， 检查<code>ps -aux</code>， 看不出来。
 检查<code>who -a /var/log/wtmp</code>, 看一下登录的信息， 看不出来。<br>
-检查bash_history, zsh_history， 根本懒得看了。<br>
-</p>
-<p>淦他娘啊， 我选择重装！<br>
-</p>
+检查bash_history, zsh_history， 根本懒得看了。  </p>
+<p>淦他娘啊， 我选择重装！  </p>
 <h2>灾后重建</h2>
-<p>这次选了ubuntu， 而且有经验了。<br>
-</p>
+<p>这次选了ubuntu， 而且有经验了。  </p>
 <ul>
 <li>
-<p>先装<code>zsh</code>, <code>apt-get install zsh</code><br>
-</p>
+<p>先装<code>zsh</code>, <code>apt-get install zsh</code>  </p>
 </li>
 <li>
 <p>建立用户, 指定shell为zsh， <code>useradd youruser -m -s /bin/zsh</code></p>
 </li>
 <li>
-<p>上传公钥， 通过 <code>ssh-copy-id</code> 命令。<br>
-</p>
+<p>上传公钥， 通过 <code>ssh-copy-id</code> 命令。  </p>
 </li>
 <li>
-<p>更改ssh的配置， 改端口， 关root登录， 关密码登录。<br>
-</p>
-<p><code>PermitRootLogin no
+<p>更改ssh的配置， 改端口， 关root登录， 关密码登录。  </p>
+<p><div class="highlight"><pre><span></span>PermitRootLogin no
 Port 12345
-PasswordAuthentication no</code>
-* 重启ssh服务。<br>
-</p>
+PasswordAuthentication no
+</pre></div>
+* 重启ssh服务。  </p>
 </li>
 <li>
-<p>安装 <code>denyhosts</code>, <code>apt-get install denyhosts</code><br>
-</p>
+<p>安装 <code>denyhosts</code>, <code>apt-get install denyhosts</code>  </p>
 </li>
 <li>
 <p><code>oh-my-zsh</code></p>
-<p><code>sh
-apt-get install git
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"</code></p>
+<div class="highlight"><pre><span></span>apt-get install git
+sh -c <span class="s2">&quot;</span><span class="k">$(</span>wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -<span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+
 </li>
 </ul>
 <h2>配置ss</h2>
@@ -136,13 +122,11 @@ pip install -U pip
 pip install shadowsocks
 </pre></div>
 
-
 <h4>安装密码库， 安装<code>libsodium</code>依赖</h4>
 <div class="highlight"><pre><span></span>apt-get install python-m2crypto
 apt-get install libsodium18
 pip install M2Crypto
 </pre></div>
-
 
 <h4>配置<code>/etc/shadowsocks.json</code></h4>
 <div class="highlight"><pre><span></span><span class="p">{</span>
@@ -159,26 +143,20 @@ pip install M2Crypto
 <span class="p">}</span>
 </pre></div>
 
-
 <p>服务器参数设置<code>"::"</code>可以同时监听ipv4和ipv6, user设置nobody权限， 选一个加密方式， 另外最新是可以打开OTA来防止被攻击， 但是需要客户端也支持OTA。 </p>
 <p>除此以外， 还可以用提供的 <a href="https://github.com/shadowsocks/shadowsocks/blob/master/utils/autoban.py">autoban.py</a> 来ban ip,使用方法参考<a href="https://github.com/shadowsocks/shadowsocks/wiki/Ban-Brute-Force-Crackers">Ban Brute Force Crackers</a> .<br>
 注意到同时监听ipv4和ipv6的时候， 这个代码提取ip的方式有问题，要改一下，<br>
-第41行改成<br>
-</p>
+第41行改成  </p>
 <div class="highlight"><pre><span></span>ip = line.split()[-1].split(&#39;:&#39;)[-2]
 </pre></div>
 
-
 <p><strong>（小心不要把自己ban了</strong></p>
-<p><br><br>
-</p>
+<p><br>  </p>
 <h4>关于优化</h4>
-<p>参考  <a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize">shadowsocks-optimize</a>, 不重复了<br>
-</p>
+<p>参考  <a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-optimize">shadowsocks-optimize</a>, 不重复了  </p>
 <h4>配置开机自启动</h4>
 <p>rc.local ubuntu用不了， 需要自己写一个<code>shadowsocks.service</code>:<br>
-在<code>/etc/systemd/system</code>下建立一个文件， 比如<code>shadowsocks.service</code>， 写入如下内容<br>
-</p>
+在<code>/etc/systemd/system</code>下建立一个文件， 比如<code>shadowsocks.service</code>， 写入如下内容  </p>
 <div class="highlight"><pre><span></span><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">run ssserver on background</span>
 
@@ -191,17 +169,14 @@ pip install M2Crypto
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </pre></div>
 
-
 <p>参考： <br>
 <a href="https://unix.stackexchange.com/questions/47695/how-to-write-startup-script-for-systemd">how-to-write-startup-script-for-systemd</a></p>
 <p><a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html">systemd.service.html</a></p>
 <p>按说明， <code>Type</code>选<code>forking</code>而不是<code>simple</code>。</p>
-<p>之后可以用<code>systemctl start shadowsocks</code> 和<code>systemctl stop shadowsocks</code> 开关ss.<br>
-</p>
+<p>之后可以用<code>systemctl start shadowsocks</code> 和<code>systemctl stop shadowsocks</code> 开关ss.  </p>
 <p>使用 <code>systemctl enable shadowsocks</code> 让ss开机启动。</p>
 <h2>总结</h2>
-<p>~~在被日中成长~~。<br>
-</p>
+<p><del>在被日中成长</del>。  </p>
   </div>
   <div class="tag-cloud">
     <p>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'> -->
+   <link href='//fonts.proxy.ustclug.org/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="littlezz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="littlezz" />
+<meta name="description" content="总览 logging 分为3大模块，Logger, Handler, 同时还有Format来控制输出的格式。 logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。 logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括： DEBUG INFO WARNING ERROR CRITICAL 默认等级是 WARNING。 对于 format 用于处理记录信息的格式， 比如%(message)s %(asctime)s. 利用老旧的%s的原因是为了兼容之前的版本， 可以在之后的设置中使用新的{风格。 logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。 对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。 logger logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger import logging logger = logging.getLogger(__name__) logger.debug(&#39;some infomation&#39;) Handler handler 有多种， 可以记录到 console …" />
+<meta name="keywords" content="python, 小结">
+  <title>littlezz's Blog &ndash; Logging 使用总结</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="littlezz" title="littlezz">
+      </a>
+      <h1><a href="http://littlezz.github.io">littlezz</a></h1>
+      <p>Everything that has a beginning has an end.</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/littlezz/" target="_blank"><i class="fa fa-github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="logging-shi-yong-zong-jie">Logging 使用总结</h1>
+    <p>Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a></p>
+  </header>
+  <div>
+    <h3>总览</h3>
+<p>logging 分为3大模块，<code>Logger</code>, <code>Handler</code>, 同时还有<code>Format</code>来控制输出的格式。  </p>
+<p>logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。<br>
+logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括：</p>
+<div class="highlight"><pre><span></span>DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+</pre></div>
+
+<p>默认等级是 <code>WARNING</code>。  </p>
+<p>对于 format 用于处理记录信息的格式， 比如<code>%(message)s %(asctime)s</code>. 利用老旧的<code>%s</code>的原因是为了兼容之前的版本， 可以在之后的设置中使用新的<code>{</code>风格。  </p>
+<p>logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。</p>
+<p>对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。  </p>
+<h3>logger</h3>
+<p>logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;some infomation&#39;</span><span class="p">)</span>
+</pre></div>
+
+<h3>Handler</h3>
+<p>handler 有多种， 可以记录到 console， 或者到文件， 文件也可以自动 rotate， 常用的几个 handler</p>
+<ul>
+<li>StreamHandler。 打印到终端</li>
+<li>FileHandler  保存到文件</li>
+<li>RotatingFileHandler 保存到文件， 达到一定大小之后备份文件。</li>
+<li>TimedRotatingFileHandler 定时备份</li>
+</ul>
+<p>其余参考 <a href="https://docs.python.org/3/howto/logging.html#useful-handlers">useful-handlers</a>  </p>
+<h3>formatter</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute name</th>
+<th>Format</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>args</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">The tuple of arguments merged into msg to produce message, or a dict whose values are used for the merge (when there is only one argument, and it is a dictionary).</td>
+</tr>
+<tr>
+<td>asctime</td>
+<td>%(asctime)s</td>
+<td align="left">Human-readable time when the LogRecord was created. By default this is of the form ‘2003-07-08 16:49:45,896’ (the numbers after the comma are millisecond portion of the time).</td>
+</tr>
+<tr>
+<td>created</td>
+<td>%(created)f</td>
+<td align="left">Time when the LogRecord was created (as returned by time.time()).</td>
+</tr>
+<tr>
+<td>exc_info</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">Exception tuple (à la sys.exc_info) or, if no exception has occurred, None.</td>
+</tr>
+<tr>
+<td>filename</td>
+<td>%(filename)s</td>
+<td align="left">Filename portion of pathname.</td>
+</tr>
+<tr>
+<td>funcName</td>
+<td>%(funcName)s</td>
+<td align="left">Name of function containing the logging call.</td>
+</tr>
+<tr>
+<td>levelname</td>
+<td>%(levelname)s</td>
+<td align="left">Text logging level for the message ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').</td>
+</tr>
+<tr>
+<td>levelno</td>
+<td>%(levelno)s</td>
+<td align="left">Numeric logging level for the message (DEBUG, INFO, WARNING, ERROR, CRITICAL).</td>
+</tr>
+<tr>
+<td>lineno</td>
+<td>%(lineno)d</td>
+<td align="left">Source line number where the logging call was issued (if available).</td>
+</tr>
+<tr>
+<td>module</td>
+<td>%(module)s</td>
+<td align="left">Module (name portion of filename).</td>
+</tr>
+<tr>
+<td>msecs</td>
+<td>%(msecs)d</td>
+<td align="left">Millisecond portion of the time when the LogRecord was created.</td>
+</tr>
+<tr>
+<td>message</td>
+<td>%(message)s</td>
+<td align="left">The logged message, computed as msg % args. This is set when Formatter.format() is invoked.</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">The format string passed in the original logging call. Merged with args to produce message, or an arbitrary object (see Using arbitrary objects as messages).</td>
+</tr>
+<tr>
+<td>name</td>
+<td>%(name)s</td>
+<td align="left">Name of the logger used to log the call.</td>
+</tr>
+<tr>
+<td>pathname</td>
+<td>%(pathname)s</td>
+<td align="left">Full pathname of the source file where the logging call was issued (if available).</td>
+</tr>
+<tr>
+<td>process</td>
+<td>%(process)d</td>
+<td align="left">Process ID (if available).</td>
+</tr>
+<tr>
+<td>processName</td>
+<td>%(processName)s</td>
+<td align="left">Process name (if available).</td>
+</tr>
+<tr>
+<td>relativeCreated</td>
+<td>%(relativeCreated)d</td>
+<td align="left">Time in milliseconds when the LogRecord was created, relative to the time the logging module was loaded.</td>
+</tr>
+<tr>
+<td>stack_info</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">Stack frame information (where available) from the bottom of the stack in the current thread, up to and including the stack frame of the logging call which resulted in the creation of this record.</td>
+</tr>
+<tr>
+<td>thread</td>
+<td>%(thread)d</td>
+<td align="left">Thread ID (if available).</td>
+</tr>
+<tr>
+<td>threadName</td>
+<td>%(threadName)s</td>
+<td align="left">Thread name (if available).</td>
+</tr>
+</tbody>
+</table>
+<h3>example</h3>
+<div class="highlight"><pre><span></span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%(asctime)s</span><span class="s2">][</span><span class="si">%(levelname)s</span><span class="s2">][</span><span class="si">%(threadName)s</span><span class="s2">][</span><span class="si">%(funcName)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">file_handle</span> <span class="o">=</span> <span class="n">handlers</span><span class="o">.</span><span class="n">RotatingFileHandler</span><span class="p">(</span><span class="s1">&#39;example.log&#39;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+                                           <span class="n">backupCount</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">err_handle</span> <span class="o">=</span> <span class="n">handlers</span><span class="o">.</span><span class="n">RotatingFileHandler</span><span class="p">(</span><span class="s1">&#39;err.log&#39;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+                                          <span class="n">backupCount</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">file_handle</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">file_handle</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+<span class="n">err_handle</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">err_handle</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+<span class="n">console_handle</span>  <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">console_handle</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">console_handle</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">file_handle</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console_handle</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">err_handle</span><span class="p">)</span>
+</pre></div>
+
+<h4>reference</h4>
+<p><a href="https://docs.python.org/3/library/logging.html">https://docs.python.org/3/library/logging.html</a> 
+<a href="https://docs.python.org/3/howto/logging.html">https://docs.python.org/3/howto/logging.html</a></p>
+<p>2017年08月02日17:20:48</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://littlezz.github.io/tag/python.html">python</a>
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'littlezz';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+        <p>&copy; littlezz 2017</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102694300-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Logging 使用总结",
+  "headline": "Logging 使用总结",
+  "datePublished": "2017-08-02 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "littlezz",
+    "url": "http://littlezz.github.io/author/littlezz.html"
+  },
+  "image": "/images/logo.jpg",
+  "url": "http://littlezz.github.io/logging-shi-yong-zong-jie.html",
+  "description": "总览 logging 分为3大模块，Logger, Handler, 同时还有Format来控制输出的格式。 logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。 logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括： DEBUG INFO WARNING ERROR CRITICAL 默认等级是 WARNING。 对于 format 用于处理记录信息的格式， 比如%(message)s %(asctime)s. 利用老旧的%s的原因是为了兼容之前的版本， 可以在之后的设置中使用新的{风格。 logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。 对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。 logger logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger import logging logger = logging.getLogger(__name__) logger.debug('some infomation') Handler handler 有多种， 可以记录到 console …"
+}
+</script></body>
+</html>

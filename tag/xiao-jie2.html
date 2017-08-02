@@ -50,6 +50,65 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Numpy 使用小结</a></h2>
+    <p>
+      Posted on Mon 21 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <p><a href="https://github.com/littlezz/ESL-Model">ESLModel</a> 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  </p>
+<p>于是抽空写一下关于numpy的总结吧。  </p>
+<h2>Intro</h2>
+<p>介绍一些会混淆的东西</p>
+<h3>vector vs matrix</h3>
+<p>vector是向量， 是一维的。 
+matrix是二维以上的。  </p>
+<div class="highlight"><pre><span></span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># method 1</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]])</span>
+
+<span class="c1"># method 2</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># mathod 3</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># output (3,)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># output (3, 1)</span>
+</pre></div>
+
+<ol>
+<li>向量可以点乘矩阵， 反过来也可以， 结果是向量。</li>
+<li>向量可以点乘向量， 得到标量</li>
+<li>向量没有倒置</li>
+<li>矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。  </li>
+</ol>
+<p>如果想要得到  单行的子矩阵  </p>
+<div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># 得到一行， 矩阵</span>
+<span class="n">mat</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
+
+<span class="c1"># 得到一列， 矩阵</span>
+<span class="n">mat</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="c1"># 得到第二列， 向量</span>
+<span class="n">mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># 子矩阵</span>
+<span class="n">mat</span><span class="p">[:</span><span class="mi">2 …</span></pre></div>
+      <a class="btn" href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Python Package Setup</a></h2>
     <p>
       Posted on Thu 17 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>

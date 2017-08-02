@@ -50,6 +50,44 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Logging 使用总结</a></h2>
+    <p>
+      Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <h3>总览</h3>
+<p>logging 分为3大模块，<code>Logger</code>, <code>Handler</code>, 同时还有<code>Format</code>来控制输出的格式。  </p>
+<p>logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。<br>
+logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括：</p>
+<div class="highlight"><pre><span></span>DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+</pre></div>
+
+<p>默认等级是 <code>WARNING</code>。  </p>
+<p>对于 format 用于处理记录信息的格式， 比如<code>%(message)s %(asctime)s</code>. 利用老旧的<code>%s</code>的原因是为了兼容之前的版本， 可以在之后的设置中使用新的<code>{</code>风格。  </p>
+<p>logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。</p>
+<p>对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。  </p>
+<h3>logger</h3>
+<p>logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;some infomation&#39;</span><span class="p">)</span>
+</pre></div>
+
+<h3>Handler</h3>
+<p>handler 有多种， 可以记录到 console …</p>
+      <a class="btn" href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/scapy-shi-yong-zong-jie.html#scapy-shi-yong-zong-jie">Scapy 使用总结</a></h2>
     <p>
       Posted on Fri 30 June 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -369,43 +407,6 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <p>look at
 <a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py …</a></p>
       <a class="btn" href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian">日本动画人展览会总结与推荐</a></h2>
-    <p>
-      Posted on Thu 21 April 2016 in <a href="http://littlezz.github.io/category/acg.html">ACG</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>      &#8226; <a href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>首先， 不得不提关于这个展览会的纪录片 《庵野先生与我们的莽撞挑战 日本动画人展览会》  </p>
-<p>5分钟的动画， 制作时间往往是好几个月， 途中经历的种种困难， 特别是对于新人监督， 经验不足，在现场时的时候很难控制场面。比如第32话的监督， 在配音时说希望林原惠用更成熟一点的语气， 结果林原惠反问『请问监督眼中的成熟是什么呢？ 我没有从人物的脸上看到成熟的气质。』。 然后监督直接吓懵逼，一个工作人员默默递给监督一个红绿按钮的选择键盘，全场没有人敢讲话， 只有监督不断翻着台本的声音。   最后还是林原惠救场， 说在刚才的基础上用更低沉的语气。 监督说很好， 这样就好。 </p>
-<p>旁白一针见血的说『现在监督一点很后悔吧』。
-但是很多问题最后可能只能妥协。<br>
-毕竟学会妥协也是成为优秀监督的必要能力。。。。  </p>
-<p>好了， 开始记录那些我喜欢的作品吧。<br>
-基于看过纪录片的原因， 我先说32话， 之后的按顺序。  </p>
-<h3>32 新世紀いんぱくつ。</h3>
-<p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。<del>那张脸上面看不出所谓的成熟</del><br>
-然后歌很好听， 非常好听， 背景也非常美，再配上百合， 百合！百合！林原精分现场！自己和自己百合！！  我吼兴奋， 我吼兴奋啊啊啊啊啊啊啊啊啊啊wwww， 可以循环看好多遍。 <br>
-<del>我的偶像不可能变成橙汁</del>  </p>
-<h3>1 龍の歯医者</h3>
-<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。  </p>
-<h3>2 HILL CLIMB GIRL</h3>
-<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。  </p>
-<h3>3 ME!ME!ME!</h3>
-<p>这个不用说了， 很多人说神作啦， 和EVA说的是一个事情啦， 更加容易懂啦， 实用啦。 各种各样。<br>
-想要补充的就是其实庵野是没有参与进来的。。。<br>
-蛮好看的， 值得一看。 卖肉新高度。而且很带感。有很多符号元素。 总之看得开心就是好的。 </p>
-<h3>4 Carnage</h3>
-<p>和上一个作品形成鲜明的对比。 <br>
-这部作品非常有表现力。
-《ME!ME!ME!》 的主题是美少女， 而这部作品的主题是表现故事 …</p>
-      <a class="btn" href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian">Continue reading</a>
   </div>
 </article>
 

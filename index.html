@@ -50,6 +50,197 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Logging 使用总结</a></h2>
+    <p>
+      Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <h3>总览</h3>
+<p>logging 分为3大模块，<code>Logger</code>, <code>Handler</code>, 同时还有<code>Format</code>来控制输出的格式。  </p>
+<p>logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。<br>
+logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括：</p>
+<div class="highlight"><pre><span></span>DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+</pre></div>
+
+<p>默认等级是 <code>WARNING</code>。  </p>
+<p>对于 format 用于处理记录信息的格式， 比如<code>%(message)s %(asctime)s</code>. 利用老旧的<code>%s</code>的原因是为了兼容之前的版本， 可以在之后的设置中使用新的<code>{</code>风格。  </p>
+<p>logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。</p>
+<p>对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。  </p>
+<h3>logger</h3>
+<p>logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;some infomation&#39;</span><span class="p">)</span>
+</pre></div>
+
+<h3>Handler</h3>
+<p>handler 有多种， 可以记录到 console， 或者到文件， 文件也可以自动 rotate， 常用的几个 handler</p>
+<ul>
+<li>StreamHandler。 打印到终端</li>
+<li>FileHandler  保存到文件</li>
+<li>RotatingFileHandler 保存到文件， 达到一定大小之后备份文件。</li>
+<li>TimedRotatingFileHandler 定时备份</li>
+</ul>
+<p>其余参考 <a href="https://docs.python.org/3/howto/logging.html#useful-handlers">useful-handlers</a>  </p>
+<h3>formatter</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute name</th>
+<th>Format</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>args</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">The tuple of arguments merged into msg to produce message, or a dict whose values are used for the merge (when there is only one argument, and it is a dictionary).</td>
+</tr>
+<tr>
+<td>asctime</td>
+<td>%(asctime)s</td>
+<td align="left">Human-readable time when the LogRecord was created. By default this is of the form ‘2003-07-08 16:49:45,896’ (the numbers after the comma are millisecond portion of the time).</td>
+</tr>
+<tr>
+<td>created</td>
+<td>%(created)f</td>
+<td align="left">Time when the LogRecord was created (as returned by time.time()).</td>
+</tr>
+<tr>
+<td>exc_info</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">Exception tuple (à la sys.exc_info) or, if no exception has occurred, None.</td>
+</tr>
+<tr>
+<td>filename</td>
+<td>%(filename)s</td>
+<td align="left">Filename portion of pathname.</td>
+</tr>
+<tr>
+<td>funcName</td>
+<td>%(funcName)s</td>
+<td align="left">Name of function containing the logging call.</td>
+</tr>
+<tr>
+<td>levelname</td>
+<td>%(levelname)s</td>
+<td align="left">Text logging level for the message ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').</td>
+</tr>
+<tr>
+<td>levelno</td>
+<td>%(levelno)s</td>
+<td align="left">Numeric logging level for the message (DEBUG, INFO, WARNING, ERROR, CRITICAL).</td>
+</tr>
+<tr>
+<td>lineno</td>
+<td>%(lineno)d</td>
+<td align="left">Source line number where the logging call was issued (if available).</td>
+</tr>
+<tr>
+<td>module</td>
+<td>%(module)s</td>
+<td align="left">Module (name portion of filename).</td>
+</tr>
+<tr>
+<td>msecs</td>
+<td>%(msecs)d</td>
+<td align="left">Millisecond portion of the time when the LogRecord was created.</td>
+</tr>
+<tr>
+<td>message</td>
+<td>%(message)s</td>
+<td align="left">The logged message, computed as msg % args. This is set when Formatter.format() is invoked.</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">The format string passed in the original logging call. Merged with args to produce message, or an arbitrary object (see Using arbitrary objects as messages).</td>
+</tr>
+<tr>
+<td>name</td>
+<td>%(name)s</td>
+<td align="left">Name of the logger used to log the call.</td>
+</tr>
+<tr>
+<td>pathname</td>
+<td>%(pathname)s</td>
+<td align="left">Full pathname of the source file where the logging call was issued (if available).</td>
+</tr>
+<tr>
+<td>process</td>
+<td>%(process)d</td>
+<td align="left">Process ID (if available).</td>
+</tr>
+<tr>
+<td>processName</td>
+<td>%(processName)s</td>
+<td align="left">Process name (if available).</td>
+</tr>
+<tr>
+<td>relativeCreated</td>
+<td>%(relativeCreated)d</td>
+<td align="left">Time in milliseconds when the LogRecord was created, relative to the time the logging module was loaded.</td>
+</tr>
+<tr>
+<td>stack_info</td>
+<td>You shouldn’t need to format this yourself.</td>
+<td align="left">Stack frame information (where available) from the bottom of the stack in the current thread, up to and including the stack frame of the logging call which resulted in the creation of this record.</td>
+</tr>
+<tr>
+<td>thread</td>
+<td>%(thread)d</td>
+<td align="left">Thread ID (if available).</td>
+</tr>
+<tr>
+<td>threadName</td>
+<td>%(threadName)s</td>
+<td align="left">Thread name (if available).</td>
+</tr>
+</tbody>
+</table>
+<h3>example</h3>
+<div class="highlight"><pre><span></span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%(asctime)s</span><span class="s2">][</span><span class="si">%(levelname)s</span><span class="s2">][</span><span class="si">%(threadName)s</span><span class="s2">][</span><span class="si">%(funcName)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">file_handle</span> <span class="o">=</span> <span class="n">handlers</span><span class="o">.</span><span class="n">RotatingFileHandler</span><span class="p">(</span><span class="s1">&#39;example.log&#39;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+                                           <span class="n">backupCount</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">err_handle</span> <span class="o">=</span> <span class="n">handlers</span><span class="o">.</span><span class="n">RotatingFileHandler</span><span class="p">(</span><span class="s1">&#39;err.log&#39;</span><span class="p">,</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+                                          <span class="n">backupCount</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">file_handle</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">file_handle</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+<span class="n">err_handle</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">err_handle</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+<span class="n">console_handle</span>  <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">console_handle</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">console_handle</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">file_handle</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console_handle</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">err_handle</span><span class="p">)</span>
+</pre></div>
+
+<h4>reference</h4>
+<p><a href="https://docs.python.org/3/library/logging.html">https://docs.python.org/3/library/logging.html</a> 
+<a href="https://docs.python.org/3/howto/logging.html">https://docs.python.org/3/howto/logging.html</a></p>
+<p>2017年08月02日17:20:48</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/scapy-shi-yong-zong-jie.html#scapy-shi-yong-zong-jie">Scapy 使用总结</a></h2>
     <p>
       Posted on Fri 30 June 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -869,117 +1060,6 @@ It will also install dependency.  </p>
 <li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a>  </li>
 </ul>
 <p>2016-05-15 11:43:33</p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian">日本动画人展览会总结与推荐</a></h2>
-    <p>
-      Posted on Thu 21 April 2016 in <a href="http://littlezz.github.io/category/acg.html">ACG</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>      &#8226; <a href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>首先， 不得不提关于这个展览会的纪录片 《庵野先生与我们的莽撞挑战 日本动画人展览会》  </p>
-<p>5分钟的动画， 制作时间往往是好几个月， 途中经历的种种困难， 特别是对于新人监督， 经验不足，在现场时的时候很难控制场面。比如第32话的监督， 在配音时说希望林原惠用更成熟一点的语气， 结果林原惠反问『请问监督眼中的成熟是什么呢？ 我没有从人物的脸上看到成熟的气质。』。 然后监督直接吓懵逼，一个工作人员默默递给监督一个红绿按钮的选择键盘，全场没有人敢讲话， 只有监督不断翻着台本的声音。   最后还是林原惠救场， 说在刚才的基础上用更低沉的语气。 监督说很好， 这样就好。 </p>
-<p>旁白一针见血的说『现在监督一点很后悔吧』。
-但是很多问题最后可能只能妥协。<br>
-毕竟学会妥协也是成为优秀监督的必要能力。。。。  </p>
-<p>好了， 开始记录那些我喜欢的作品吧。<br>
-基于看过纪录片的原因， 我先说32话， 之后的按顺序。  </p>
-<h3>32 新世紀いんぱくつ。</h3>
-<p>和eva是同一个时间观的， 我特别去看了之前监督和林原惠意见冲突的地方， 讲道理， 其实还是林原惠说得对。。。<del>那张脸上面看不出所谓的成熟</del><br>
-然后歌很好听， 非常好听， 背景也非常美，再配上百合， 百合！百合！林原精分现场！自己和自己百合！！  我吼兴奋， 我吼兴奋啊啊啊啊啊啊啊啊啊啊wwww， 可以循环看好多遍。 <br>
-<del>我的偶像不可能变成橙汁</del>  </p>
-<h3>1 龍の歯医者</h3>
-<p>恢弘大作的感觉， 嗯， BGM也很恢弘， 作画也很酷炫。  </p>
-<h3>2 HILL CLIMB GIRL</h3>
-<p>感觉上是秀3D技术的， 然而我觉得里面的歌曲很好听。  </p>
-<h3>3 ME!ME!ME!</h3>
-<p>这个不用说了， 很多人说神作啦， 和EVA说的是一个事情啦， 更加容易懂啦， 实用啦。 各种各样。<br>
-想要补充的就是其实庵野是没有参与进来的。。。<br>
-蛮好看的， 值得一看。 卖肉新高度。而且很带感。有很多符号元素。 总之看得开心就是好的。 </p>
-<h3>4 Carnage</h3>
-<p>和上一个作品形成鲜明的对比。 <br>
-这部作品非常有表现力。
-《ME!ME!ME!》 的主题是美少女， 而这部作品的主题是表现故事， 人物和剧情， 都只是表现的手段而已。 当然很多人可能会说『这画风我不喜欢』。 然后结束观看， 然后接着对mememe撸。  </p>
-<p>可是我tm真的好喜欢！<br>
-那帅到炸裂的分镜， 没有矫揉造作的卖萌，一股浓浓的黑暗风格。 干净利落， 没有多余的台词， 关键的剧情全部用镜头来表达。  </p>
-<p>这他妈就是艺术品啊。  </p>
-<p>《ME!ME!ME!》确实取得了很高的人气， 如果是真的变成作品放送的话， 多半情况下也是ME!ME!ME!》热卖， 而本作暴死。  </p>
-<p>但是总得有人做像《Carnage》这样的动画， 这种东西才称得上是所谓的『动画未来』。 其他的像《mememe》这种模式，商业运作成功， 无可厚非， 毕竟卖bd卖人设，赚了钱活下去才是王道。 但是如果一辈子都干这种事情，而且还时不时披上一个『内涵作』这样的外衣的话，我觉得真的是有点的恶心。  </p>
-<h3>6 西荻窪駅徒歩20分2LDK敷礼2ヶ月ペット不可</h3>
-<p>和第四话一样， 剧情非常有趣， 动作非常非常的流畅， 非常推荐。  这部作品在纪录片里面有提到。  </p>
-<h3>10 ヤマデロイド</h3>
-<p>这个也很好看， 配合一首歌曲讲了一个故事， 节奏非常带感， 而且没有对白， 全部用镜头语言来讲故事， 比现在的一些动画恨不得配角24小时全程解说不知道要高到哪里去。  </p>
-<p>但是有一点， 这个人脸的画风， 23333 不行， 我一开始以为是要全程颜艺， 但是看旧了好像还是蛮带感的。  </p>
-<p>总之很推荐， 剧情也很有爱。  </p>
-<h3>11 POWER PLANT No.33</h3>
-<p>Trigger， 今石洋之办的那家工作室。<br>
-科幻类的，没什么要说的， 值得一看。 ed很好听。  </p>
-<h3>12 [evangelion： Another Impact（Confidential）</h3>
-<p>卧槽， 说老实话， 我光看画面我真的分不清到底是3D的还是特摄片。  </p>
-<p>怕了。  </p>
-<h3>13 Kanón</h3>
-<p>和其他的不同， 这部全程在说话， 应该是讨论一些东西， 可能是讨论作品和观众的问题吧。<br>
-看得下去的话可以一看。  </p>
-<h3>14 Sex&amp;VIOLENCE with MACHSPEED</h3>
-<p>我是看完这部才想着搞一个总结的。<br>
-我最近遇上一些讨厌的事情， 没有什么道理可以讲， 对面只会不断的追问『你为什么』 和『你凭什么』。 就像这部作品所表达的东西一样： 没有为什么， 我tm就是要为之一战。</p>
-<p>这可能是现在无可奈何的我内心深处非常羡慕敢想而不敢讲的东西吧。  </p>
-<p>2016年04月21日21:41:15   </p>
-<h3>15 おばけちゃん</h3>
-<p>2333<br>
-好有趣， 前面都是一点蠢萌蠢萌的片段，全都是neta， 但是如果坚持到最后， 会有好的收获的。  </p>
-<p>而且， ed是重点， 最后出现了鹤卷和哉！</p>
-<h3>16</h3>
-<p>这什么鬼。。。<br>
-剧情一头雾水， 然后各种风格的混搭， 设定的不明。<br>
-总之我觉得不好看。</p>
-<h3>17 三本の証言者</h3>
-<p>卧槽， 居然是剧情片， 短篇+剧情=很难看懂。<br>
-不过还是值得一看的。  </p>
-<h3>19 I can Friday by day!</h3>
-<p>卧槽！！！
-我就是在找这个啊，  监督是 <strong>鹤卷和哉</strong> !重复一遍， 监督是鹤卷和哉！ </p>
-<p>别废话了， 抓紧看吧， 和flcl一样的感觉， 猜不到开头， 更加猜不到结尾。</p>
-<p>2016年04月22日03:20:30</p>
-<h3>22 イブセキヨルニ</h3>
-<p>这个东西讨论到政治了。<br>
-和我当初看这个博览会的注重点不同， 不过老实话， 监督脑洞真是大， 真敢拍啊。  </p>
-<p>没看的话可以看一下。  </p>
-<h3>25 ハンマーヘッド</h3>
-<p>妈的， 一股沙耶之歌的感觉。<br>
-卧槽， 还是给我看一集萌妹中和一下吧我的天， 这从20 开始的一系列都是药吃多了么。  </p>
-<p>和前面一样， 没看的话可以看一下。  </p>
-<h3>26 コント  ころしや　1989</h3>
-<p>这个很有趣。 简直是超展开。  </p>
-<h3>29 ヒストリー機関</h3>
-<p>可以一看。<br>
-一开始看我以为又是政治片， 结果看到后面发现是脑洞片。<br>
-说老实话， 我比较想看的是表现手法， 即， 我认为， 举办这个活动的目的是抛开商业， 抛开蓝光销量， 抛开各种制约，你会怎么做动画片，你会用什么样的形式你有什么样没有敢实践的创意。 而不是一说到自由创作， 就想方设法展现自己对政治对人类历史的洞见，找一些看似高深的角度， 然后做一下浅薄幼稚的讨论。<br>
-有些东西， 需要去看书去明白， 而不是看几集动画片就能说清楚的， 拼命的传达自己的见解， 丧失了最基础的娱乐性， 只剩说教， 那观众为何不去看公开课？<br>
-（<del>没错， 我说的就是那种整天一副讨论正义是什么的动画</del>） </p>
-<h3>31 GIRL</h3>
-<p>和mememe一样的团队做的（没错， 就是那两个人）.<br>
-本来没什么好说的， 但是想了一下， 那个眼睛的画法真的很好的表达了人物一副不知道在想什么而且还很容易冷场的形象。<br>
-而且我感觉这个画面实在是太华丽了吧。 我的天。  </p>
-<h3>34 旅のロボから</h3>
-<p>卧槽， 监督在业界是被称为师匠的男人。<br>
-真的是不一样啊。mememe的作画监督说自己非常崇拜他， 说他有某种特别的特质， 才能画出这样工口感这么强的画。<br>
-我感觉这个人对生活的观察非常的细腻。 如果说mememe的作者在发掘美少女设计上面独树一帜的话， 那么本作的监督则是在美少女的动作方面达到了超一流。  </p>
-<p>里面美少女的动作， 非常的流畅， 非常的写实，所以能够让人感觉『生动』。<br>
-之前有个笑话是嘲笑部分画师画妹子泡温泉的时候头发是披下来的， 说可怜的死宅， 连妹子的手都没有摸过2333.<br>
-那么本作的监督绝对是那种知道要让妹子把头发盘起来， 同时还能把怎么盘的具体动作画出来，而且还画得超乎想象的优雅的那种。  </p>
-<p>不愧是『师匠』  </p>
-<p>这种感觉， 就想白箱里面的那个老一代的画师， 基础功扎实到可怕， 不是现在的画师能够随便超越的那种存在。  </p>
-<p><del>我觉得特别的特质之一是人家有女朋友吧喂！</del></p>
-<h3>35 カセットガール</h3>
-<p>这个。。。这个。。 这个是向庵野秀明毕业作品致敬么？  </p>
-<p>2016年04月25日00:02:40</p>
-<h3>最后</h3>
   </div>
 </article>
 

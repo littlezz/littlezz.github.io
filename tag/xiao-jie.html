@@ -50,6 +50,44 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Logging 使用总结</a></h2>
+    <p>
+      Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <h3>总览</h3>
+<p>logging 分为3大模块，<code>Logger</code>, <code>Handler</code>, 同时还有<code>Format</code>来控制输出的格式。  </p>
+<p>logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。<br>
+logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括：</p>
+<div class="highlight"><pre><span></span>DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+</pre></div>
+
+<p>默认等级是 <code>WARNING</code>。  </p>
+<p>对于 format 用于处理记录信息的格式， 比如<code>%(message)s %(asctime)s</code>. 利用老旧的<code>%s</code>的原因是为了兼容之前的版本， 可以在之后的设置中使用新的<code>{</code>风格。  </p>
+<p>logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。</p>
+<p>对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。  </p>
+<h3>logger</h3>
+<p>logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;some infomation&#39;</span><span class="p">)</span>
+</pre></div>
+
+<h3>Handler</h3>
+<p>handler 有多种， 可以记录到 console …</p>
+      <a class="btn" href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/scapy-shi-yong-zong-jie.html#scapy-shi-yong-zong-jie">Scapy 使用总结</a></h2>
     <p>
       Posted on Fri 30 June 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -350,65 +388,6 @@ install:
 <p>Firstly, Numpy is slight different with R in eigen decomposition(I spent lots of time to find out T_T).  </p>
 <p>In R, the eigenvalues return from <code>eigen</code> is descending, which is all notes …</p>
       <a class="btn" href="http://littlezz.github.io/how-to-write-reduced-rank-linear-discriminant-analysis-with-python.html#how-to-write-reduced-rank-linear-discriminant-analysis-with-python">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Numpy 使用小结</a></h2>
-    <p>
-      Posted on Mon 21 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p><a href="https://github.com/littlezz/ESL-Model">ESLModel</a> 开发有一段时间了， 期间和numpy打了非常多的交道， 虐得我死去活来。  </p>
-<p>于是抽空写一下关于numpy的总结吧。  </p>
-<h2>Intro</h2>
-<p>介绍一些会混淆的东西</p>
-<h3>vector vs matrix</h3>
-<p>vector是向量， 是一维的。 
-matrix是二维以上的。  </p>
-<div class="highlight"><pre><span></span><span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-<span class="c1"># method 1</span>
-<span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]])</span>
-
-<span class="c1"># method 2</span>
-<span class="n">mat</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
-<span class="c1"># mathod 3</span>
-<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="c1"># output (3,)</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="c1"># output (3, 1)</span>
-</pre></div>
-
-<ol>
-<li>向量可以点乘矩阵， 反过来也可以， 结果是向量。</li>
-<li>向量可以点乘向量， 得到标量</li>
-<li>向量没有倒置</li>
-<li>矩阵使用下标的时候， 结果是向量， 使用slice 来查询的时候， 得到子矩阵。  </li>
-</ol>
-<p>如果想要得到  单行的子矩阵  </p>
-<div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-
-<span class="c1"># 得到一行， 矩阵</span>
-<span class="n">mat</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
-
-<span class="c1"># 得到一列， 矩阵</span>
-<span class="n">mat</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">]]</span>
-
-<span class="c1"># 得到第二列， 向量</span>
-<span class="n">mat</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
-
-<span class="c1"># 子矩阵</span>
-<span class="n">mat</span><span class="p">[:</span><span class="mi">2 …</span></pre></div>
-      <a class="btn" href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Continue reading</a>
   </div>
 </article>
 

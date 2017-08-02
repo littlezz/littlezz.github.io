@@ -1,5 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog - Python</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/python.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-06-30T00:00:00+08:00</updated><entry><title>Scapy 使用总结</title><link href="http://littlezz.github.io/scapy-shi-yong-zong-jie.html" rel="alternate"></link><published>2017-06-30T00:00:00+08:00</published><updated>2017-06-30T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-06-30:/scapy-shi-yong-zong-jie.html</id><summary type="html">&lt;h3&gt;构造包以及一些网络基础知识&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog - Python</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/python.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-08-02T00:00:00+08:00</updated><entry><title>Logging 使用总结</title><link href="http://littlezz.github.io/logging-shi-yong-zong-jie.html" rel="alternate"></link><published>2017-08-02T00:00:00+08:00</published><updated>2017-08-02T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-08-02:/logging-shi-yong-zong-jie.html</id><summary type="html">&lt;h3&gt;总览&lt;/h3&gt;
+&lt;p&gt;logging 分为3大模块，&lt;code&gt;Logger&lt;/code&gt;, &lt;code&gt;Handler&lt;/code&gt;, 同时还有&lt;code&gt;Format&lt;/code&gt;来控制输出的格式。  &lt;/p&gt;
+&lt;p&gt;logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。&lt;br&gt;
+logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;默认等级是 &lt;code&gt;WARNING&lt;/code&gt;。  &lt;/p&gt;
+&lt;p&gt;对于 format 用于处理记录信息的格式， 比如&lt;code&gt;%(message)s %(asctime)s&lt;/code&gt;. 利用老旧的&lt;code&gt;%s&lt;/code&gt;的原因是为了兼容之前的版本， 可以在之后的设置中使用新的&lt;code&gt;{&lt;/code&gt;风格。  &lt;/p&gt;
+&lt;p&gt;logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。&lt;/p&gt;
+&lt;p&gt;对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。  &lt;/p&gt;
+&lt;h3&gt;logger&lt;/h3&gt;
+&lt;p&gt;logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;some infomation&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Handler&lt;/h3&gt;
+&lt;p&gt;handler 有多种， 可以记录到 console …&lt;/p&gt;</summary><content type="html">&lt;h3&gt;总览&lt;/h3&gt;
+&lt;p&gt;logging 分为3大模块，&lt;code&gt;Logger&lt;/code&gt;, &lt;code&gt;Handler&lt;/code&gt;, 同时还有&lt;code&gt;Format&lt;/code&gt;来控制输出的格式。  &lt;/p&gt;
+&lt;p&gt;logger 用于在应用中产生 log 信息实例， 这个信息之后会被 handler 处理， 用于分配 log 信息记录的位置， 比如是打印到屏幕上还是存放到文件中，一个log 信息可以被多个 handler 处理， 即， 一个 logger 可以有零个多个 handler。&lt;br&gt;
+logger 和 handler 都有独立的记录等级， 只有在这个等级之上的信息才回被记录。 记录等级包括：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DEBUG
+INFO
+WARNING
+ERROR
+CRITICAL
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;默认等级是 &lt;code&gt;WARNING&lt;/code&gt;。  &lt;/p&gt;
+&lt;p&gt;对于 format 用于处理记录信息的格式， 比如&lt;code&gt;%(message)s %(asctime)s&lt;/code&gt;. 利用老旧的&lt;code&gt;%s&lt;/code&gt;的原因是为了兼容之前的版本， 可以在之后的设置中使用新的&lt;code&gt;{&lt;/code&gt;风格。  &lt;/p&gt;
+&lt;p&gt;logger 存在高低层关系， 底层的 logger 产生的信息会上传到父层中。&lt;/p&gt;
+&lt;p&gt;对于 logger， 有多种配置方式， 主要由两种， 基于 conf 的， 和使用代码的， 这里只总结了使用代码的。  &lt;/p&gt;
+&lt;h3&gt;logger&lt;/h3&gt;
+&lt;p&gt;logger 通过 getLogger 函数得到， 可以在不同的模块中使用不同的 logger&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;some infomation&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Handler&lt;/h3&gt;
+&lt;p&gt;handler 有多种， 可以记录到 console， 或者到文件， 文件也可以自动 rotate， 常用的几个 handler&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;StreamHandler。 打印到终端&lt;/li&gt;
+&lt;li&gt;FileHandler  保存到文件&lt;/li&gt;
+&lt;li&gt;RotatingFileHandler 保存到文件， 达到一定大小之后备份文件。&lt;/li&gt;
+&lt;li&gt;TimedRotatingFileHandler 定时备份&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其余参考 &lt;a href="https://docs.python.org/3/howto/logging.html#useful-handlers"&gt;useful-handlers&lt;/a&gt;  &lt;/p&gt;
+&lt;h3&gt;formatter&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Attribute name&lt;/th&gt;
+&lt;th&gt;Format&lt;/th&gt;
+&lt;th align="left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;args&lt;/td&gt;
+&lt;td&gt;You shouldn’t need to format this yourself.&lt;/td&gt;
+&lt;td align="left"&gt;The tuple of arguments merged into msg to produce message, or a dict whose values are used for the merge (when there is only one argument, and it is a dictionary).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;asctime&lt;/td&gt;
+&lt;td&gt;%(asctime)s&lt;/td&gt;
+&lt;td align="left"&gt;Human-readable time when the LogRecord was created. By default this is of the form ‘2003-07-08 16:49:45,896’ (the numbers after the comma are millisecond portion of the time).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;created&lt;/td&gt;
+&lt;td&gt;%(created)f&lt;/td&gt;
+&lt;td align="left"&gt;Time when the LogRecord was created (as returned by time.time()).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;exc_info&lt;/td&gt;
+&lt;td&gt;You shouldn’t need to format this yourself.&lt;/td&gt;
+&lt;td align="left"&gt;Exception tuple (à la sys.exc_info) or, if no exception has occurred, None.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;filename&lt;/td&gt;
+&lt;td&gt;%(filename)s&lt;/td&gt;
+&lt;td align="left"&gt;Filename portion of pathname.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;funcName&lt;/td&gt;
+&lt;td&gt;%(funcName)s&lt;/td&gt;
+&lt;td align="left"&gt;Name of function containing the logging call.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;levelname&lt;/td&gt;
+&lt;td&gt;%(levelname)s&lt;/td&gt;
+&lt;td align="left"&gt;Text logging level for the message ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;levelno&lt;/td&gt;
+&lt;td&gt;%(levelno)s&lt;/td&gt;
+&lt;td align="left"&gt;Numeric logging level for the message (DEBUG, INFO, WARNING, ERROR, CRITICAL).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lineno&lt;/td&gt;
+&lt;td&gt;%(lineno)d&lt;/td&gt;
+&lt;td align="left"&gt;Source line number where the logging call was issued (if available).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;module&lt;/td&gt;
+&lt;td&gt;%(module)s&lt;/td&gt;
+&lt;td align="left"&gt;Module (name portion of filename).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;msecs&lt;/td&gt;
+&lt;td&gt;%(msecs)d&lt;/td&gt;
+&lt;td align="left"&gt;Millisecond portion of the time when the LogRecord was created.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;message&lt;/td&gt;
+&lt;td&gt;%(message)s&lt;/td&gt;
+&lt;td align="left"&gt;The logged message, computed as msg % args. This is set when Formatter.format() is invoked.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;msg&lt;/td&gt;
+&lt;td&gt;You shouldn’t need to format this yourself.&lt;/td&gt;
+&lt;td align="left"&gt;The format string passed in the original logging call. Merged with args to produce message, or an arbitrary object (see Using arbitrary objects as messages).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;name&lt;/td&gt;
+&lt;td&gt;%(name)s&lt;/td&gt;
+&lt;td align="left"&gt;Name of the logger used to log the call.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pathname&lt;/td&gt;
+&lt;td&gt;%(pathname)s&lt;/td&gt;
+&lt;td align="left"&gt;Full pathname of the source file where the logging call was issued (if available).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;process&lt;/td&gt;
+&lt;td&gt;%(process)d&lt;/td&gt;
+&lt;td align="left"&gt;Process ID (if available).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;processName&lt;/td&gt;
+&lt;td&gt;%(processName)s&lt;/td&gt;
+&lt;td align="left"&gt;Process name (if available).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;relativeCreated&lt;/td&gt;
+&lt;td&gt;%(relativeCreated)d&lt;/td&gt;
+&lt;td align="left"&gt;Time in milliseconds when the LogRecord was created, relative to the time the logging module was loaded.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;stack_info&lt;/td&gt;
+&lt;td&gt;You shouldn’t need to format this yourself.&lt;/td&gt;
+&lt;td align="left"&gt;Stack frame information (where available) from the bottom of the stack in the current thread, up to and including the stack frame of the logging call which resulted in the creation of this record.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;thread&lt;/td&gt;
+&lt;td&gt;%(thread)d&lt;/td&gt;
+&lt;td align="left"&gt;Thread ID (if available).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;threadName&lt;/td&gt;
+&lt;td&gt;%(threadName)s&lt;/td&gt;
+&lt;td align="left"&gt;Thread name (if available).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;example&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;logger&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;formatter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Formatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="si"&gt;%(asctime)s&lt;/span&gt;&lt;span class="s2"&gt;][&lt;/span&gt;&lt;span class="si"&gt;%(levelname)s&lt;/span&gt;&lt;span class="s2"&gt;][&lt;/span&gt;&lt;span class="si"&gt;%(threadName)s&lt;/span&gt;&lt;span class="s2"&gt;][&lt;/span&gt;&lt;span class="si"&gt;%(funcName)s&lt;/span&gt;&lt;span class="s2"&gt;] &lt;/span&gt;&lt;span class="si"&gt;%(message)s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;file_handle&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;handlers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RotatingFileHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;example.log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;maxBytes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                           &lt;span class="n"&gt;backupCount&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;err_handle&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;handlers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RotatingFileHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;err.log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;maxBytes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                          &lt;span class="n"&gt;backupCount&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;file_handle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;file_handle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formatter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;err_handle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ERROR&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;err_handle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formatter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;console_handle&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;StreamHandler&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;console_handle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;console_handle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setFormatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formatter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_handle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;console_handle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;addHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;err_handle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;reference&lt;/h4&gt;
+&lt;p&gt;&lt;a href="https://docs.python.org/3/library/logging.html"&gt;https://docs.python.org/3/library/logging.html&lt;/a&gt; 
+&lt;a href="https://docs.python.org/3/howto/logging.html"&gt;https://docs.python.org/3/howto/logging.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;2017年08月02日17:20:48&lt;/p&gt;</content><category term="python"></category><category term="小结"></category></entry><entry><title>Scapy 使用总结</title><link href="http://littlezz.github.io/scapy-shi-yong-zong-jie.html" rel="alternate"></link><published>2017-06-30T00:00:00+08:00</published><updated>2017-06-30T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-06-30:/scapy-shi-yong-zong-jie.html</id><summary type="html">&lt;h3&gt;构造包以及一些网络基础知识&lt;/h3&gt;
 &lt;p&gt;载入所有函数  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;scapy.all&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;

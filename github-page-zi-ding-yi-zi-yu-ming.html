@@ -15,19 +15,6 @@
 <meta name="author" content="littlezz" />
 <meta name="description" content="目标：设置域名 xxx.github.io --&gt; blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { &#39;static/CNAME&#39;:{&#39;path&#39;:&#39;CNAME&#39;}, } STATIC_PATHS = [&#39;images&#39;, &#39;static&#39;] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 …" />
 <meta name="keywords" content="小结, 小技巧">
-<!--<meta property="og:site_name" content="littlezz's Blog"/>
-<meta property="og:title" content="Github Page 自定义子域名"/>
-<meta property="og:description" content="目标：设置域名 xxx.github.io --> blog.xxx.com 首先在 github page 上面的项目里添加一个文件CNAME, 内容是目标站点blog.xxx.com 之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用blog.xxx.com那么 host 的值填 blog而不是blog.xxx.com， value 填xxx.github.io 如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。 我是用的是 pelican， 设置方法是在pelicanconf.py 中设置 EXTRA_PATH_METADATA = { 'static/CNAME':{'path':'CNAME'}, } STATIC_PATHS = ['images', 'static'] 之后就是等待 dns 的刷新了 小结 CNAME 设置是 blog， 而不blog.xxx.com, 不然域名会解析到blog.xxx.com.xxx.com 另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。 方法： 在主题里的 …"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2017-05-02 00:00:00+08:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
-<meta property="article:section" content="Code"/>
-<meta property="article:tag" content="小结"/>
-<meta property="article:tag" content="小技巧"/>
-<meta property="og:image" content="/images/logo.jpg">-->
   <title>littlezz's Blog &ndash; Github Page 自定义子域名</title>
 </head>
 <body>

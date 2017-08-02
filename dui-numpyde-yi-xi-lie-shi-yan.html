@@ -15,19 +15,6 @@
 <meta name="author" content="littlezz" />
 <meta name="description" content="本文主要总结了如何把numpy计算速度优化100倍的过程。 简介 最近要对图片做二值化， 参照Adaptive Thresholding Using the Integral Image 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。 算法 首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。 直观实现 首先我们直接照着原理实现，理论是最快的 （然而实际是最慢的） def intuitive_method(mat, w, h , set_value, threshold, boxsize): mat = mat.T integral_map = np.zeros_like(mat, dtype=int) ret = np.zeros_like(mat, dtype=int) for i in range(w): csum=0 for j in range …" />
 <meta name="keywords" content="python, numpy">
-<!--<meta property="og:site_name" content="littlezz's Blog"/>
-<meta property="og:title" content="对numpy的一系列实验"/>
-<meta property="og:description" content="本文主要总结了如何把numpy计算速度优化100倍的过程。 简介 最近要对图片做二值化， 参照Adaptive Thresholding Using the Integral Image 这篇论文， 可是Python的for循环非常的慢，单纯的翻译伪代码实现起来速度要比C慢接近100倍， 论文上的实现对640x480的图片用时大概为15ms， 接下来我们要一步步从最初的慢100倍优化到和C一样快， 以及最后再比它快一点点。 算法 首先， 介绍一下 Adaptive Thresholding Using the Integral Image 这篇论文， 论文很简单， 对一个点周围的一片区域取平均值， 如果该点低于平均值的85%， 就设为黑， 否则为白色。 论文主要是用累积和来改进取一片区域平均值的速度。 过程为水平方向做一次累积和， 垂直方向做一次累积和， 这样每一个点就表示其左上角的区域的和， 于是要计算一个矩形（a, b, c, d), 其区域上的和就是 d - b -c + a. 原始的扫描区域的每一个点求和， 时间是O(n * n * boxsize * boxsize)， 现在变成了常数时间。 直观实现 首先我们直接照着原理实现，理论是最快的 （然而实际是最慢的） def intuitive_method(mat, w, h , set_value, threshold, boxsize): mat = mat.T integral_map = np.zeros_like(mat, dtype=int) ret = np.zeros_like(mat, dtype=int) for i in range(w): csum=0 for j in range …"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://littlezz.github.io/dui-numpyde-yi-xi-lie-shi-yan.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-12-08 00:00:00+08:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
-<meta property="article:section" content="Python"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="numpy"/>
-<meta property="og:image" content="/images/logo.jpg">-->
   <title>littlezz's Blog &ndash; 对numpy的一系列实验</title>
 </head>
 <body>

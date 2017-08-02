@@ -15,19 +15,6 @@
 <meta name="author" content="littlezz" />
 <meta name="description" content="构造包以及一些网络基础知识 载入所有函数 from scapy.all import * 或者从命令行输入sudo scapy scapy 可以控制各个层的数据， 使用/符号拼合各个层构造出一个包 packet = IP(dst=&#39;192.168.1.1&#39;, src=&#39;192.168.1.2&#39;)/ UDP(sport=5555, dport=4444)/ b&#39;udp data&#39; packet.show() print(bytes(packet)) IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。 再后面一层是要发送的数据。 packet.show() 工整的打印包数据 发送包 scapy 有几种发包的方式。 send用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。 send(packet) sendp(p, iface=&#39;en0&#39;) packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …" />
 <meta name="keywords" content="python, 小结">
-<!--<meta property="og:site_name" content="littlezz's Blog"/>
-<meta property="og:title" content="Scapy 使用总结"/>
-<meta property="og:description" content="构造包以及一些网络基础知识 载入所有函数 from scapy.all import * 或者从命令行输入sudo scapy scapy 可以控制各个层的数据， 使用/符号拼合各个层构造出一个包 packet = IP(dst='192.168.1.1', src='192.168.1.2')/ UDP(sport=5555, dport=4444)/ b'udp data' packet.show() print(bytes(packet)) IP层控制 ip 地址， 对于 udp 包来说不需要握手可以伪造源地址。UDP 是和 TCP 平行的一层， 控制发包的源端口和目标端口。 再后面一层是要发送的数据。 packet.show() 工整的打印包数据 发送包 scapy 有几种发包的方式。 send用于发送 layer3 层的包， 也就是程序自动处理链路层上面的 mac 地址， 如果想要自定义 mac 地址， 需要使用 sendp， 这是在 layer2 层发包， 这个时候可以自定义 mac 地址。 send(packet) sendp(p, iface='en0') packet = Ether(src=RandMAC())/IP(dst='192.168.31.1 …"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://littlezz.github.io/scapy-shi-yong-zong-jie.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2017-06-30 00:00:00+08:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
-<meta property="article:section" content="Python"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="小结"/>
-<meta property="og:image" content="/images/logo.jpg">-->
   <title>littlezz's Blog &ndash; Scapy 使用总结</title>
 </head>
 <body>

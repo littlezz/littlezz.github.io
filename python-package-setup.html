@@ -15,19 +15,6 @@
 <meta name="author" content="littlezz" />
 <meta name="description" content="esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open(&#39;README.rst&#39;, &#39;r&#39;, encoding=&#39;utf8&#39;) as f: readme = f.read() version = __import__(&#39;esl_model&#39;).__version__ setup(name=&#39;esl_model&#39;, version=version, description=&#34;Algorithm from The Elements of Statistical Learning book implement by Python code&#34;, long_description=readme, classifiers=[ &#39;Programming Language :: Python :: 3.5&#39;, &#39;Programming Language :: Python :: 3 :: Only&#39;, &#39;Development Status :: 2 - Pre-Alpha&#39;, &#39;License :: OSI Approved :: MIT License&#39;, ], url=&#39;https://github.com/littlezz/ESL-Model&#39;, author=&#39;littlezz …" />
 <meta name="keywords" content="python, 小结">
-<!--<meta property="og:site_name" content="littlezz's Blog"/>
-<meta property="og:title" content="Python Package Setup"/>
-<meta property="og:description" content="esl_model https://github.com/littlezz/ESL-Model 今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。 简单总结一下Python的Package Distribution吧。 有空的话， 在写一个pytest的简单总结。 setup.py setup.py 是最主要的整个配置的文件， 贴我的setup.py 的代码好了。 from setuptools import setup, find_packages with open('README.rst', 'r', encoding='utf8') as f: readme = f.read() version = __import__('esl_model').__version__ setup(name='esl_model', version=version, description="Algorithm from The Elements of Statistical Learning book implement by Python code", long_description=readme, classifiers=[ 'Programming Language :: Python :: 3.5', 'Programming Language :: Python :: 3 :: Only', 'Development Status :: 2 - Pre-Alpha', 'License :: OSI Approved :: MIT License', ], url='https://github.com/littlezz/ESL-Model', author='littlezz …"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://littlezz.github.io/python-package-setup.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-03-17 00:00:00+08:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="http://littlezz.github.io/author/littlezz.html">
-<meta property="article:section" content="Python"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="小结"/>
-<meta property="og:image" content="/images/logo.jpg">-->
   <title>littlezz's Blog &ndash; Python Package Setup</title>
 </head>
 <body>

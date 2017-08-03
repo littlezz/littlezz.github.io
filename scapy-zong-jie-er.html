@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'> -->
+   <link href='//fonts.proxy.ustclug.org/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="http://littlezz.github.io/theme/css/font-awesome.min.css">
+  <link href="http://littlezz.github.io/static/custom.css" rel="stylesheet">
+  <link href="http://littlezz.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="littlezz's Blog Atom">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+<meta name="author" content="littlezz" />
+<meta name="description" content="关于字节流中恢复包， 定义新的协议以及sniff 源码分析 从字节流中恢复包 from scapy.all import Ether b = bytes(pkt) r = Ether(b) Packet 类和其子类 在 scapy 中， 定义了一些类， 用于处理不同层中的数据， 层和层之间存在上下关系。 每一层只解析对应的数据， 其余的被当成 payload 存放。比如Ether只解析 mac 地址， 之后 IP 层的数据都存在 payload 中。 在当前层解析完成之后， 余下的 payload会调用guess_payload_class来猜测下一层需要使用的类， 之后交由下一层来解析剩下的 payload。 Ether IP UDP TCP等都是Packet的子类，每一层都定义了 field， 存放于field_desc中， field 为 descriotor， 用于处理数据类型， 类似于 django model 中的Field。 比如定义一个新的 layer class Disney(Packet): name = &#34;DisneyPacket &#34; fields_desc=[ ShortField(&#34;mickey&#34;,5), XByteField(&#34;minnie&#34;,3) , IntEnumField(&#34;donald&#34; , 1 , { 1: &#34;happy&#34;, 2: &#34;cool&#34; , 3: &#34;angry&#34; } ) ] 具体可以参考 http …" />
+<meta name="keywords" content="python, 小结">
+  <title>littlezz's Blog &ndash; scapy 总结（二）</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="http://littlezz.github.io">
+        <img src="/images/logo.jpg" alt="littlezz" title="littlezz">
+      </a>
+      <h1><a href="http://littlezz.github.io">littlezz</a></h1>
+      <p>Everything that has a beginning has an end.</p>
+      <nav>
+        <ul class="list">
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/littlezz/" target="_blank"><i class="fa fa-github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+    <nav>
+      <a href="http://littlezz.github.io">Home</a>
+      <a href="/categories">Category</a>
+      <a href="/tags">Tags</a>
+      <a href="http://littlezz.github.io/feeds/all.atom.xml">Atom</a>
+    </nav>
+
+<article>
+  <header>
+    <h1 id="scapy-zong-jie-er">scapy 总结（二）</h1>
+    <p>Posted on Thu 03 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a></p>
+  </header>
+  <div>
+    <p>关于字节流中恢复包， 定义新的协议以及sniff 源码分析</p>
+<h2>从字节流中恢复包</h2>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="n">Ether</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+<h2><code>Packet</code> 类和其子类</h2>
+<p>在 scapy 中， 定义了一些类， 用于处理不同层中的数据， 层和层之间存在上下关系。 每一层只解析对应的数据， 其余的被当成 <code>payload</code> 存放。比如<code>Ether</code>只解析 mac 地址， 之后 IP 层的数据都存在 payload 中。</p>
+<p>在当前层解析完成之后， 余下的 payload会调用<code>guess_payload_class</code>来猜测下一层需要使用的类， 之后交由下一层来解析剩下的 payload。</p>
+<p><code>Ether</code> <code>IP</code> <code>UDP</code> <code>TCP</code>等都是<code>Packet</code>的子类，每一层都定义了 field， 存放于<code>field_desc</code>中， field 为 descriotor， 用于处理数据类型， 类似于 django model 中的<code>Field</code>。</p>
+<p>比如定义一个新的 layer</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Disney</span><span class="p">(</span><span class="n">Packet</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DisneyPacket &quot;</span>
+    <span class="n">fields_desc</span><span class="o">=</span><span class="p">[</span> <span class="n">ShortField</span><span class="p">(</span><span class="s2">&quot;mickey&quot;</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+                 <span class="n">XByteField</span><span class="p">(</span><span class="s2">&quot;minnie&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">,</span>
+                 <span class="n">IntEnumField</span><span class="p">(</span><span class="s2">&quot;donald&quot;</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span>
+                      <span class="p">{</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;cool&quot;</span> <span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;angry&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">]</span>
+</pre></div>
+
+<p>具体可以参考 <a href="http://scapy.readthedocs.io/en/latest/build_dissect.html">http://scapy.readthedocs.io/en/latest/build_dissect.html</a>  </p>
+<h3>自带的包序列化</h3>
+<p>文档里面没有提及， 我翻源码的时候看到有<code>import_object</code> 和<code>export_object</code>函数， 用于把包序列化。  代码位于 <code>utils.py</code> 中</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">export_object</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">dill</span> <span class="kn">as</span> <span class="nn">pickle</span>
+    <span class="kn">import</span> <span class="nn">base64</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">gzip</span><span class="o">.</span><span class="n">zlib</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="mi">9</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>返回 pickle 序列化后压缩然后 b64编码的值。  </p>
+<h3>sniff 函数源码分析</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sniff</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prn</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">lfilter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">L2socket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+          <span class="n">opened_socket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stop_filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">exceptions</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">karg</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">opened_socket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">opened_socket</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">offline</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">L2socket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">L2socket</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">L2listen</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">L2socket</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ETH_P_ALL</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">karg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">PcapReader</span><span class="p">(</span><span class="n">offline</span><span class="p">)</span>
+
+    <span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">stoptime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">+</span><span class="n">timeout</span>
+    <span class="n">remain</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">remain</span> <span class="o">=</span> <span class="n">stoptime</span><span class="o">-</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">remain</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="n">sel</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="n">s</span><span class="p">],[],[],</span><span class="n">remain</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">MTU</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">lfilter</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lfilter</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">store</span><span class="p">:</span>
+                    <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">prn</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">prn</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">stop_filter</span> <span class="ow">and</span> <span class="n">stop_filter</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">count</span><span class="p">:</span>
+                    <span class="k">break</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">exceptions</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">opened_socket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">plist</span><span class="o">.</span><span class="n">PacketList</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span><span class="s2">&quot;Sniffed&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p>首先初始化<code>c</code>，用于无条件统计包的个数， 初始化<code>s</code>， 该对象的来源有三种途径， 从<code>opened_socket</code>参数设置一个给定的打开的 socket 对象， 或者是在 <code>offline</code>设定了文件路径的时候使用<code>PcapReader</code>, 最后使用默认的<code>L2listen</code>.<br>
+之后进入循环， 使用<code>select</code>监听s 的可读事件， 每次读入之后对包做处理， 先用<code>lfilter</code>, 然后判断<code>store</code>为真将包存入列表中， 使用<code>prn</code>设置的函数,使用<code>stop_filter</code>设置的函数， 判断 c 和 count 的大小， 是否退出循环。  </p>
+<p>函数捕获 <code>KeyboardInterrupt</code>异常， 循环结束后返回存储的列表。  </p>
+<p>有几个不是很好的地方， 一个是 变量c默认不断的累加包数量， 另一个是 select 的超时参数被用于设置 sniff 的监听时间了，  在设置为无限运行时， sniff会在没有包到来的时候永久阻塞， 由于判断退出的回调函数是在处理每个包时调用的， 所以无法正常的退出。</p>
+<p>如果你希望 sniff 函数作为线程长期运行，但是又希望能在没有包到来的情况下按时的退出， 一种是发送一自定义的包， 触发 stop_filter函数， 另一种是修改 sniff 源码，select 的 timeout 参数设置为一个 sweep timeout， 用于定时的结束 select 的 block， 然后检查循环是否需要退出。</p>
+<p>2017年08月03日17:23:46</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://littlezz.github.io/tag/python.html">python</a>
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>
+    </p>
+  </div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'littlezz';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</article>
+
+    <footer>
+        <p>&copy; littlezz 2017</p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102694300-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "scapy 总结（二）",
+  "headline": "scapy 总结（二）",
+  "datePublished": "2017-08-03 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "littlezz",
+    "url": "http://littlezz.github.io/author/littlezz.html"
+  },
+  "image": "/images/logo.jpg",
+  "url": "http://littlezz.github.io/scapy-zong-jie-er.html",
+  "description": "关于字节流中恢复包， 定义新的协议以及sniff 源码分析 从字节流中恢复包 from scapy.all import Ether b = bytes(pkt) r = Ether(b) Packet 类和其子类 在 scapy 中， 定义了一些类， 用于处理不同层中的数据， 层和层之间存在上下关系。 每一层只解析对应的数据， 其余的被当成 payload 存放。比如Ether只解析 mac 地址， 之后 IP 层的数据都存在 payload 中。 在当前层解析完成之后， 余下的 payload会调用guess_payload_class来猜测下一层需要使用的类， 之后交由下一层来解析剩下的 payload。 Ether IP UDP TCP等都是Packet的子类，每一层都定义了 field， 存放于field_desc中， field 为 descriotor， 用于处理数据类型， 类似于 django model 中的Field。 比如定义一个新的 layer class Disney(Packet): name = "DisneyPacket " fields_desc=[ ShortField("mickey",5), XByteField("minnie",3) , IntEnumField("donald" , 1 , { 1: "happy", 2: "cool" , 3: "angry" } ) ] 具体可以参考 http …"
+}
+</script></body>
+</html>

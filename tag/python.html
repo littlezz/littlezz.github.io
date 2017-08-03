@@ -50,6 +50,41 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">scapy 总结（二）</a></h2>
+    <p>
+      Posted on Thu 03 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/scapy-zong-jie-er.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <p>关于字节流中恢复包， 定义新的协议以及sniff 源码分析</p>
+<h2>从字节流中恢复包</h2>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="n">Ether</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+<h2><code>Packet</code> 类和其子类</h2>
+<p>在 scapy 中， 定义了一些类， 用于处理不同层中的数据， 层和层之间存在上下关系。 每一层只解析对应的数据， 其余的被当成 <code>payload</code> 存放。比如<code>Ether</code>只解析 mac 地址， 之后 IP 层的数据都存在 payload 中。</p>
+<p>在当前层解析完成之后， 余下的 payload会调用<code>guess_payload_class</code>来猜测下一层需要使用的类， 之后交由下一层来解析剩下的 payload。</p>
+<p><code>Ether</code> <code>IP</code> <code>UDP</code> <code>TCP</code>等都是<code>Packet</code>的子类，每一层都定义了 field， 存放于<code>field_desc</code>中， field 为 descriotor， 用于处理数据类型， 类似于 django model 中的<code>Field</code>。</p>
+<p>比如定义一个新的 layer</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Disney</span><span class="p">(</span><span class="n">Packet</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DisneyPacket &quot;</span>
+    <span class="n">fields_desc</span><span class="o">=</span><span class="p">[</span> <span class="n">ShortField</span><span class="p">(</span><span class="s2">&quot;mickey&quot;</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+                 <span class="n">XByteField</span><span class="p">(</span><span class="s2">&quot;minnie&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">,</span>
+                 <span class="n">IntEnumField</span><span class="p">(</span><span class="s2">&quot;donald&quot;</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span>
+                      <span class="p">{</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;cool&quot;</span> <span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;angry&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">]</span>
+</pre></div>
+
+<p>具体可以参考 <a href="http://scapy.readthedocs.io/en/latest/build_dissect.html">http …</a></p>
+      <a class="btn" href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Logging 使用总结</a></h2>
     <p>
       Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -377,50 +412,12 @@ matrix是二维以上的。  </p>
 <span class="n">mat</span><span class="p">[:</span><span class="mi">2 …</span></pre></div>
       <a class="btn" href="http://littlezz.github.io/numpy-shi-yong-xiao-jie.html#numpy-shi-yong-xiao-jie">Continue reading</a>
   </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Python Package Setup</a></h2>
-    <p>
-      Posted on Thu 17 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/python-package-setup.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>esl_model <a href="https://github.com/littlezz/ESL-Model">https://github.com/littlezz/ESL-Model</a><br>
-今天算是弄完了第三章的代码， 放到github上面， 折腾python的打包折腾了大半天。  </p>
-<p>简单总结一下Python的Package Distribution吧。<br>
-有空的话， 在写一个pytest的简单总结。</p>
-<h2>setup.py</h2>
-<p>setup.py 是最主要的整个配置的文件， </p>
-<p>贴我的setup.py 的代码好了。  </p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;README.rst&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">readme</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">version</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;esl_model&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">__version__</span>
-
-
-<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;esl_model&#39;</span><span class="p">,</span>
-      <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
-      <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Algorithm from The Elements of Statistical Learning book implement by Python code&quot;</span><span class="p">,</span>
-      <span class="n">long_description</span><span class="o">=</span><span class="n">readme</span><span class="p">,</span>
-      <span class="n">classifiers</span><span class="o">=</span><span class="p">[</span>
-          <span class="s1">&#39;Programming Language :: Python :: 3.5&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;Programming Language :: Python :: 3 :: Only&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;Development Status :: 2 - Pre-Alpha&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;License :: OSI Approved :: MIT License&#39;</span><span class="p">,</span>
-      <span class="p">],</span>
-      <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://github.com/littlezz/ESL-Model&#39;</span><span class="p">,</span>
-      <span class="n">author</span><span class="o">=</span><span class="s1">&#39;littlezz …</span></pre></div>
-      <a class="btn" href="http://littlezz.github.io/python-package-setup.html#python-package-setup">Continue reading</a>
-  </div>
 </article>
 
   <div class="pagination">
+    <a class="btn" href="http://littlezz.github.io/tag/python2.html">
+      <i class="fa fa-angle-left"></i> Older Posts
+    </a>
   </div>
 
     <footer>

@@ -50,6 +50,42 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">How to upload package to pypi</a></h2>
+    <p>
+      Posted on Sun 15 May 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <h2>Install twine</h2>
+<p><code>pip install twine</code></p>
+<h2>Init file</h2>
+<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
+<p>For example, </p>
+<div class="highlight"><pre><span></span>.
+├── foo
+│   └── a.py
+└── readme.md
+</pre></div>
+
+<p>Secondly, add specify file to the root folder.  </p>
+<ul>
+<li>README.rst  </li>
+<li>MANIFEST.in  </li>
+<li>setup.py  </li>
+<li>setup.cfg(option)</li>
+</ul>
+<p>pypi do not know markdown format readme, there is only rst format available.</p>
+<h2>setup.py</h2>
+<p>look at
+<a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py …</a></p>
+      <a class="btn" href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian.html#ri-ben-dong-hua-ren-zhan-lan-hui-zong-jie-yu-tui-jian">日本动画人展览会总结与推荐</a></h2>
     <p>
       Posted on Thu 21 April 2016 in <a href="http://littlezz.github.io/category/acg.html">ACG</a>
@@ -365,34 +401,6 @@ matrix是二维以上的。  </p>
 <p><span class="math">\(\hat \sigma = \frac{1}{N-p-1} \sum_{i=1}^N(y_i - \hat y_i)^2\)</span></p>
 <p>然后是z-score …</p>
       <a class="btn" href="http://littlezz.github.io/linear-modelde-zong-jie.html#linear-modelde-zong-jie">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/gai-lu-lun-xue-xi.html#gai-lu-lun-xue-xi">概率论学习</a></h2>
-    <p>
-      Posted on Fri 29 January 2016 in <a href="http://littlezz.github.io/category/machine-learning.html">Machine-Learning</a>
-      &#8226; <a href="http://littlezz.github.io/gai-lu-lun-xue-xi.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>所用公式都是用mathjax 写的， ( <del>奶奶的， 写死我了。</del> )  </p>
-<h2>基本概念</h2>
-<p>基本概念主要记下常用公式。</p>
-<ul>
-<li>P(A) 表示事件A发生的概率  </li>
-<li><span class="math">\(P(A \bigcup B) = P(A) + P(B) - P(AB)\)</span>  </li>
-<li>上面公式可以推广到N个事件  </li>
-<li><span class="math">\(P(B \mid A)  = \frac{P(AB)}{P(A)}\)</span>  </li>
-<li><span class="math">\(P(A) = P(AB)+P(A \bar B) = P(B) \cdot P(A|B) + P(\bar B) \cdot P(A| \bar B)\)</span>  </li>
-</ul>
-<h5>全概率公式</h5>
-<p><span class="math">\(B_i\)</span> 是<span class="math">\(S\)</span>的完备事件组  </p>
-<p><span class="math">\(P(A) = \sum_{i=1}^n P(B_i)P(A|B_i)\)</span>   </p>
-<h5>贝叶斯公式</h5>
-<p><span class="math">\(P(B_k|A) = {P(B_k A) \over P(A)} = {P(B_k)P(A|P(B_k) \over \sum_{j=1}^n P(B_j …</span></p>
-      <a class="btn" href="http://littlezz.github.io/gai-lu-lun-xue-xi.html#gai-lu-lun-xue-xi">Continue reading</a>
   </div>
 </article>
 

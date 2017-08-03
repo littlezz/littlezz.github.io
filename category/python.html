@@ -50,6 +50,41 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">scapy 总结（二）</a></h2>
+    <p>
+      Posted on Thu 03 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/scapy-zong-jie-er.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <p>关于字节流中恢复包， 定义新的协议以及sniff 源码分析</p>
+<h2>从字节流中恢复包</h2>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="n">Ether</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+<h2><code>Packet</code> 类和其子类</h2>
+<p>在 scapy 中， 定义了一些类， 用于处理不同层中的数据， 层和层之间存在上下关系。 每一层只解析对应的数据， 其余的被当成 <code>payload</code> 存放。比如<code>Ether</code>只解析 mac 地址， 之后 IP 层的数据都存在 payload 中。</p>
+<p>在当前层解析完成之后， 余下的 payload会调用<code>guess_payload_class</code>来猜测下一层需要使用的类， 之后交由下一层来解析剩下的 payload。</p>
+<p><code>Ether</code> <code>IP</code> <code>UDP</code> <code>TCP</code>等都是<code>Packet</code>的子类，每一层都定义了 field， 存放于<code>field_desc</code>中， field 为 descriotor， 用于处理数据类型， 类似于 django model 中的<code>Field</code>。</p>
+<p>比如定义一个新的 layer</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Disney</span><span class="p">(</span><span class="n">Packet</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DisneyPacket &quot;</span>
+    <span class="n">fields_desc</span><span class="o">=</span><span class="p">[</span> <span class="n">ShortField</span><span class="p">(</span><span class="s2">&quot;mickey&quot;</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+                 <span class="n">XByteField</span><span class="p">(</span><span class="s2">&quot;minnie&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">,</span>
+                 <span class="n">IntEnumField</span><span class="p">(</span><span class="s2">&quot;donald&quot;</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span>
+                      <span class="p">{</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;cool&quot;</span> <span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;angry&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">]</span>
+</pre></div>
+
+<p>具体可以参考 <a href="http://scapy.readthedocs.io/en/latest/build_dissect.html">http …</a></p>
+      <a class="btn" href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Logging 使用总结</a></h2>
     <p>
       Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>

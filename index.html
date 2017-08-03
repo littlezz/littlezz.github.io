@@ -50,6 +50,109 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">scapy 总结（二）</a></h2>
+    <p>
+      Posted on Thu 03 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/scapy-zong-jie-er.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <p>关于字节流中恢复包， 定义新的协议以及sniff 源码分析</p>
+<h2>从字节流中恢复包</h2>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="n">Ether</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">Ether</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+<h2><code>Packet</code> 类和其子类</h2>
+<p>在 scapy 中， 定义了一些类， 用于处理不同层中的数据， 层和层之间存在上下关系。 每一层只解析对应的数据， 其余的被当成 <code>payload</code> 存放。比如<code>Ether</code>只解析 mac 地址， 之后 IP 层的数据都存在 payload 中。</p>
+<p>在当前层解析完成之后， 余下的 payload会调用<code>guess_payload_class</code>来猜测下一层需要使用的类， 之后交由下一层来解析剩下的 payload。</p>
+<p><code>Ether</code> <code>IP</code> <code>UDP</code> <code>TCP</code>等都是<code>Packet</code>的子类，每一层都定义了 field， 存放于<code>field_desc</code>中， field 为 descriotor， 用于处理数据类型， 类似于 django model 中的<code>Field</code>。</p>
+<p>比如定义一个新的 layer</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Disney</span><span class="p">(</span><span class="n">Packet</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;DisneyPacket &quot;</span>
+    <span class="n">fields_desc</span><span class="o">=</span><span class="p">[</span> <span class="n">ShortField</span><span class="p">(</span><span class="s2">&quot;mickey&quot;</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+                 <span class="n">XByteField</span><span class="p">(</span><span class="s2">&quot;minnie&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">,</span>
+                 <span class="n">IntEnumField</span><span class="p">(</span><span class="s2">&quot;donald&quot;</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span>
+                      <span class="p">{</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;happy&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;cool&quot;</span> <span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;angry&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">]</span>
+</pre></div>
+
+<p>具体可以参考 <a href="http://scapy.readthedocs.io/en/latest/build_dissect.html">http://scapy.readthedocs.io/en/latest/build_dissect.html</a>  </p>
+<h3>自带的包序列化</h3>
+<p>文档里面没有提及， 我翻源码的时候看到有<code>import_object</code> 和<code>export_object</code>函数， 用于把包序列化。  代码位于 <code>utils.py</code> 中</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">export_object</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">dill</span> <span class="kn">as</span> <span class="nn">pickle</span>
+    <span class="kn">import</span> <span class="nn">base64</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">gzip</span><span class="o">.</span><span class="n">zlib</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="mi">9</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>返回 pickle 序列化后压缩然后 b64编码的值。  </p>
+<h3>sniff 函数源码分析</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sniff</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">offline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prn</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">lfilter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">L2socket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+          <span class="n">opened_socket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stop_filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">exceptions</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">karg</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">opened_socket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">opened_socket</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">offline</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">L2socket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">L2socket</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">L2listen</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">L2socket</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">ETH_P_ALL</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">karg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">PcapReader</span><span class="p">(</span><span class="n">offline</span><span class="p">)</span>
+
+    <span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">stoptime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">+</span><span class="n">timeout</span>
+    <span class="n">remain</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">remain</span> <span class="o">=</span> <span class="n">stoptime</span><span class="o">-</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">remain</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="n">sel</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="n">s</span><span class="p">],[],[],</span><span class="n">remain</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">MTU</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">lfilter</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lfilter</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">store</span><span class="p">:</span>
+                    <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">prn</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">prn</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">stop_filter</span> <span class="ow">and</span> <span class="n">stop_filter</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="n">count</span><span class="p">:</span>
+                    <span class="k">break</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">exceptions</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">opened_socket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">plist</span><span class="o">.</span><span class="n">PacketList</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span><span class="s2">&quot;Sniffed&quot;</span><span class="p">)</span>
+</pre></div>
+
+<p>首先初始化<code>c</code>，用于无条件统计包的个数， 初始化<code>s</code>， 该对象的来源有三种途径， 从<code>opened_socket</code>参数设置一个给定的打开的 socket 对象， 或者是在 <code>offline</code>设定了文件路径的时候使用<code>PcapReader</code>, 最后使用默认的<code>L2listen</code>.<br>
+之后进入循环， 使用<code>select</code>监听s 的可读事件， 每次读入之后对包做处理， 先用<code>lfilter</code>, 然后判断<code>store</code>为真将包存入列表中， 使用<code>prn</code>设置的函数,使用<code>stop_filter</code>设置的函数， 判断 c 和 count 的大小， 是否退出循环。  </p>
+<p>函数捕获 <code>KeyboardInterrupt</code>异常， 循环结束后返回存储的列表。  </p>
+<p>有几个不是很好的地方， 一个是 变量c默认不断的累加包数量， 另一个是 select 的超时参数被用于设置 sniff 的监听时间了，  在设置为无限运行时， sniff会在没有包到来的时候永久阻塞， 由于判断退出的回调函数是在处理每个包时调用的， 所以无法正常的退出。</p>
+<p>如果你希望 sniff 函数作为线程长期运行，但是又希望能在没有包到来的情况下按时的退出， 一种是发送一自定义的包， 触发 stop_filter函数， 另一种是修改 sniff 源码，select 的 timeout 参数设置为一个 sweep timeout， 用于定时的结束 select 的 block， 然后检查循环是否需要退出。</p>
+<p>2017年08月03日17:23:46</p>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/logging-shi-yong-zong-jie.html#logging-shi-yong-zong-jie">Logging 使用总结</a></h2>
     <p>
       Posted on Wed 02 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -984,82 +1087,6 @@ pip install M2Crypto
 <p>梦醒了。</p>
 <p><br></p>
 <p><em><p align='right'>2016年06月05日， 记昨天晚上做的一个梦。</p></em></p>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#how-to-upload-package-to-pypi">How to upload package to pypi</a></h2>
-    <p>
-      Posted on Sun 15 May 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/how-to-upload-package-to-pypi.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <h2>Install twine</h2>
-<p><code>pip install twine</code></p>
-<h2>Init file</h2>
-<p>First of all, make sure that the structure of project is correct. Says, your project code in a folder call 'foo', then you have <code>README</code> and some other files in the same level.  </p>
-<p>For example, </p>
-<div class="highlight"><pre><span></span>.
-├── foo
-│   └── a.py
-└── readme.md
-</pre></div>
-
-<p>Secondly, add specify file to the root folder.  </p>
-<ul>
-<li>README.rst  </li>
-<li>MANIFEST.in  </li>
-<li>setup.py  </li>
-<li>setup.cfg(option)</li>
-</ul>
-<p>pypi do not know markdown format readme, there is only rst format available.</p>
-<h2>setup.py</h2>
-<p>look at
-<a href="https://github.com/pypa/sampleproject/blob/master/setup.py">https://github.com/pypa/sampleproject/blob/master/setup.py</a></p>
-<p>after finish <code>setup.py</code><br>
-you can use   </p>
-<p><code>pip install -e .</code>
-install package locally on editable mode.<br>
-It will also install dependency.  </p>
-<h2>Make dist</h2>
-<h3>Build source distribution</h3>
-<p>run<br>
-<code>python setup.py sdist</code>  </p>
-<h3>Build wheel.</h3>
-<p>If your code compat py2 and py3.<br>
-<code>python setup.py bdist_wheel --universal</code>  </p>
-<p>else, 
-<code>python setup.py bdist_wheel</code>  </p>
-<p>if your code is specify for some python version, add python tag in <code>setup.cfg</code>  </p>
-<p>For example, if your code is only available in py3.5 and 3.4 </p>
-<div class="highlight"><pre><span></span><span class="k">[bdist_wheel]</span>
-<span class="na">python-tag</span> <span class="o">=</span> <span class="s">py35, py34</span>
-</pre></div>
-
-<h2>Upload</h2>
-<p>look at <a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/#uploading-your-project-to-pypi</a>  </p>
-<p>Create a account on pypi, register your package,  write a <code>~/.pypirc</code> </p>
-<div class="highlight"><pre><span></span><span class="k">[distutils]</span>
-<span class="na">index-servers</span><span class="o">=</span><span class="s">pypi</span>
-
-<span class="k">[pypi]</span>
-<span class="na">repository</span> <span class="o">=</span> <span class="s">https://pypi.python.org/pypi</span>
-<span class="na">username</span> <span class="o">=</span> <span class="s">&lt;username&gt;</span>
-<span class="na">password</span> <span class="o">=</span> <span class="s">&lt;password&gt;</span>
-</pre></div>
-
-<p>left the password empty, you can use twine with <code>-p PASSWORD</code>.  </p>
-<p>upload your dist folder  </p>
-<p><code>twine upload dist/*</code>  </p>
-<h2>Reference</h2>
-<ul>
-<li><a href="http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/">http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/</a>  </li>
-<li><a href="http://peterdowns.com/posts/first-time-with-pypi.html">http://peterdowns.com/posts/first-time-with-pypi.html</a>  </li>
-</ul>
-<p>2016-05-15 11:43:33</p>
   </div>
 </article>
 

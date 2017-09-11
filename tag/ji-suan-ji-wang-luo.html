@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://littlezz.github.io"/>
 <meta property="og:image" content="/images/logo.jpg">
-  <title>littlezz's Blog &ndash; Category: Code</title>
+  <title>littlezz's Blog &ndash; Tag: 计算机网络</title>
 </head>
 <body>
   <aside>
@@ -94,85 +94,6 @@
 <h3>在客户端上面安装根认证</h3>
 <p>Chrome …</p>
       <a class="btn" href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Github Page 自定义子域名</a></h2>
-    <p>
-      Posted on Tue 02 May 2017 in <a href="http://littlezz.github.io/category/code.html">Code</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/xiao-ji-qiao.html">小技巧</a>      &#8226; <a href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>目标：设置域名</p>
-<div class="highlight"><pre><span></span>xxx.github.io --&gt; blog.xxx.com
-</pre></div>
-
-<ul>
-<li>
-<p>首先在 github page 上面的项目里添加一个文件<code>CNAME</code>, 内容是目标站点<code>blog.xxx.com</code></p>
-</li>
-<li>
-<p>之后， 在 DNS advance 上面增加一条CNAME记录， 如果要使用<code>blog.xxx.com</code>那么 <code>host</code> 的值填 <code>blog</code>而不是<code>blog.xxx.com</code>， value 填<code>xxx.github.io</code>  </p>
-</li>
-<li>
-<p>如果你的 github page 是一个不断更新的博客， 必须在渲染时增加 CNAME 记录。  我是用的是 pelican， 设置方法是在<code>pelicanconf.py</code> 中设置</p>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;static/CNAME&#39;</span><span class="p">:{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span><span class="s1">&#39;CNAME&#39;</span><span class="p">},</span>
-<span class="p">}</span>
-
-<span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> 
-                <span class="s1">&#39;static&#39;</span><span class="p">]</span>
-</pre></div>
-
-<p>之后就是等待 dns 的刷新了</p>
-<h3>小结</h3>
-<p>CNAME 设置是 <code>blog</code>， 而不<code>blog.xxx.com</code>, 不然域名会解析到<code>blog.xxx.com.xxx.com</code></p>
-<p>另外， pelican 默认只听是 googleapi 上面的， 虽然据说可能大概好像也许， 在北京有服务器， 但是我这里还是很慢， 于是我把字体的 url 改成了中科大的。  </p>
-<p>方法：
-在主题里的 …</p>
-      <a class="btn" href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html#github-page-zi-ding-yi-zi-yu-ming">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">记一次服务器被爆破后灾后重建ss的经历</a></h2>
-    <p>
-      Posted on Fri 18 November 2016 in <a href="http://littlezz.github.io/category/code.html">Code</a>
-      &#8226; <a href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <h2>疑似被黑</h2>
-<p>2年前和基友合力租了一台服务器用于搭建ss服务， 当年啥也不懂， 系统选的是fedora， yum install fail2ban之后主要精力就是折腾ss， 配了supervisord， 编译了hybla的模块， 就不管了。  </p>
-<p>2年来一直没出什么大事， 偶尔大面积100%丢包过一下就好了， 没当回事。  </p>
-<p>直到昨天因为系统更新准备重新编译hybla， 登录上去顺便用网上抄了的命令查看了一下当前连接量， </p>
-<div class="highlight"><pre><span></span>netstat -an | grep 443 | grep ESTABLISHED | wc -l
-</pre></div>
-
-<p>大的惊人， 开始慌了。  </p>
-<p>检查log日志， 发现大量</p>
-<div class="highlight"><pre><span></span>2016-11-16 01:16:01 ERROR can not parse header when handling connection from ::ffff:&lt;ip&gt;:&lt;port&gt;
-</pre></div>
-
-<p>反查这些ip， 发现都不是我们自己的ip。<br>
-我估计是被爆破了， 但是我端口用的是443， 所以也不太好确定是不是真的被爆破。
-之后就是ban ip， 换端口， 改密码。  </p>
-<p>接着开始考虑服务器本身有没有被攻破， 看了一下ssh的22端口， 发现有其他的ip在建立连接， 到这里我都没有特别慌张， 我想， 我还有fail2ban呢。  </p>
-<p>检查了一下我的fail2ban， 发现处于开启失败状态。<br>
-顺带， ssh服务没换端口， 允许root账号登录， 允许密码登录。</p>
-<p>『卧槽， 精彩了』  </p>
-<p>赶紧联系大腿。</p>
-<p>先打<code>w</code>命令， 一片空白， 一般登录了的话至少有自己一个人， 现在什么也没有， 六神表示<code>w</code>估计被改了， 可能是被rootkit了， rootkit了的话基本就很难看出其他的东西了。  </p>
-<p>往后是一些挣扎， 检查<code>ps -aux</code>， 看不出来。
-检查<code>who -a /var/log/wtmp …</code></p>
-      <a class="btn" href="http://littlezz.github.io/ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li.html#ji-yi-ci-fu-wu-qi-bei-bao-po-hou-zai-hou-zhong-jian-ssde-jing-li">Continue reading</a>
   </div>
 </article>
 

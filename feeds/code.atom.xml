@@ -1,5 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog - Code</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/code.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-05-02T00:00:00+08:00</updated><entry><title>Github Page 自定义子域名</title><link href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html" rel="alternate"></link><published>2017-05-02T00:00:00+08:00</published><updated>2017-05-02T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-05-02:/github-page-zi-ding-yi-zi-yu-ming.html</id><summary type="html">&lt;p&gt;目标：设置域名&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>littlezz's Blog - Code</title><link href="http://littlezz.github.io/" rel="alternate"></link><link href="http://littlezz.github.io/feeds/code.atom.xml" rel="self"></link><id>http://littlezz.github.io/</id><updated>2017-09-11T00:00:00+08:00</updated><entry><title>如何生成自用的 SSL 认证证书</title><link href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html" rel="alternate"></link><published>2017-09-11T00:00:00+08:00</published><updated>2017-09-11T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-09-11:/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html</id><summary type="html">&lt;p&gt;本文结合 &lt;a href="https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/"&gt;creating-your-own-ssl-certificate-authority&lt;/a&gt; 这篇文章，描述如何生成一个4096位的私有证书， 同时解决 Chrome 浏览器不识别的问题。 &lt;/p&gt;
+&lt;p&gt;Let's encrypt 只能对域名签发证书， 如果希望在内网中使用， 或者是对 IP 使用， 需要自己签发证书。  &lt;/p&gt;
+&lt;h2&gt;总览&lt;/h2&gt;
+&lt;p&gt;证书是为了在使用 HTTPS 中对对方进行认证， 确认目标。所以证书都是对域名或者 ip 签发的。&lt;br&gt;
+对于自用证书，一般有两种方式，一种是生成一对证书，然后服务器和客户端分别装上。&lt;br&gt;
+另一种方法是生成一个『根认证证书』，再由这个根认证配合秘钥向服务器签发证书，服务器安装根认证，之后可以识别所有这个根认证签发的服务器的证书。  &lt;/p&gt;
+&lt;p&gt;我们首先将生成证书认证（CA）， 之后用 CA 对服务器签发证书（cert）&lt;/p&gt;
+&lt;p&gt;生成 CA 的步骤：  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;生成秘钥&lt;/li&gt;
+&lt;li&gt;自签名&lt;/li&gt;
+&lt;li&gt;在客户端上安装 CA&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;之后用 CA 对服务器签发证书:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;生成CSR&lt;/li&gt;
+&lt;li&gt;利用 CA 和秘钥对CSR 签名&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;生成根证书&lt;/h2&gt;
+&lt;p&gt;根证书只用生成一次&lt;/p&gt;
+&lt;h3&gt;生成秘钥&lt;/h3&gt;
+&lt;p&gt;秘钥需要被&lt;strong&gt;严格保密&lt;/strong&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl genrsa -out rootCA.key 4096
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这里生成了4096位的秘钥&lt;/p&gt;
+&lt;h3&gt;自签名&lt;/h3&gt;
+&lt;p&gt;自签名后生成的 pem 文件用于在客户端上面安装。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl req -x509 -new -nodes -key rootCA.key -sha384 -days 8192 -out rootCA.pem
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这里采用了 sha384，以及有效期设置为了8192天  &lt;/p&gt;
+&lt;p&gt;之后会进入一个交互页面， 按需要填写对应的信息。  &lt;/p&gt;
+&lt;h3&gt;在客户端上面安装根认证&lt;/h3&gt;
+&lt;p&gt;Chrome …&lt;/p&gt;</summary><content type="html">&lt;p&gt;本文结合 &lt;a href="https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/"&gt;creating-your-own-ssl-certificate-authority&lt;/a&gt; 这篇文章，描述如何生成一个4096位的私有证书， 同时解决 Chrome 浏览器不识别的问题。 &lt;/p&gt;
+&lt;p&gt;Let's encrypt 只能对域名签发证书， 如果希望在内网中使用， 或者是对 IP 使用， 需要自己签发证书。  &lt;/p&gt;
+&lt;h2&gt;总览&lt;/h2&gt;
+&lt;p&gt;证书是为了在使用 HTTPS 中对对方进行认证， 确认目标。所以证书都是对域名或者 ip 签发的。&lt;br&gt;
+对于自用证书，一般有两种方式，一种是生成一对证书，然后服务器和客户端分别装上。&lt;br&gt;
+另一种方法是生成一个『根认证证书』，再由这个根认证配合秘钥向服务器签发证书，服务器安装根认证，之后可以识别所有这个根认证签发的服务器的证书。  &lt;/p&gt;
+&lt;p&gt;我们首先将生成证书认证（CA）， 之后用 CA 对服务器签发证书（cert）&lt;/p&gt;
+&lt;p&gt;生成 CA 的步骤：  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;生成秘钥&lt;/li&gt;
+&lt;li&gt;自签名&lt;/li&gt;
+&lt;li&gt;在客户端上安装 CA&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;之后用 CA 对服务器签发证书:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;生成CSR&lt;/li&gt;
+&lt;li&gt;利用 CA 和秘钥对CSR 签名&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;生成根证书&lt;/h2&gt;
+&lt;p&gt;根证书只用生成一次&lt;/p&gt;
+&lt;h3&gt;生成秘钥&lt;/h3&gt;
+&lt;p&gt;秘钥需要被&lt;strong&gt;严格保密&lt;/strong&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl genrsa -out rootCA.key 4096
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这里生成了4096位的秘钥&lt;/p&gt;
+&lt;h3&gt;自签名&lt;/h3&gt;
+&lt;p&gt;自签名后生成的 pem 文件用于在客户端上面安装。  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl req -x509 -new -nodes -key rootCA.key -sha384 -days 8192 -out rootCA.pem
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这里采用了 sha384，以及有效期设置为了8192天  &lt;/p&gt;
+&lt;p&gt;之后会进入一个交互页面， 按需要填写对应的信息。  &lt;/p&gt;
+&lt;h3&gt;在客户端上面安装根认证&lt;/h3&gt;
+&lt;p&gt;Chrome 和 Safari 和 IE 都使用系统的证书管理， 把.pem文件安装， 然后设置为任何时间都信任。&lt;br&gt;
+firefox 有自己的证书系统， 需要特别的在浏览器内安装&lt;/p&gt;
+&lt;h2&gt;对服务器签发证书&lt;/h2&gt;
+&lt;p&gt;每个服务器都单独的签发。&lt;/p&gt;
+&lt;h3&gt;生成 CSR&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;先生成一个新的私钥&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl genrsa -out test_server.key 2048
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生成 certificate signing request.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl req -new -key test_server.key -out test_server.csr
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;和之前一样， 会进入一个交互式的设置， 其中， 需要正确设置&lt;code&gt;common-name&lt;/code&gt;  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Common Name (eg, YOUR name) []: 192.168.1.112
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;签发证书&lt;/h3&gt;
+&lt;h4&gt;v3.ext&lt;/h4&gt;
+&lt;p&gt;为了解决 google 不识别 subjectaltname 从而不识别证书的问题， 需要新建一个 &lt;code&gt;v3.ext&lt;/code&gt;，写入下面内容&lt;/p&gt;
+&lt;p&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = IP:192.168.1.112
+&lt;/pre&gt;&lt;/div&gt;
+ip可以替换为自己要签发的 ip&lt;/p&gt;
+&lt;h4&gt;签发证书&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;openssl x509 -req -in test_server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out test_server.crt -days 7500 -sha384 -extfile ./v3.ext
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;到此，我们有了&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rootCA.key      rootCA.srl      test_server.csr
+rootCA.pem      test_server.crt test_server.key
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这些文件， 其中&lt;code&gt;rootCA.key&lt;/code&gt;需要被妥善保管， 任何拥有&lt;code&gt;rootCA.key&lt;/code&gt;都可以伪造签发证书。  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;rootCA.pem&lt;/code&gt;公开， 用于客户端安装  &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;test_server.key&lt;/code&gt;以及&lt;code&gt;test_server.crt&lt;/code&gt;保密， 用于在服务器运行时提供给服务器。  &lt;/p&gt;
+&lt;p&gt;2017年09月11日17:52:15&lt;/p&gt;</content><category term="小结"></category><category term="计算机网络"></category></entry><entry><title>Github Page 自定义子域名</title><link href="http://littlezz.github.io/github-page-zi-ding-yi-zi-yu-ming.html" rel="alternate"></link><published>2017-05-02T00:00:00+08:00</published><updated>2017-05-02T00:00:00+08:00</updated><author><name>littlezz</name></author><id>tag:littlezz.github.io,2017-05-02:/github-page-zi-ding-yi-zi-yu-ming.html</id><summary type="html">&lt;p&gt;目标：设置域名&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;xxx.github.io --&amp;gt; blog.xxx.com
 &lt;/pre&gt;&lt;/div&gt;
 

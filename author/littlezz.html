@@ -50,6 +50,55 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu">如何生成自用的 SSL 认证证书</a></h2>
+    <p>
+      Posted on Mon 11 September 2017 in <a href="http://littlezz.github.io/category/code.html">Code</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/ji-suan-ji-wang-luo.html">计算机网络</a>      &#8226; <a href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <p>本文结合 <a href="https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/">creating-your-own-ssl-certificate-authority</a> 这篇文章，描述如何生成一个4096位的私有证书， 同时解决 Chrome 浏览器不识别的问题。 </p>
+<p>Let's encrypt 只能对域名签发证书， 如果希望在内网中使用， 或者是对 IP 使用， 需要自己签发证书。  </p>
+<h2>总览</h2>
+<p>证书是为了在使用 HTTPS 中对对方进行认证， 确认目标。所以证书都是对域名或者 ip 签发的。<br>
+对于自用证书，一般有两种方式，一种是生成一对证书，然后服务器和客户端分别装上。<br>
+另一种方法是生成一个『根认证证书』，再由这个根认证配合秘钥向服务器签发证书，服务器安装根认证，之后可以识别所有这个根认证签发的服务器的证书。  </p>
+<p>我们首先将生成证书认证（CA）， 之后用 CA 对服务器签发证书（cert）</p>
+<p>生成 CA 的步骤：  </p>
+<ol>
+<li>生成秘钥</li>
+<li>自签名</li>
+<li>在客户端上安装 CA</li>
+</ol>
+<p>之后用 CA 对服务器签发证书:</p>
+<ol>
+<li>生成CSR</li>
+<li>利用 CA 和秘钥对CSR 签名</li>
+</ol>
+<h2>生成根证书</h2>
+<p>根证书只用生成一次</p>
+<h3>生成秘钥</h3>
+<p>秘钥需要被<strong>严格保密</strong>。</p>
+<div class="highlight"><pre><span></span>openssl genrsa -out rootCA.key 4096
+</pre></div>
+
+<p>这里生成了4096位的秘钥</p>
+<h3>自签名</h3>
+<p>自签名后生成的 pem 文件用于在客户端上面安装。  </p>
+<div class="highlight"><pre><span></span>openssl req -x509 -new -nodes -key rootCA.key -sha384 -days 8192 -out rootCA.pem
+</pre></div>
+
+<p>这里采用了 sha384，以及有效期设置为了8192天  </p>
+<p>之后会进入一个交互页面， 按需要填写对应的信息。  </p>
+<h3>在客户端上面安装根认证</h3>
+<p>Chrome …</p>
+      <a class="btn" href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">scapy 总结（二）</a></h2>
     <p>
       Posted on Thu 03 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -377,35 +426,6 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <p>这个项目后来也不了了之了， 我自己都不用。  </p>
 <p>后来还写了一个<a href="https://github.com/littlezz/ESL-Model">ESL-Model</a>, 这东西我都不想说， 现在都快成黑历史了 …</p>
       <a class="btn" href="http://littlezz.github.io/lan.html#lan">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/hui-jia.html#hui-jia">回家</a></h2>
-    <p>
-      Posted on Sun 05 June 2016 in <a href="http://littlezz.github.io/category/diary.html">diary</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/ri-ji.html">日记</a>,      <a href="http://littlezz.github.io/tag/li-ren-ge.html">里人格</a>,      <a href="http://littlezz.github.io/tag/xia-che.html">瞎扯</a>      &#8226; <a href="http://littlezz.github.io/hui-jia.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>我在上课。<br>
-如同之前我上过的无数的课一样， 我完全没有在听。  </p>
-<p>老师要求我们在书本上做题， 之后使用像超市里面的条形码扫描器一样的机器在书本上一扫， 平时分就出来了。  </p>
-<p>当然， 这种机器看上去高级， 但总是给人一种玩具的感觉。有些人的分数就是飘忽不定， 一会儿是二十几分， 一会儿是六十几分， 这取决于使用扫描器时的角度， 是个依赖耐心和运气的活儿。   <br>
-不过使用者虽然有耐心， 但是其他同学还在等着用啊， 于是乱糟糟的， 催别人快一些的， 拿高分的发表扫描器使用经验谈的， 拿低分大叫不公平等着再试一次的。  </p>
-<p>看够了， 我才发现我不知道教材是什么， 看看邻座的，还好， 我桌子上有了一本， 可是完全不知道要写哪里。<br>
-此时老师已经拿着扫描仪走到我旁边了， 我还没有找到对应的页数， 一把抽过邻座的书， 74页， 我看了一下自己的书， 第71页， 赶紧一翻， 老师也在这时走到了我身旁。  </p>
-<p>我希望他没有看到我空空如也的书本， 对他说先检查邻座的吧。  </p>
-<p>末了， 老师说时间不够了， 没有检查的同学下课了过去找他。我松了一口气， 赶紧对着邻座的书本抄， 题目是填写一个巨大且数目繁多的表格。  </p>
-<p>放学后走在回家的路上， 我带着耳机， 放着the pillows的《one life》，和一个女生并肩走着， 我低着头看我的脚抬起又落下， 配合着节拍， 正当我觉得风景正好， 晚霞染红了半片天， 心情舒畅， 斗志昂扬的时候， 我想起这样带着耳机和一个女孩走路不太礼貌， 继而我突然想到我忘记去给老师检查我的作业了。</p>
-<p>于是事情最终演变成了我摘下耳机， 停下了脚步， 在兴奋劲还没有散去的脸上新添了一份略带惶恐的表情：『完了， 我忘记给老师检查了， 平时分没有了。  』</p>
-<p>女孩或许说了些什么， 我没在听， 但是我才注意到我喜欢这个女孩， 但是他是不是我的女朋友呢， 好像也不是， 我们可能是在恋爱期吧。  </p>
-<p>我觉得没有什么比现在和女孩一起走在回家的路上更重要的了， 瞬间忘光了检查作业的事情， 毕竟， 现在回学校也没有什么用了。  </p>
-<p>到了一处池塘， 池塘旁边放满了五花八门的脸盆和塑料桶。 这个池塘里面有各种各样的鱼， 以黑色的草鱼为主。 一个无主的池塘， 鱼儿平时可能就吃一些水草吧， 所以鱼饵一下去， 立马咬钩， 但是钓上来的鱼却总是又肥又大， 池塘旁边的各式各样的盆和桶用于给垂钓者临时存放钓上来的鱼， 偶尔来得早了还能发现几根普通的『随手』杆。  总之， 一个免费且设施齐全的自助鱼塘。  </p>
-<p>我们商量着钓一条鱼回去， 取了一根鱼竿 …</p>
-      <a class="btn" href="http://littlezz.github.io/hui-jia.html#hui-jia">Continue reading</a>
   </div>
 </article>
 

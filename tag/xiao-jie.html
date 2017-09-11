@@ -50,6 +50,55 @@
 
 <article>
   <header>
+    <h2><a href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu">如何生成自用的 SSL 认证证书</a></h2>
+    <p>
+      Posted on Mon 11 September 2017 in <a href="http://littlezz.github.io/category/code.html">Code</a>
+      &#8226; Tagged with
+      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>,      <a href="http://littlezz.github.io/tag/ji-suan-ji-wang-luo.html">计算机网络</a>      &#8226; <a href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#disqus_thread">Leave a comment</a>
+    </p>
+  </header>
+  <div>
+      <p>本文结合 <a href="https://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/">creating-your-own-ssl-certificate-authority</a> 这篇文章，描述如何生成一个4096位的私有证书， 同时解决 Chrome 浏览器不识别的问题。 </p>
+<p>Let's encrypt 只能对域名签发证书， 如果希望在内网中使用， 或者是对 IP 使用， 需要自己签发证书。  </p>
+<h2>总览</h2>
+<p>证书是为了在使用 HTTPS 中对对方进行认证， 确认目标。所以证书都是对域名或者 ip 签发的。<br>
+对于自用证书，一般有两种方式，一种是生成一对证书，然后服务器和客户端分别装上。<br>
+另一种方法是生成一个『根认证证书』，再由这个根认证配合秘钥向服务器签发证书，服务器安装根认证，之后可以识别所有这个根认证签发的服务器的证书。  </p>
+<p>我们首先将生成证书认证（CA）， 之后用 CA 对服务器签发证书（cert）</p>
+<p>生成 CA 的步骤：  </p>
+<ol>
+<li>生成秘钥</li>
+<li>自签名</li>
+<li>在客户端上安装 CA</li>
+</ol>
+<p>之后用 CA 对服务器签发证书:</p>
+<ol>
+<li>生成CSR</li>
+<li>利用 CA 和秘钥对CSR 签名</li>
+</ol>
+<h2>生成根证书</h2>
+<p>根证书只用生成一次</p>
+<h3>生成秘钥</h3>
+<p>秘钥需要被<strong>严格保密</strong>。</p>
+<div class="highlight"><pre><span></span>openssl genrsa -out rootCA.key 4096
+</pre></div>
+
+<p>这里生成了4096位的秘钥</p>
+<h3>自签名</h3>
+<p>自签名后生成的 pem 文件用于在客户端上面安装。  </p>
+<div class="highlight"><pre><span></span>openssl req -x509 -new -nodes -key rootCA.key -sha384 -days 8192 -out rootCA.pem
+</pre></div>
+
+<p>这里采用了 sha384，以及有效期设置为了8192天  </p>
+<p>之后会进入一个交互页面， 按需要填写对应的信息。  </p>
+<h3>在客户端上面安装根认证</h3>
+<p>Chrome …</p>
+      <a class="btn" href="http://littlezz.github.io/ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu.html#ru-he-sheng-cheng-zi-yong-de-ssl-ren-zheng-zheng-shu">Continue reading</a>
+  </div>
+  <hr />
+</article>
+<article>
+  <header>
     <h2><a href="http://littlezz.github.io/scapy-zong-jie-er.html#scapy-zong-jie-er">scapy 总结（二）</a></h2>
     <p>
       Posted on Thu 03 August 2017 in <a href="http://littlezz.github.io/category/python.html">Python</a>
@@ -377,32 +426,6 @@ packet = Ether(src=RandMAC())/IP(dst=&#39;192.168.31.1 …</pre></div>
 <p>说到底， 为什么作品的排名会被高低分这种东西牵制。 或者说如何排除傻逼对一个作品的影响。  </p>
 <p>投票者投票表决天才， 但是有一个前提是 …</p>
       <a class="btn" href="http://littlezz.github.io/guan-yu-wo-bu-zai-de-jie-dao-ping-fen-de-yi-dian-si-kao.html#guan-yu-wo-bu-zai-de-jie-dao-ping-fen-de-yi-dian-si-kao">Continue reading</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Travis CI with Numpy and Pytest</a></h2>
-    <p>
-      Posted on Thu 31 March 2016 in <a href="http://littlezz.github.io/category/python.html">Python</a>
-      &#8226; Tagged with
-      <a href="http://littlezz.github.io/tag/python.html">python</a>,      <a href="http://littlezz.github.io/tag/numpy.html">numpy</a>,      <a href="http://littlezz.github.io/tag/xiao-jie.html">小结</a>      &#8226; <a href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#disqus_thread">Leave a comment</a>
-    </p>
-  </header>
-  <div>
-      <p>It takes long time to install scientific python package by <code>pip</code> in travis and sometime fail.  </p>
-<p>The solve is to use conda to install binary package. <br>
-<a href="http://conda.pydata.org/docs/travis.html">http://conda.pydata.org/docs/travis.html</a>  </p>
-<p>Note that some package not in conda, you can use <code>pip</code> install it, for example, <code>py.test</code>  </p>
-<p>Here is my <a href="https://github.com/littlezz/ESL-Model">ESL-Model</a> .trais.yml, you can view on github <a href="https://github.com/littlezz/ESL-Model/blob/master/.travis.yml">https://github.com/littlezz/ESL-Model/blob/master/.travis.yml</a>  </p>
-<p><div class="highlight"><pre><span></span>language: python
-python:
-  <span class="c1"># We don&#39;t actually use the Travis Python, but this keeps it organized.</span>
-  - <span class="s2">&quot;3.5&quot;</span>
-
-install:
-  - sudo …</pre></div></p>
-      <a class="btn" href="http://littlezz.github.io/travis-ci-with-numpy-and-pytest.html#travis-ci-with-numpy-and-pytest">Continue reading</a>
   </div>
 </article>
 
